@@ -9,4 +9,4 @@
 - 电量统计FuelSummary
 - 设置勿扰模式
 - WIFI密码查看
--满血充电MAX
+- 满血充电MAX
