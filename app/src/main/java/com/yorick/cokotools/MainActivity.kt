@@ -6,15 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yorick.cokotools.databinding.ActivityMainBinding
-
+import com.yorick.cokotools.util.Utils
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,9 +28,33 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.buttonLockBands.setOnClickListener {
+            Log.d("yu", "onCreate: lock")
+            val activityExisting = Utils.isActivityExisting(
+                this,
+                "com.vivo.networkstate",
+                "com.vivo.networkstate.MainActivity"
+            )
+            if (!activityExisting) {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(resources.getString(R.string.compose_needed))
+                    .setMessage(resources.getString(R.string.download_network_state))
+                    .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
+                    }
+                    .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
+
+                    }
+                    .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+
+                    }
+                    .show()
+            } else {
+                Toast.makeText(
+                    this, resources.getString(R.string.compose_satisfied),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
         binding.fab.setOnClickListener {
             val uri: Uri = Uri.parse(resources.getString(R.string.feedback_url))
@@ -48,10 +70,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> {
-                startActivity(Intent(this,SettingsActivity::class.java))
-                return true
-            }
             R.id.action_helps -> {
                 Log.d("yu", "onOptionsItemSelected: helps")
                 return true
@@ -63,11 +81,5 @@ class MainActivity : AppCompatActivity() {
 
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
     }
 }

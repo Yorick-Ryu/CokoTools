@@ -1,26 +1,20 @@
 package com.yorick.cokotools
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yorick.cokotools.databinding.FragmentFirstBinding
+import com.yorick.cokotools.databinding.FragmentMainBinding
 import com.yorick.cokotools.util.Utils
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class MainFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentMainBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -28,7 +22,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -52,13 +46,12 @@ class MainFragment : Fragment() {
                         .setTitle(resources.getString(R.string.compose_needed))
                         .setMessage(resources.getString(R.string.download_network_state))
                         .setNeutralButton(resources.getString(R.string.cancel)){ dialog, which ->
-                            // Respond to negative button press
                         }
                         .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
-                            // Respond to negative button press
+
                         }
                         .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
-                            // Respond to positive button press
+
                         }
                         .show()
                 }else{
