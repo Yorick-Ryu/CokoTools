@@ -39,7 +39,7 @@ class MainFragment : Fragment() {
 //        binding.buttonFirst.setOnClickListener {
 //            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
 //        }
-        binding.buttonEngineerMode.visibility = View.GONE
+//        binding.buttonEngineerMode.visibility = View.GONE
         binding.buttonLockBands.setOnClickListener {
             context?.let {
                 val activityExisting = Utils.isActivityExisting(
