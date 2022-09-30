@@ -56,7 +56,7 @@ object Utils {
         Toast.makeText(context, desc, Toast.LENGTH_LONG).show()
     }
 
-    fun getAppVersionName(context: Context, packageName: String): List<String> {
+    private fun getAppVersionName(context: Context, packageName: String): List<String> {
         val verList = mutableListOf<String>()
         try {
             val packageInfo = context.applicationContext
@@ -80,7 +80,7 @@ object Utils {
     fun testVer(context: Context, packageName: String) {
         // 测试
         val verList = getAppVersionName(context, packageName)
-        Utils.copy(context, verList.toString())
+        copy(context, verList.toString())
         toastUtil(context, "版本为${verList},已复制")
         // 测试
     }

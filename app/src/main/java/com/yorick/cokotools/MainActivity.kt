@@ -48,6 +48,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.buttonEngineerMode.setOnClickListener {
+            // 版本测试
+            Utils.testVer(this, resources.getString(R.string.engineer_mode_package))
             Utils.jumpActivity(
                 this,
                 resources.getString(R.string.engineer_mode_package),
@@ -82,6 +84,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.buttonMaxCharging.setOnClickListener {
+            // 版本测试
+            Utils.testVer(this, resources.getString(R.string.max_charging_package))
             Utils.jumpActivity(
                 this,
                 resources.getString(R.string.max_charging_package),
@@ -93,8 +97,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.fab.setOnClickListener {
             val uri: Uri = Uri.parse(resources.getString(R.string.feedback_url))
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
+            startActivity(Intent(Intent.ACTION_VIEW, uri))
         }
     }
 
@@ -110,7 +113,8 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_helps -> {
-//                startActivity(this,)
+                val uri: Uri = Uri.parse(resources.getString(R.string.help_doc))
+                startActivity(Intent(Intent.ACTION_VIEW, uri))
                 return true
             }
             else -> super.onOptionsItemSelected(item)

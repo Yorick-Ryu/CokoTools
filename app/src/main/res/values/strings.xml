@@ -4,6 +4,7 @@
     <string name="action_donate">捐赠</string>
     <string name="action_helps">帮助</string>
     <string name="feedback_url">https://support.qq.com/product/352780</string>
+    <string name="help_doc">https://shimo.im/docs/R13j8x5vQ1ieogk5</string>
     <string name="zen_mode">设置勿扰模式</string>
     <string name="zen_mode_package">com.android.settings</string>
     <string name="zen_mode_activity">com.android.settings.Settings$ZenModeSettingsActivity</string>
