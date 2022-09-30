@@ -22,7 +22,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
 
         <Button
             android:id="@+id/button_lock_bands"
@@ -79,14 +80,14 @@
             android:layout_height="@dimen/button_height"
             android:layout_marginBottom="10dp"
             android:text="@string/zen_mode"
-            app:layout_constraintBottom_toTopOf="@id/show_wifi_keys"
+            app:layout_constraintBottom_toTopOf="@id/button_show_wifi_keys"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_fuel_summary" />
         />
 
         <Button
-            android:id="@+id/show_wifi_keys"
+            android:id="@+id/button_show_wifi_keys"
             android:layout_width="@dimen/button_width"
             android:layout_height="@dimen/button_height"
             android:layout_marginBottom="10dp"
@@ -106,7 +107,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/show_wifi_keys" />
+            app:layout_constraintTop_toBottomOf="@+id/button_show_wifi_keys" />
         />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
