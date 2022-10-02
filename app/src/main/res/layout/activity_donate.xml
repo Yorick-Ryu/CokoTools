@@ -27,7 +27,7 @@
         android:checkable="true"
         android:clickable="true"
         android:focusable="true"
-        app:cardBackgroundColor="@color/Primary_Container"
+        app:cardBackgroundColor="@color/color_ic_back"
         app:cardCornerRadius="35dp"
         app:cardElevation="3dp"
         app:contentPadding="10dp"
@@ -70,7 +70,7 @@
         android:checkable="true"
         android:clickable="true"
         android:focusable="true"
-        app:cardBackgroundColor="@color/Primary_Container"
+        app:cardBackgroundColor="@color/color_ic_back"
         app:cardCornerRadius="35dp"
         app:cardElevation="3dp"
         app:contentPadding="10dp"
@@ -89,7 +89,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/donate_code" />
+                android:src="@drawable/donate_code"
+                android:contentDescription="@string/action_donate"/>
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"

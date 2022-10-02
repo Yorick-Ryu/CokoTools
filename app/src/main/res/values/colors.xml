@@ -3,6 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="material_blue">#F3EDF7</color>
-    <color name="Primary_Container">#EADDFF</color>
-    <color name="Primary_Container_nignt">#4F378B</color>
+    <color name="color_ic_back">#EADDFF</color>
+    <color name="color_ic_fore">#4F378B</color>
 </resources>
