@@ -1,6 +1,7 @@
 package com.yorick.cokotools
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -8,16 +9,44 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.ui.AppBarConfiguration
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yorick.cokotools.databinding.ActivityMainBinding
 import com.yorick.cokotools.util.Utils
 import com.yorick.cokotools.util.Utils.toastUtil
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        preferences = getSharedPreferences("count", MODE_PRIVATE)
+        var count: Int = preferences.getInt("count", 0)
+        //判断程序与第几次运行，如果是第一次运行则开启弹窗
+        val editor: SharedPreferences.Editor
+        if (count == 0) {
+            editor = preferences.edit()
+            val uri: Uri = Uri.parse(resources.getString(R.string.help_doc))
+            MaterialAlertDialogBuilder(this)
+                .setIcon(R.drawable.ic_logo)
+                .setTitle(resources.getString(R.string.exceptions_title))
+                .setMessage(resources.getString(R.string.exceptions_message))
+                .setNeutralButton(resources.getString(R.string.exceptions_read_help_doc)) { _, _ ->
+                    this.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                }
+                .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
+                    editor.putInt("count", 0)
+                    editor.commit()
+                    finish()
+                }
+                .setPositiveButton(resources.getString(R.string.exceptions_accept)) { _, _ ->
+                    editor.putInt("count", ++count)
+                    editor.commit()
+                }.setCancelable(false)
+                .show()
+        }
+
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
@@ -27,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         binding.buttonLockBands.setOnClickListener {
+            // 尝试打开
             Utils.jumpActivity(
                 this,
                 resources.getString(R.string.lock_bands_package),
@@ -100,6 +130,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
         return when (item.itemId) {
             R.id.action_donate -> {
                 startActivity(Intent(this, DonateActivity::class.java))

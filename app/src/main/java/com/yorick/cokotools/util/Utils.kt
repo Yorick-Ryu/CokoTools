@@ -14,6 +14,7 @@ import com.yorick.cokotools.R
 
 object Utils {
 
+
     private fun openActivity(context: Context, packageName: String, activityName: String): Boolean {
         try {
             val intent = Intent()
@@ -80,14 +81,15 @@ object Utils {
         val resources = context.resources
         if (!flag) {
             MaterialAlertDialogBuilder(context)
+                .setIcon(R.drawable.ic_logo)
                 .setTitle(resources.getString(R.string.compose_needed))
                 .setMessage(msg)
-                .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
+                .setNeutralButton(resources.getString(R.string.cancel)) { _, _ ->
 
                 }
-                .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
+                .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
                 }
-                .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+                .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
                     val uri: Uri = Uri.parse(resources.getString(R.string.help_doc))
                     context.startActivity(Intent(Intent.ACTION_VIEW, uri))
                 }
