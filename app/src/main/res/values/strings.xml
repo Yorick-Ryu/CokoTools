@@ -13,15 +13,15 @@
     <string name="lock_bands_package">com.vivo.networkstate</string>
     <string name="lock_bands_activity">com.vivo.networkstate.MainActivity</string>
     <string name="show_seconds">状态栏显秒</string>
-    <string name="show_seconds_tips">点击“状态栏”，下滑找到“时间”</string>
+    <string name="show_seconds_tips">点击“状态栏” 下滑找到“时间”</string>
     <string name="show_seconds_package">com.android.systemui</string>
     <string name="show_seconds_activity">com.android.systemui.DemoMode</string>
     <string name="max_charging">满血充电MAX</string>
-    <string name="max_charging_tips">点击"循环充电"，弹出"记录频率设置"点确定，插充电器，点击开始</string>
+    <string name="max_charging_tips">点击"循环充电" 弹出"记录频率设置"点确定 插充电器 点击开始</string>
     <string name="max_charging_package">com.vivo.fuelsummary</string>
     <string name="max_charging_activity">com.vivo.fuelsummary.FuelSummary</string>
     <string name="show_wifi_keys">WIFI密码查看</string>
-    <string name="show_wifi_key_tips">点击要查看密码的WiFi，再点击“分享“后触摸指纹传感器</string>
+    <string name="show_wifi_key_tips">点击要查看密码的WiFi 点击“分享”后触摸指纹传感器</string>
     <string name="show_wifi_keys_package">com.android.settings</string>
     <string name="show_wifi_keys_activity">com.android.settings.Settings$SavedAccessPointsSettingsActivity</string>
     <string name="engineer_mode">工厂测试EngineerMode</string>
@@ -53,6 +53,7 @@
     <string name="contributors">贡献墙</string>
     <string name="name">Yorick</string>
     <string name="zhangsan">张三</string>
+
     <string name="xiaoying">小影</string>
     <string name="joinGroup">一键加入交流群</string>
     <string name="joinGroup_key">lFuzgAHN-Q_4j7fodzBaOtKrc_q6NYg9</string>

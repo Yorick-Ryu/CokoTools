@@ -4,6 +4,8 @@
 ---
 ## 目前功能如下：
 
+详细文档：[《酷客工具箱》帮助文档](https://shimo.im/docs/R13j8x5vQ1ieogk5)
+
 - 锁频段LockBands
 - 状态栏显秒
 - 工厂测试EngineerMode
