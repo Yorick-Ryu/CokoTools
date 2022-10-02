@@ -27,9 +27,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         binding.buttonLockBands.setOnClickListener {
-            // 版本测试
-            Utils.testVer(this, resources.getString(R.string.lock_bands_package))
-            // 尝试打开
             Utils.jumpActivity(
                 this,
                 resources.getString(R.string.lock_bands_package),
@@ -48,8 +45,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.buttonEngineerMode.setOnClickListener {
-            // 版本测试
-            Utils.testVer(this, resources.getString(R.string.engineer_mode_package))
             Utils.jumpActivity(
                 this,
                 resources.getString(R.string.engineer_mode_package),
@@ -84,8 +79,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.buttonMaxCharging.setOnClickListener {
-            // 版本测试
-            Utils.testVer(this, resources.getString(R.string.max_charging_package))
             Utils.jumpActivity(
                 this,
                 resources.getString(R.string.max_charging_package),
