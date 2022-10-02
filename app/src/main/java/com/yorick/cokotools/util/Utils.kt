@@ -1,19 +1,13 @@
 package com.yorick.cokotools.util
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager.NameNotFoundException
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yorick.cokotools.R
 
-
 object Utils {
-
 
     private fun openActivity(context: Context, packageName: String, activityName: String): Boolean {
         try {
@@ -42,35 +36,6 @@ object Utils {
 
     fun toastUtil(context: Context, desc: String) {
         Toast.makeText(context, desc, Toast.LENGTH_LONG).show()
-    }
-
-    private fun getAppVersionName(context: Context, packageName: String): List<String> {
-        val verList = mutableListOf<String>()
-        try {
-            val packageInfo = context.applicationContext
-                .packageManager
-                .getPackageInfo(packageName, 0)
-            verList.add(packageInfo.versionName) //版本号名称
-            verList.add(packageInfo.longVersionCode.toString())
-            Log.d("yu", "当前版本：$verList")
-        } catch (e: NameNotFoundException) {
-            e.printStackTrace()
-        }
-        return verList
-    }
-
-    private fun copy(context: Context, content: String) {
-        val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val text = ClipData.newPlainText("yu", content)
-        cm.setPrimaryClip(text)
-    }
-
-    fun testVer(context: Context, packageName: String) {
-        // 测试
-        val verList = getAppVersionName(context, packageName)
-        copy(context, verList.toString())
-        toastUtil(context, "版本为${verList},已复制")
-        // 测试
     }
 
     private fun mDialog(

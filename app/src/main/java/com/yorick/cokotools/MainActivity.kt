@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import androidx.navigation.ui.AppBarConfiguration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yorick.cokotools.databinding.ActivityMainBinding
 import com.yorick.cokotools.util.Utils

@@ -12,7 +12,7 @@ class DonateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_donate)
         findViewById<Button>(R.id.button_join_group).setOnClickListener {
-            Utils.joinQQGroup(this, "lFuzgAHN-Q_4j7fodzBaOtKrc_q6NYg9")
+            Utils.joinQQGroup(this, resources.getString(R.string.joinGroup_key))
         }
         findViewById<Button>(R.id.button_coolapk_index).setOnClickListener {
             val uri: Uri = Uri.parse(resources.getString(R.string.coolapk_index_link))

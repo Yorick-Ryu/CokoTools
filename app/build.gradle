@@ -11,15 +11,15 @@ android {
         applicationId "com.yorick.cokotools"
         minSdk 24
         targetSdk 33
-        versionCode 1
-        versionName "2.0"
-
+        versionCode 2
+        versionName "2.0-penguin"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
