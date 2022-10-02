@@ -1,11 +1,9 @@
 package com.yorick.cokotools.util
 
-import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
 import android.net.Uri
 import android.util.Log
@@ -15,19 +13,8 @@ import com.yorick.cokotools.R
 
 
 object Utils {
-    fun isActivityExisting(context: Context, packageName: String, activityName: String): Boolean {
-        try {
-            val packageManager = context.packageManager
-            packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
-            Class.forName(activityName)
-        } catch (e: NameNotFoundException) {
-            e.printStackTrace()
-            return false
-        }
-        return true
-    }
 
-    fun openActivity(context: Context, packageName: String, activityName: String): Boolean {
+    private fun openActivity(context: Context, packageName: String, activityName: String): Boolean {
         try {
             val intent = Intent()
             context.startActivity(intent.setClassName(packageName, activityName))
@@ -101,7 +88,8 @@ object Utils {
                 .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
                 }
                 .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
-
+                    val uri: Uri = Uri.parse(resources.getString(R.string.help_doc))
+                    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
                 }
                 .show()
         }

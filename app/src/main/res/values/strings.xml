@@ -5,6 +5,7 @@
     <string name="action_helps">帮助</string>
     <string name="feedback_url">https://support.qq.com/product/352780</string>
     <string name="help_doc">https://shimo.im/docs/R13j8x5vQ1ieogk5</string>
+    <string name="coolapk_index_link">http://www.coolapk.com/u/3774603</string>
     <string name="zen_mode">设置勿扰模式</string>
     <string name="zen_mode_package">com.android.settings</string>
     <string name="zen_mode_activity">com.android.settings.Settings$ZenModeSettingsActivity</string>
@@ -12,7 +13,7 @@
     <string name="lock_bands_package">com.vivo.networkstate</string>
     <string name="lock_bands_activity">com.vivo.networkstate.MainActivity</string>
     <string name="show_seconds">状态栏显秒</string>
-    <string name="show_seconds_tips">点击“状态栏”，下滑找到“时间”></string>
+    <string name="show_seconds_tips">点击“状态栏”，下滑找到“时间”</string>
     <string name="show_seconds_package">com.android.systemui</string>
     <string name="show_seconds_activity">com.android.systemui.DemoMode</string>
     <string name="max_charging">满血充电MAX</string>
@@ -36,16 +37,23 @@
     <string name="compose_needed">检测到缺少组件</string>
     <string name="compose_satisfied">组件满足</string>
     <string name="download_network_state">
-        是否下载NetworkState组件\n注意：此功能仅对蓝厂系手机有效，非蓝厂手机请勿下载使用。
+        缺少NetworkState组件，是否打开帮助文档下载？\n\n注意：此功能仅对蓝厂系手机有效，非蓝厂手机请勿下载使用。
+    </string>
+    <string name="download_engineer_model">
+        缺少工厂测试组件，是否打开帮助文档下载？\n\n注意：此功能仅对蓝厂系手机有效，非蓝厂手机请勿下载使用。
     </string>
     <string name="download_fuel_summary">
-        是否下载FuelSummary组件\n注意：此功能仅对蓝厂系手机有效，非蓝厂手机请勿下载使用。
+        缺少FuelSummary组件，是否打开帮助文档下载？\n\n注意：此功能仅对蓝厂系手机有效，非蓝厂手机请勿下载使用。
     </string>
-    <string name="common_tips">打开失败，这个功能可能不兼容你的设备，有问题请点击右下角按钮反馈。</string>
+    <string name="common_tips">打开失败，这个功能可能不兼容你的设备，有问题请点击右下角按钮反馈，点击确认将为您打开帮助文档。</string>
     <string name="cancel">取消</string>
     <string name="accept">确认</string>
     <string name="decline">拒绝</string>
-    <string name="plaese_donate">你好，打钱！</string>
+    <string name="plaese_donate">如果本软件对您有帮助，可以请我喝杯冰镇可乐。（小声bb：截图后打开微信扫码哦，可以留言你的名字，我将会在下次版本更新中永远镌刻在贡献墙上！）</string>
     <string name="contributors">贡献墙</string>
     <string name="name">Yorick</string>
+    <string name="zhangsan">张三</string>
+    <string name="xiaoying">小影</string>
+    <string name="joinGroup">一键加入交流群</string>
+    <string name="coolapk_index">作者的酷安主页</string>
 </resources>

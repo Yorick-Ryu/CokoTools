@@ -54,9 +54,9 @@ class MainActivity : AppCompatActivity() {
                 this,
                 resources.getString(R.string.engineer_mode_package),
                 resources.getString(R.string.engineer_mode_activity),
+                resources.getString(R.string.download_engineer_model)
             )
         }
-
         binding.buttonFuelSummary.setOnClickListener {
             Utils.jumpActivity(
                 this,

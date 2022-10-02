@@ -12,36 +12,53 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/black"
         android:text="@string/contributors"
         android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/card_contributors"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_contributors"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:checkable="true"
         android:clickable="true"
         android:focusable="true"
-        android:layout_marginTop="10dp"
         app:cardBackgroundColor="@color/Primary_Container"
-        app:cardElevation="3dp"
-        app:strokeWidth="2dp"
         app:cardCornerRadius="35dp"
+        app:cardElevation="3dp"
         app:contentPadding="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_contributors">
+        app:layout_constraintTop_toBottomOf="@+id/tv_contributors"
+        app:strokeWidth="2dp">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name"/>
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/zhangsan" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/xiaoying" />
+        </LinearLayout>
+
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -49,22 +66,23 @@
         android:id="@+id/card_donate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:checkable="true"
         android:clickable="true"
         android:focusable="true"
-        android:layout_marginTop="20dp"
         app:cardBackgroundColor="@color/Primary_Container"
-        app:cardElevation="3dp"
-        app:strokeWidth="2dp"
         app:cardCornerRadius="35dp"
+        app:cardElevation="3dp"
         app:contentPadding="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/card_contributors">
+        app:layout_constraintTop_toBottomOf="@+id/card_contributors"
+        app:strokeWidth="2dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
 
             <ImageView
                 android:id="@+id/IV_donate_code"
@@ -79,16 +97,52 @@
                 app:dividerInsetEnd="8dp"
                 app:dividerInsetStart="8dp" />
 
-            <TextView
-                android:id="@+id/cat_card_title"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-                android:text="@string/plaese_donate"
-                android:textSize="20sp" />
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
+
+                <TextView
+                    android:id="@+id/cat_card_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/plaese_donate"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
+
+    <Button
+        android:id="@+id/button_coolapk_index"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/coolapk_index"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/button_join_group"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_donate" />
+    />
+
+    <Button
+        android:id="@+id/button_join_group"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/joinGroup"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_coolapk_index" />
+    />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
