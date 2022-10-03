@@ -4,6 +4,19 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\yurui\\android_dev_keys\\origin_key.jks')
+        }
+        release {
+            v1SigningEnabled true
+            v2SigningEnabled true
+            storePassword 'cmwap964538YR'
+            keyAlias 'key0'
+            keyPassword 'cmwap964538YR'
+            storeFile file('C:\\Users\\yurui\\android_dev_keys\\origin_key.jks')
+        }
+    }
     namespace 'com.yorick.cokotools'
     compileSdk 33
 
@@ -21,6 +34,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
