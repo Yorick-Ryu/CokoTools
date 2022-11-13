@@ -62,4 +62,5 @@
     <string name="exceptions_message">本软件部分功能可能对某些机型产生如发热等不可预知的后果，使用需谨慎，造成的一切后果请用户自行承担。使用本软件代表您接受此声明。强烈建议阅读《帮助文档》后使用!\n\nTips：点击接受后不再提示</string>
     <string name="exceptions_accept">接受</string>
     <string name="exceptions_read_help_doc">查看文档</string>
+    <string name="feedback">反馈</string>
 </resources>

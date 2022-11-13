@@ -130,7 +130,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_donate" />
-    />
+
 
     <Button
         android:id="@+id/button_join_group"
@@ -143,7 +143,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_coolapk_index" />
-    />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
