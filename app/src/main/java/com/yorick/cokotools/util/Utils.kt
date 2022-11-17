@@ -1,5 +1,6 @@
 package com.yorick.cokotools.util
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -13,7 +14,7 @@ object Utils {
         try {
             val intent = Intent()
             context.startActivity(intent.setClassName(packageName, activityName))
-        } catch (e: Exception) {
+        } catch (e: ActivityNotFoundException) {
             e.printStackTrace()
             return false
         }
@@ -34,40 +35,67 @@ object Utils {
         }
     }
 
+    fun openDoc(context: Context) {
+        val uri: Uri = Uri.parse(context.resources.getString(R.string.help_doc))
+        context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+    }
+
     fun toastUtil(context: Context, desc: String) {
-        Toast.makeText(context, desc, Toast.LENGTH_LONG).show()
+        if (desc != "") {
+            Toast.makeText(context, desc, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun mDialog(
         flag: Boolean,
         context: Context,
-        msg: String
+        errMsg: String,
+        okMsg: String
     ) {
-        val resources = context.resources
         if (!flag) {
-            MaterialAlertDialogBuilder(context)
-                .setIcon(R.drawable.ic_logo)
-                .setTitle(resources.getString(R.string.compose_needed))
-                .setMessage(msg)
-                .setNeutralButton(resources.getString(R.string.cancel)) { _, _ ->
-
-                }
-                .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
-                }
-                .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
-                    val uri: Uri = Uri.parse(resources.getString(R.string.help_doc))
-                    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
-                }
-                .show()
+            baseDialog(context, errMsg)
+        } else {
+            toastUtil(context, okMsg)
         }
+    }
+
+    fun baseDialog(
+        context: Context,
+        msg: String,
+        title: String = context.resources.getString(R.string.compose_needed),
+        neutral: String = context.resources.getString(R.string.cancel),
+        neutralCallback: () -> Unit = {},
+        negative: String = context.resources.getString(R.string.decline),
+        negativeCallback: () -> Unit = {},
+        positive: String = context.resources.getString(R.string.accept),
+        positiveCallback: () -> Unit = {
+            openDoc(context)
+        },
+        cancelable: Boolean = true
+    ) {
+        MaterialAlertDialogBuilder(context)
+            .setIcon(R.drawable.ic_logo)
+            .setTitle(title)
+            .setMessage(msg)
+            .setNeutralButton(neutral) { _, _ ->
+                neutralCallback()
+            }
+            .setNegativeButton(negative) { _, _ ->
+                negativeCallback()
+            }
+            .setPositiveButton(positive) { _, _ ->
+                positiveCallback()
+            }.setCancelable(cancelable)
+            .show()
     }
 
     fun jumpActivity(
         context: Context,
         packageName: String,
         activityName: String,
-        msg: String = context.resources.getString(R.string.common_tips)
+        errMsg: String = context.resources.getString(R.string.common_tips),
+        okMsg: String = ""
     ) {
-        mDialog(openActivity(context, packageName, activityName), context, msg)
+        mDialog(openActivity(context, packageName, activityName), context, errMsg, okMsg)
     }
 }

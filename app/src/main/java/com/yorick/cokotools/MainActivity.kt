@@ -8,10 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yorick.cokotools.databinding.ActivityMainBinding
 import com.yorick.cokotools.util.Utils
-import com.yorick.cokotools.util.Utils.toastUtil
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,24 +24,26 @@ class MainActivity : AppCompatActivity() {
         val editor: SharedPreferences.Editor
         if (count == 0) {
             editor = preferences.edit()
-            val uri: Uri = Uri.parse(resources.getString(R.string.help_doc))
-            MaterialAlertDialogBuilder(this)
-                .setIcon(R.drawable.ic_logo)
-                .setTitle(resources.getString(R.string.exceptions_title))
-                .setMessage(resources.getString(R.string.exceptions_message))
-                .setNeutralButton(resources.getString(R.string.exceptions_read_help_doc)) { _, _ ->
-                    this.startActivity(Intent(Intent.ACTION_VIEW, uri))
-                }
-                .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
+            Utils.baseDialog(
+                this,
+                title = resources.getString(R.string.exceptions_title),
+                msg = resources.getString(R.string.exceptions_message),
+                neutral = resources.getString(R.string.exceptions_read_help_doc),
+                neutralCallback = {
+                    Utils.openDoc(this)
+                },
+                negativeCallback = {
                     editor.putInt("count", 0)
                     editor.commit()
                     finish()
-                }
-                .setPositiveButton(resources.getString(R.string.exceptions_accept)) { _, _ ->
+                },
+                positive = resources.getString(R.string.exceptions_accept),
+                positiveCallback = {
                     editor.putInt("count", ++count)
                     editor.commit()
-                }.setCancelable(false)
-                .show()
+                },
+                cancelable = false
+            )
         }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -51,11 +51,9 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.toolbar)
 
         binding.buttonLockBands.setOnClickListener {
-            // 尝试打开
             Utils.jumpActivity(
                 this,
                 resources.getString(R.string.lock_bands_package),
@@ -69,8 +67,8 @@ class MainActivity : AppCompatActivity() {
                 this,
                 resources.getString(R.string.show_seconds_package),
                 resources.getString(R.string.show_seconds_activity),
+                okMsg = resources.getString(R.string.show_seconds_tips)
             )
-            toastUtil(this, resources.getString(R.string.show_seconds_tips))
         }
 
         binding.buttonEngineerMode.setOnClickListener {
@@ -86,8 +84,8 @@ class MainActivity : AppCompatActivity() {
                 this,
                 resources.getString(R.string.fuel_summary_package),
                 resources.getString(R.string.fuel_summary_activity),
+                okMsg = resources.getString(R.string.fuel_summary_tips)
             )
-            toastUtil(this, resources.getString(R.string.fuel_summary_tips))
         }
 
         binding.buttonZenMode.setOnClickListener {
@@ -103,8 +101,8 @@ class MainActivity : AppCompatActivity() {
                 this,
                 resources.getString(R.string.show_wifi_keys_package),
                 resources.getString(R.string.show_wifi_keys_activity),
+                okMsg = resources.getString(R.string.show_wifi_key_tips)
             )
-            toastUtil(this, resources.getString(R.string.show_wifi_key_tips))
         }
 
         binding.buttonMaxCharging.setOnClickListener {
@@ -112,9 +110,9 @@ class MainActivity : AppCompatActivity() {
                 this,
                 resources.getString(R.string.max_charging_package),
                 resources.getString(R.string.max_charging_activity),
-                resources.getString(R.string.download_fuel_summary)
+                resources.getString(R.string.download_fuel_summary),
+                resources.getString(R.string.max_charging_tips)
             )
-            toastUtil(this, resources.getString(R.string.max_charging_tips))
         }
 
         binding.fab.setOnClickListener {
@@ -136,8 +134,7 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_helps -> {
-                val uri: Uri = Uri.parse(resources.getString(R.string.help_doc))
-                startActivity(Intent(Intent.ACTION_VIEW, uri))
+                Utils.openDoc(this)
                 return true
             }
             else -> super.onOptionsItemSelected(item)
