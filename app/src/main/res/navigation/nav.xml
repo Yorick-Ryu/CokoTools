@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/functionFragment">
+
+    <fragment
+        android:id="@+id/functionFragment"
+        android:name="com.yorick.cokotools.FunctionFragment"
+        android:label="fragment_function"
+        tools:layout="@layout/fragment_function" >
+        <action
+            android:id="@+id/action_functionFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.yorick.cokotools.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
+</navigation>

@@ -40,7 +40,7 @@ object Utils {
         context.startActivity(Intent(Intent.ACTION_VIEW, uri))
     }
 
-    fun toastUtil(context: Context, desc: String) {
+    private fun toastUtil(context: Context, desc: String) {
         if (desc != "") {
             Toast.makeText(context, desc, Toast.LENGTH_LONG).show()
         }

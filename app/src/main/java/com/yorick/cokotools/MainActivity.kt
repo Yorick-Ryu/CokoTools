@@ -18,6 +18,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+
         preferences = getSharedPreferences("count", MODE_PRIVATE)
         var count: Int = preferences.getInt("count", 0)
         //判断程序与第几次运行，如果是第一次运行则开启弹窗
@@ -34,84 +41,15 @@ class MainActivity : AppCompatActivity() {
                 },
                 negativeCallback = {
                     editor.putInt("count", 0)
-                    editor.commit()
+                    editor.apply()
                     finish()
                 },
                 positive = resources.getString(R.string.exceptions_accept),
                 positiveCallback = {
                     editor.putInt("count", ++count)
-                    editor.commit()
+                    editor.apply()
                 },
                 cancelable = false
-            )
-        }
-
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
-
-        binding.buttonLockBands.setOnClickListener {
-            Utils.jumpActivity(
-                this,
-                resources.getString(R.string.lock_bands_package),
-                resources.getString(R.string.lock_bands_activity),
-                resources.getString(R.string.download_network_state)
-            )
-        }
-
-        binding.buttonShowSeconds.setOnClickListener {
-            Utils.jumpActivity(
-                this,
-                resources.getString(R.string.show_seconds_package),
-                resources.getString(R.string.show_seconds_activity),
-                okMsg = resources.getString(R.string.show_seconds_tips)
-            )
-        }
-
-        binding.buttonEngineerMode.setOnClickListener {
-            Utils.jumpActivity(
-                this,
-                resources.getString(R.string.engineer_mode_package),
-                resources.getString(R.string.engineer_mode_activity),
-                resources.getString(R.string.download_engineer_model)
-            )
-        }
-        binding.buttonFuelSummary.setOnClickListener {
-            Utils.jumpActivity(
-                this,
-                resources.getString(R.string.fuel_summary_package),
-                resources.getString(R.string.fuel_summary_activity),
-                okMsg = resources.getString(R.string.fuel_summary_tips)
-            )
-        }
-
-        binding.buttonZenMode.setOnClickListener {
-            Utils.jumpActivity(
-                this,
-                resources.getString(R.string.zen_mode_package),
-                resources.getString(R.string.zen_mode_activity),
-            )
-        }
-
-        binding.buttonShowWifiKeys.setOnClickListener {
-            Utils.jumpActivity(
-                this,
-                resources.getString(R.string.show_wifi_keys_package),
-                resources.getString(R.string.show_wifi_keys_activity),
-                okMsg = resources.getString(R.string.show_wifi_key_tips)
-            )
-        }
-
-        binding.buttonMaxCharging.setOnClickListener {
-            Utils.jumpActivity(
-                this,
-                resources.getString(R.string.max_charging_package),
-                resources.getString(R.string.max_charging_activity),
-                resources.getString(R.string.download_fuel_summary),
-                resources.getString(R.string.max_charging_tips)
             )
         }
 
