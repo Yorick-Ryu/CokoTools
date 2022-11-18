@@ -24,6 +24,7 @@
     <string name="show_wifi_key_tips">点击要查看密码的WiFi 点击[分享]后触摸指纹传感器</string>
     <string name="show_wifi_keys_package">com.android.settings</string>
     <string name="show_wifi_keys_activity">com.android.settings.Settings$SavedAccessPointsSettingsActivity</string>
+    <string name="show_wifi_list_activity">com.android.settings.Settings$WifiSettingsActivity</string>
     <string name="engineer_mode">工厂测试EngineerMode</string>
     <string name="engineer_mode_package">com.iqoo.engineermode</string>
     <string name="engineer_mode_activity">com.iqoo.engineermode.EngineerMode</string>
@@ -53,7 +54,6 @@
     <string name="contributors">贡献墙</string>
     <string name="name">Yorick</string>
     <string name="zhangsan">张三</string>
-
     <string name="xiaoying">小影</string>
     <string name="joinGroup">一键加入交流群</string>
     <string name="joinGroup_key">lFuzgAHN-Q_4j7fodzBaOtKrc_q6NYg9</string>
@@ -64,4 +64,7 @@
     <string name="exceptions_read_help_doc">查看文档</string>
     <string name="feedback">反馈</string>
     <string name="uriStr">mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26jump_from%3Dwebapi%26k%3D</string>
+    <string name="title_tip">提示</string>
+    <string name="msg_high_version">这项功能无法在Android12+的系统上使用，您可以通过扫描WIFI分享的二维码获取密码。</string>
+    <string name="open_wifi_list">打开WIFI列表</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.yorick.cokotools
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -61,12 +62,31 @@ class FunctionFragment : Fragment() {
         }
 
         binding.buttonShowWifiKeys.setOnClickListener {
-            Utils.jumpActivity(
-                requireContext(),
-                resources.getString(R.string.show_wifi_keys_package),
-                resources.getString(R.string.show_wifi_keys_activity),
-                okMsg = resources.getString(R.string.show_wifi_key_tips)
-            )
+            // 系统为Android12+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                Utils.baseDialog(
+                    requireContext(),
+                    title = resources.getString(R.string.title_tip),
+                    msg = resources.getString(R.string.msg_high_version),
+                    neutral = resources.getString(R.string.open_wifi_list),
+                    neutralCallback = {
+                        Utils.jumpActivity(
+                            requireContext(),
+                            resources.getString(R.string.show_wifi_keys_package),
+                            resources.getString(R.string.show_wifi_list_activity),
+                        )
+                    },
+                    positiveCallback = {},
+                    negative = ""
+                )
+            } else {
+                Utils.jumpActivity(
+                    requireContext(),
+                    resources.getString(R.string.show_wifi_keys_package),
+                    resources.getString(R.string.show_wifi_keys_activity),
+                    okMsg = resources.getString(R.string.show_wifi_key_tips)
+                )
+            }
         }
 
         binding.buttonMaxCharging.setOnClickListener {
