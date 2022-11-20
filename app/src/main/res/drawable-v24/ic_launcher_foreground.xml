@@ -6,7 +6,7 @@
     android:viewportHeight="216">
     <path
         android:fillAlpha="0.9"
-        android:fillColor="#FF000000"
+        android:fillColor="@color/color_ic_back"
         android:pathData="
         M97,66
         Q79,66 71.5,84
@@ -17,7 +17,7 @@
 
     <path
         android:fillAlpha="0.72"
-        android:fillColor="#FF000000"
+        android:fillColor="@color/color_ic_back"
         android:pathData="
         M97,90
         Q79,90 71.5,108
@@ -28,7 +28,7 @@
 
     <path
         android:fillAlpha="0.56"
-        android:fillColor="#FF000000"
+        android:fillColor="@color/color_ic_back"
         android:pathData="
         M97,114
         Q79,114 71.5,132
