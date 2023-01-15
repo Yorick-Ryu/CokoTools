@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import com.yorick.cokotools.databinding.FragmentFunctionBinding
 import com.yorick.cokotools.util.Utils
 
@@ -52,6 +53,14 @@ class FunctionFragment : Fragment() {
                 okMsg = resources.getString(R.string.fuel_summary_tips)
             )
         }
+
+//        binding.buttonStorageDashboard?.setOnClickListener {
+//            Utils.jumpActivity(
+//                requireContext(),
+//                resources.getString(R.string.fuel_summary_package),
+//                resources.getString(R.string.storage_dashboard_activity),
+//            )
+//        }
 
         binding.buttonZenMode.setOnClickListener {
             Utils.jumpActivity(

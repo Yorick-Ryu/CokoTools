@@ -13,7 +13,7 @@ object Utils {
     private fun openActivity(context: Context, packageName: String, activityName: String): Boolean {
         try {
             val intent = Intent()
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent.setClassName(packageName, activityName))
         } catch (e: ActivityNotFoundException) {
             e.printStackTrace()

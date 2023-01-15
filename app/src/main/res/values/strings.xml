@@ -32,6 +32,7 @@
     <string name="fuel_summary_tips">请点击右上角三个点或者电池用量</string>
     <string name="fuel_summary_package">com.android.settings</string>
     <string name="fuel_summary_activity">com.android.settings.Settings$PowerUsageSummaryActivity</string>
+    <string name="storage_dashboard_activity">com.android.settings.Settings$StorageDashboardActivity</string>
     <string name="high_power">电池优化FuelOptimize</string>
     <string name="high_power_package">com.android.settings</string>
     <string name="high_power_activity">com.android.settings.Settings$HighPowerApplicationsActivity</string>
@@ -67,4 +68,11 @@
     <string name="title_tip">提示</string>
     <string name="msg_high_version">这项功能无法在Android12+的系统上使用，您可以通过扫描WIFI分享的二维码获取密码。</string>
     <string name="open_wifi_list">打开WIFI列表</string>
+    <string name="home">主页</string>
+    <string name="setting">设置</string>
+    <string name="shell">Shell脚本</string>
+    <string name="common">通用</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="storage_dashboard">原生存储</string>
 </resources>

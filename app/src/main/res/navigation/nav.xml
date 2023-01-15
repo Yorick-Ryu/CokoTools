@@ -9,14 +9,25 @@
         android:id="@+id/functionFragment"
         android:name="com.yorick.cokotools.FunctionFragment"
         android:label="fragment_function"
-        tools:layout="@layout/fragment_function" >
-        <action
-            android:id="@+id/action_functionFragment_to_aboutFragment"
-            app:destination="@id/aboutFragment" />
+        tools:layout="@layout/fragment_function">
+
     </fragment>
+
+    <fragment
+        android:id="@+id/shellFragment"
+        android:name="com.yorick.cokotools.ShellFragment"
+        android:label="fragment_shell"
+        tools:layout="@layout/fragment_shell" />
+
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.yorick.cokotools.AboutFragment"
         android:label="fragment_about"
         tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.yorick.cokotools.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
+
 </navigation>
