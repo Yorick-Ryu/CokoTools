@@ -88,6 +88,28 @@ val commonTools = listOf(
             }
         }
     ),
+    Tool(
+        toolName = R.string.urls_manage,
+        toolDesc = R.string.urls_manage_tips,
+        toolAction = { context ->
+            Utils.jumpActivity(
+                context,
+                R.string.fuel_summary_package,
+                R.string.urls_manage_activity,
+            )
+        }
+    ),
+    Tool(
+        toolName = R.string.high_power,
+        toolDesc = R.string.high_power_tips,
+        toolAction = { context ->
+            Utils.jumpActivity(
+                context,
+                R.string.fuel_summary_package,
+                R.string.high_power_activity,
+            )
+        }
+    ),
 )
 
 val blueTools = listOf(

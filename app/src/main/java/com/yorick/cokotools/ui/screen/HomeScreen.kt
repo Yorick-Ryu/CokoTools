@@ -39,7 +39,7 @@ fun HomeScreen(
         ) {
             items(items = commonTools, key = { it.toolName }) { tool ->
                 Button(
-                    modifier = Modifier.padding(start = 16.dp),
+                    modifier = Modifier.padding(start = 14.dp),
                     onClick = { tool.toolAction(context) }
                 ) {
                     Text(
@@ -58,7 +58,7 @@ fun HomeScreen(
         ) {
             items(items = blueTools, key = { it.toolName }) { tool ->
                 Button(
-                    modifier = Modifier.padding(start = 16.dp),
+                    modifier = Modifier.padding(start = 14.dp),
                     onClick = { tool.toolAction(context) }
                 ) {
                     Text(
@@ -120,14 +120,14 @@ fun CokoToolsCard(
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
                                     text = stringResource(id = toolsCategory),
-                                    style = MaterialTheme.typography.titleMedium
+                                    style = MaterialTheme.typography.titleLarge
                                 )
                             }
                         },
                         text = {
                             Text(
                                 text = stringResource(id = toolsDesc),
-                                style = MaterialTheme.typography.bodyMedium
+                                style = MaterialTheme.typography.bodyLarge
                             )
                         },
                         confirmButton = {

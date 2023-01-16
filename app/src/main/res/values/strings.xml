@@ -37,7 +37,10 @@
     <string name="fuel_summary_package">com.android.settings</string>
     <string name="fuel_summary_activity">com.android.settings.Settings$PowerUsageSummaryActivity</string>
     <string name="storage_dashboard_activity">com.android.settings.Settings$StorageDashboardActivity</string>
-    <string name="high_power">电池优化FuelOptimize</string>
+    <string name="notification_history_activity">com.android.settings.Settings$NotificationStationActivity</string>
+    <string name="urls_manage_activity">com.android.settings.Settings$ManageDomainUrlsActivity</string>
+    <string name="high_power">电池优化</string>
+    <string name="high_power_tips">电池优化</string>
     <string name="high_power_package">com.android.settings</string>
     <string name="high_power_activity">com.android.settings.Settings$HighPowerApplicationsActivity</string>
     <string name="compose_needed">检测到缺少组件</string>
@@ -76,12 +79,16 @@
     <string name="home">主页</string>
     <string name="setting">设置</string>
     <string name="shell">Shell脚本</string>
-    <string name="common">安卓通用功能</string>
-    <string name="common_desc">调用原生安卓设置，只要系统没被厂家魔改就可以使用</string>
+    <string name="common">安卓通用</string>
+    <string name="common_desc">调用原生安卓设置，只要系统没被厂家魔改就可以使用。</string>
     <string name="blue">酷客专用</string>
     <string name="blue_desc">蓝厂专属黑科技功能，使用前请下载安装所需组件。</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="storage_dashboard">原生存储</string>
     <string name="storage_dashboard_tips">打开安卓原生存储</string>
+    <string name="notification_history">通知历史</string>
+    <string name="notification_history_tips">打开通知历史</string>
+    <string name="urls_manage">链接管理</string>
+    <string name="urls_manage_tips">设置链接跳转到对应的应用界面</string>
 </resources>
