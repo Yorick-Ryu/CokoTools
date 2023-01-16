@@ -1,22 +1,25 @@
 <resources>
     <string name="app_name">酷客工具箱</string>
+    <string name="empty"> </string>
     <string name="action_settings">设置</string>
     <string name="action_donate">捐赠</string>
     <string name="action_helps">帮助</string>
     <string name="feedback_url">https://support.qq.com/product/352780</string>
     <string name="help_doc">https://shimo.im/docs/R13j8x5vQ1ieogk5</string>
     <string name="coolapk_index_link">http://www.coolapk.com/u/3774603</string>
-    <string name="zen_mode">设置勿扰模式</string>
+    <string name="zen_mode">原生勿扰模式</string>
+    <string name="zen_mode_tips">打开安卓原生勿扰模式</string>
     <string name="zen_mode_package">com.android.settings</string>
     <string name="zen_mode_activity">com.android.settings.Settings$ZenModeSettingsActivity</string>
-    <string name="lock_bands">锁频段LockBands</string>
+    <string name="lock_bands">锁频段</string>
+    <string name="lock_bands_tips">通过手动锁定Band来提高某些场景下的网络速度。</string>
     <string name="lock_bands_package">com.vivo.networkstate</string>
     <string name="lock_bands_activity">com.vivo.networkstate.MainActivity</string>
     <string name="show_seconds">状态栏显秒</string>
     <string name="show_seconds_tips">点击[状态栏] 下滑找到[时间]</string>
     <string name="show_seconds_package">com.android.systemui</string>
     <string name="show_seconds_activity">com.android.systemui.DemoMode</string>
-    <string name="max_charging">满血充电MAX</string>
+    <string name="max_charging">满血充电</string>
     <string name="max_charging_tips">点击[循环充电] 弹出[记录频率设置]点确定 插充电器 点击开始</string>
     <string name="max_charging_package">com.vivo.fuelsummary</string>
     <string name="max_charging_activity">com.vivo.fuelsummary.FuelSummary</string>
@@ -25,10 +28,11 @@
     <string name="show_wifi_keys_package">com.android.settings</string>
     <string name="show_wifi_keys_activity">com.android.settings.Settings$SavedAccessPointsSettingsActivity</string>
     <string name="show_wifi_list_activity">com.android.settings.Settings$WifiSettingsActivity</string>
-    <string name="engineer_mode">工厂测试EngineerMode</string>
+    <string name="engineer_mode">工厂测试</string>
+    <string name="engineer_mode_tips">据说可以锁屏幕帧率和5G，但是锁帧会掉，具体请在酷安里找教程。</string>
     <string name="engineer_mode_package">com.iqoo.engineermode</string>
     <string name="engineer_mode_activity">com.iqoo.engineermode.EngineerMode</string>
-    <string name="fuel_summary">电量统计FuelSummary</string>
+    <string name="fuel_summary">电量统计</string>
     <string name="fuel_summary_tips">请点击右上角三个点或者电池用量</string>
     <string name="fuel_summary_package">com.android.settings</string>
     <string name="fuel_summary_activity">com.android.settings.Settings$PowerUsageSummaryActivity</string>
@@ -50,6 +54,7 @@
     <string name="common_tips">打开失败，这个功能可能不兼容你的设备，有问题请点击右下角按钮反馈，点击确认将为您打开帮助文档。</string>
     <string name="cancel">取消</string>
     <string name="accept">确认</string>
+    <string name="understand">明白</string>
     <string name="decline">拒绝</string>
     <string name="plaese_donate">如果本软件对您有帮助，可以请我喝杯冰镇可乐。（小声bb：截图后打开微信扫码哦，可以留言你的名字，我将会在下次版本更新中永远镌刻在贡献墙上！）</string>
     <string name="contributors">贡献墙</string>
@@ -71,8 +76,12 @@
     <string name="home">主页</string>
     <string name="setting">设置</string>
     <string name="shell">Shell脚本</string>
-    <string name="common">通用</string>
+    <string name="common">安卓通用功能</string>
+    <string name="common_desc">调用原生安卓设置，只要系统没被厂家魔改就可以使用</string>
+    <string name="blue">酷客专用</string>
+    <string name="blue_desc">蓝厂专属黑科技功能，使用前请下载安装所需组件。</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="storage_dashboard">原生存储</string>
+    <string name="storage_dashboard_tips">打开安卓原生存储</string>
 </resources>

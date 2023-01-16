@@ -1,36 +1,27 @@
 package com.yorick.cokotools
 
-import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
-import com.yorick.cokotools.databinding.ActivityMainBinding
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import com.yorick.cokotools.ui.CokoToolsApp
+import com.yorick.cokotools.ui.theme.CokoToolsTheme
 import com.yorick.cokotools.util.Utils
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
-    private lateinit var binding: ActivityMainBinding
     private lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.findNavController()
-        NavigationUI.setupWithNavController(binding.navigation, navController)
+        setContent {
+            CokoToolsTheme {
+                CokoToolsApp()
+            }
+        }
 
         preferences = getSharedPreferences("count", MODE_PRIVATE)
         var count: Int = preferences.getInt("count", 0)
@@ -40,9 +31,9 @@ class MainActivity : AppCompatActivity() {
             editor = preferences.edit()
             Utils.baseDialog(
                 this,
-                title = resources.getString(R.string.exceptions_title),
-                msg = resources.getString(R.string.exceptions_message),
-                neutral = resources.getString(R.string.exceptions_read_help_doc),
+                title = R.string.exceptions_title,
+                msg = R.string.exceptions_message,
+                neutral = R.string.exceptions_read_help_doc,
                 neutralCallback = {
                     Utils.openDoc(this)
                 },
@@ -58,32 +49,6 @@ class MainActivity : AppCompatActivity() {
                 },
                 cancelable = false
             )
-        }
-
-        binding.fab.setOnClickListener {
-            val uri: Uri = Uri.parse(resources.getString(R.string.feedback_url))
-            startActivity(Intent(Intent.ACTION_VIEW, uri))
-        }
-    }
-
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        return when (item.itemId) {
-            R.id.action_donate -> {
-                startActivity(Intent(this, DonateActivity::class.java))
-                return true
-            }
-            R.id.action_helps -> {
-                Utils.openDoc(this)
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 }

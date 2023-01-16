@@ -10,11 +10,16 @@ import com.yorick.cokotools.R
 
 object Utils {
 
-    private fun openActivity(context: Context, packageName: String, activityName: String): Boolean {
+    private fun openActivity(context: Context, packageName: Int, activityName: Int): Boolean {
         try {
             val intent = Intent()
 //            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent.setClassName(packageName, activityName))
+            context.startActivity(
+                intent.setClassName(
+                    context.resources.getString(packageName),
+                    context.resources.getString(activityName)
+                )
+            )
         } catch (e: ActivityNotFoundException) {
             e.printStackTrace()
             return false
@@ -43,7 +48,7 @@ object Utils {
     }
 
     private fun toastUtil(context: Context, desc: String) {
-        if (desc != "") {
+        if (desc != "" && desc != " ") {
             Toast.makeText(context, desc, Toast.LENGTH_LONG).show()
         }
     }
@@ -51,21 +56,21 @@ object Utils {
     private fun mDialog(
         flag: Boolean,
         context: Context,
-        errMsg: String,
-        okMsg: String
+        errMsg: Int,
+        okMsg: Int
     ) {
         if (!flag) {
             baseDialog(context, errMsg)
         } else {
-            toastUtil(context, okMsg)
+            toastUtil(context, context.resources.getString(okMsg))
         }
     }
 
     fun baseDialog(
         context: Context,
-        msg: String,
-        title: String = context.resources.getString(R.string.compose_needed),
-        neutral: String = context.resources.getString(R.string.cancel),
+        msg: Int,
+        title: Int = R.string.compose_needed,
+        neutral: Int = R.string.cancel,
         neutralCallback: () -> Unit = {},
         negative: String = context.resources.getString(R.string.decline),
         negativeCallback: () -> Unit = {},
@@ -77,9 +82,9 @@ object Utils {
     ) {
         MaterialAlertDialogBuilder(context)
             .setIcon(R.drawable.ic_logo)
-            .setTitle(title)
-            .setMessage(msg)
-            .setNeutralButton(neutral) { _, _ ->
+            .setTitle(context.resources.getString(title))
+            .setMessage(context.resources.getString(msg))
+            .setNeutralButton(context.resources.getString(neutral)) { _, _ ->
                 neutralCallback()
             }
             .setNegativeButton(negative) { _, _ ->
@@ -93,10 +98,10 @@ object Utils {
 
     fun jumpActivity(
         context: Context,
-        packageName: String,
-        activityName: String,
-        errMsg: String = context.resources.getString(R.string.common_tips),
-        okMsg: String = ""
+        packageName: Int,
+        activityName: Int,
+        errMsg: Int = R.string.common_tips,
+        okMsg: Int = R.string.empty
     ) {
         mDialog(openActivity(context, packageName, activityName), context, errMsg, okMsg)
     }
