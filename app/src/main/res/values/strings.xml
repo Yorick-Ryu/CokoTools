@@ -3,10 +3,11 @@
     <string name="empty"> </string>
     <string name="action_settings">设置</string>
     <string name="action_donate">捐赠</string>
+    <string name="visit_blog">访问作者的博客：</string>
+    <string name="wx_donate_code">微信赞赏码</string>
     <string name="action_helps">帮助</string>
     <string name="feedback_url">https://support.qq.com/product/352780</string>
     <string name="help_doc">https://shimo.im/docs/R13j8x5vQ1ieogk5</string>
-    <string name="coolapk_index_link">http://www.coolapk.com/u/3774603</string>
     <string name="zen_mode">原生勿扰模式</string>
     <string name="zen_mode_tips">打开安卓原生勿扰模式</string>
     <string name="zen_mode_package">com.android.settings</string>
@@ -44,6 +45,8 @@
     <string name="high_power_package">com.android.settings</string>
     <string name="high_power_activity">com.android.settings.Settings$HighPowerApplicationsActivity</string>
     <string name="compose_needed">检测到缺少组件</string>
+    <string name="title_error">打开失败</string>
+    <string name="need_desc">暂无描述</string>
     <string name="compose_satisfied">组件满足</string>
     <string name="download_network_state">
         缺少NetworkState组件，是否打开帮助文档下载？\n\n注意：此功能仅对蓝厂系手机有效，非蓝厂手机请勿下载使用。
@@ -54,25 +57,21 @@
     <string name="download_fuel_summary">
         缺少FuelSummary组件，是否打开帮助文档下载？\n\n注意：此功能仅对蓝厂系手机有效，非蓝厂手机请勿下载使用。
     </string>
-    <string name="common_tips">打开失败，这个功能可能不兼容你的设备，有问题请点击右下角按钮反馈，点击确认将为您打开帮助文档。</string>
+    <string name="common_tips">这个功能可能不兼容你的设备，详情请查看文档。</string>
     <string name="cancel">取消</string>
     <string name="accept">确认</string>
     <string name="understand">明白</string>
     <string name="decline">拒绝</string>
-    <string name="plaese_donate">如果本软件对您有帮助，可以请我喝杯冰镇可乐。（小声bb：截图后打开微信扫码哦，可以留言你的名字，我将会在下次版本更新中永远镌刻在贡献墙上！）</string>
+    <string name="please_donate">如果本软件对您有帮助，可以请我喝杯冰镇可乐。(小声bb：截图后打开微信扫码哦，可以留言你的名字，我将会在下次版本更新中永远镌刻在贡献墙上！)</string>
     <string name="contributors">贡献墙</string>
-    <string name="name">Yorick</string>
-    <string name="zhangsan">张三</string>
-    <string name="xiaoying">小影</string>
-    <string name="joinGroup">一键加入交流群</string>
-    <string name="joinGroup_key">lFuzgAHN-Q_4j7fodzBaOtKrc_q6NYg9</string>
-    <string name="coolapk_index">作者的酷安主页</string>
+    <string name="contributors_info">排名不分先后。由于数量限制，可能以后仅展示捐赠金额大于1.0的捐赠者，感谢理解。</string>
+    <string name="joinGroup">加入酷客群</string>
+    <string name="coolapk_index">关注作者</string>
     <string name="exceptions_title">免责声明</string>
     <string name="exceptions_message">本软件部分功能可能对某些机型产生如发热等不可预知的后果，使用需谨慎，造成的一切后果请用户自行承担。使用本软件代表您接受此声明。强烈建议阅读《帮助文档》后使用!\n\nTips：点击接受后不再提示</string>
     <string name="exceptions_accept">接受</string>
     <string name="exceptions_read_help_doc">查看文档</string>
     <string name="feedback">反馈</string>
-    <string name="uriStr">mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26jump_from%3Dwebapi%26k%3D</string>
     <string name="title_tip">提示</string>
     <string name="msg_high_version">这项功能无法在Android12+的系统上使用，您可以通过扫描WIFI分享的二维码获取密码。</string>
     <string name="open_wifi_list">打开WIFI列表</string>
@@ -91,4 +90,8 @@
     <string name="notification_history_tips">打开通知历史</string>
     <string name="urls_manage">链接管理</string>
     <string name="urls_manage_tips">设置链接跳转到对应的应用界面</string>
+    <string name="sub_setting">原生设置</string>
+    <string name="sub_setting_tips">打开安卓原生设置，仅限OriginOS2.0+</string>
+    <string name="sub_setting_package">com.vivo.settings.VivoSubSettings</string>
+    <string name="back">返回</string>
 </resources>

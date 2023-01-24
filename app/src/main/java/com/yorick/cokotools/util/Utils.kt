@@ -4,8 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yorick.cokotools.R
 
 object Utils {
@@ -27,10 +25,13 @@ object Utils {
         return true
     }
 
-    fun joinQQGroup(context: Context, key: String): Boolean {
+    fun joinQQGroup(context: Context): Boolean {
         val intent = Intent()
         intent.data =
-            Uri.parse(context.resources.getString(R.string.uriStr) + key)
+            Uri.parse(
+                "mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26jump_from%3Dwebapi%26k%3D"
+                        + "lFuzgAHN-Q_4j7fodzBaOtKrc_q6NYg9"
+            )
         // 此Flag可根据具体产品需要自定义，如设置，则在加群界面按返回，返回手Q主界面，不设置，按返回会返回到呼起产品界面
         // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         return try {
@@ -45,64 +46,5 @@ object Utils {
     fun openDoc(context: Context) {
         val uri: Uri = Uri.parse(context.resources.getString(R.string.help_doc))
         context.startActivity(Intent(Intent.ACTION_VIEW, uri))
-    }
-
-    private fun toastUtil(context: Context, desc: String) {
-        if (desc != "" && desc != " ") {
-            Toast.makeText(context, desc, Toast.LENGTH_LONG).show()
-        }
-    }
-
-    private fun mDialog(
-        flag: Boolean,
-        context: Context,
-        errMsg: Int,
-        okMsg: Int
-    ) {
-        if (!flag) {
-            baseDialog(context, errMsg)
-        } else {
-            toastUtil(context, context.resources.getString(okMsg))
-        }
-    }
-
-    fun baseDialog(
-        context: Context,
-        msg: Int,
-        title: Int = R.string.compose_needed,
-        neutral: Int = R.string.cancel,
-        neutralCallback: () -> Unit = {},
-        negative: String = context.resources.getString(R.string.decline),
-        negativeCallback: () -> Unit = {},
-        positive: String = context.resources.getString(R.string.accept),
-        positiveCallback: () -> Unit = {
-            openDoc(context)
-        },
-        cancelable: Boolean = true
-    ) {
-        MaterialAlertDialogBuilder(context)
-            .setIcon(R.drawable.ic_logo)
-            .setTitle(context.resources.getString(title))
-            .setMessage(context.resources.getString(msg))
-            .setNeutralButton(context.resources.getString(neutral)) { _, _ ->
-                neutralCallback()
-            }
-            .setNegativeButton(negative) { _, _ ->
-                negativeCallback()
-            }
-            .setPositiveButton(positive) { _, _ ->
-                positiveCallback()
-            }.setCancelable(cancelable)
-            .show()
-    }
-
-    fun jumpActivity(
-        context: Context,
-        packageName: Int,
-        activityName: Int,
-        errMsg: Int = R.string.common_tips,
-        okMsg: Int = R.string.empty
-    ) {
-        mDialog(openActivity(context, packageName, activityName), context, errMsg, okMsg)
     }
 }
