@@ -52,7 +52,7 @@ fun CokoToolsApp(
                 CokoToolsAppBar(onClickDonate = {
                     navController.navigate(
                         CookToolsRoute.DONATE
-                    )
+                    ) { launchSingleTop = true }
                 })
             }
             AnimatedVisibility(
