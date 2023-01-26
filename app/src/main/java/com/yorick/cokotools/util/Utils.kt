@@ -1,29 +1,11 @@
 package com.yorick.cokotools.util
 
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.yorick.cokotools.R
 
 object Utils {
-
-    private fun openActivity(context: Context, packageName: Int, activityName: Int): Boolean {
-        try {
-            val intent = Intent()
-//            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(
-                intent.setClassName(
-                    context.resources.getString(packageName),
-                    context.resources.getString(activityName)
-                )
-            )
-        } catch (e: ActivityNotFoundException) {
-            e.printStackTrace()
-            return false
-        }
-        return true
-    }
 
     fun joinQQGroup(context: Context): Boolean {
         val intent = Intent()
