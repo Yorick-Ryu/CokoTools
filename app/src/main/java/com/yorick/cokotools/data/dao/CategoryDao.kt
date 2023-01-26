@@ -19,8 +19,8 @@ interface CategoryDao {
 
     // 增加分类，冲突则替换
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addNewCategory(category: Category)
+    fun addNewCategory(vararg categories: Category)
 
     @Delete
-    fun deleteCategory(category: Category)
+    fun deleteCategory(vararg categories: Category)
 }

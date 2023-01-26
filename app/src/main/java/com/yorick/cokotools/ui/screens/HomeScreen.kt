@@ -20,9 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.yorick.cokotools.R
-import com.yorick.cokotools.data.model.Category
+import com.yorick.cokotools.data.model.CategoryWithTools
 import com.yorick.cokotools.data.model.Tool
 import com.yorick.cokotools.ui.components.BaseAlterDialog
 import com.yorick.cokotools.ui.components.ErrorDialog
@@ -30,6 +31,7 @@ import com.yorick.cokotools.ui.viewmodels.HomeViewModel
 import com.yorick.cokotools.util.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlin.math.ceil
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -40,14 +42,18 @@ fun HomeScreen(
     hostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     LazyColumn(modifier = modifier, state = rememberLazyListState()) {
-        items(items = homeViewModel.categories, key = { it.categoryId }) { category: Category ->
-            val tool = homeViewModel.tools.filter { it.category == category.categoryId }
+        items(
+            items = homeViewModel.categoryWithTools.filter { it.tools.isNotEmpty() },
+            key = { it.category.categoryId }) { categoryWithTools: CategoryWithTools ->
+            val rows = ceil(categoryWithTools.tools.size.toDouble() / 3).toInt()
+            val height: Dp = 60.dp + 60.dp * rows
             CokoToolsCard(
-                modifier = Modifier.height(240.dp),
-                toolsCategory = category.name,
-                toolsDesc = category.desc ?: stringResource(id = R.string.need_desc),
-                rows = StaggeredGridCells.Fixed(3),
-                tools = tool,
+                modifier = Modifier.height(height),
+                toolsCategory = categoryWithTools.category.name,
+                toolsDesc = categoryWithTools.category.desc
+                    ?: stringResource(id = R.string.need_desc),
+                rows = StaggeredGridCells.Fixed(rows),
+                tools = categoryWithTools.tools,
                 toolOnClick = homeViewModel::startActivity,
                 isSuccess = homeViewModel.isSuccess,
                 closeErrorDialog = homeViewModel::closeErrorDialog,

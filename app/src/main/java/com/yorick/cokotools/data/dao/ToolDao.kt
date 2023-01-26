@@ -13,12 +13,12 @@ interface ToolDao {
     fun tool(id: Int): Flow<Tool?>
 
     @Update
-    fun updateTool(tool: Tool)
+    fun updateTool(vararg tools: Tool)
 
     // 增加工具，冲突则替换
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addNewTool(tool: Tool)
+    fun addNewTool(vararg tools: Tool)
 
     @Delete
-    fun deleteTool(tool: Tool)
+    fun deleteTool(vararg tools: Tool)
 }

@@ -28,6 +28,7 @@ class HomeViewModel(
 
     init {
         observeCategories()
+        observeCategoryWithTools()
         observeTools()
     }
 
@@ -44,6 +45,11 @@ class HomeViewModel(
             cateRepository.getAllCategory().collect {
                 categories = it
             }
+        }
+    }
+
+    private fun observeCategoryWithTools() {
+        viewModelScope.launch {
             cateRepository.getAllCategoryWithTools().collect {
                 categoryWithTools = it
             }

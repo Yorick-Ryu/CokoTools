@@ -9,9 +9,9 @@ class ToolRepositoryImpl(
 ) : ToolRepository {
     override suspend fun getAllTools(): Flow<List<Tool>> = toolDao.allTools()
 
-    override suspend fun addNewTool(tool: Tool) = toolDao.addNewTool(tool)
+    override suspend fun addNewTool(vararg tools: Tool) = toolDao.addNewTool(*tools)
 
-    override suspend fun updateTool(tool: Tool) = toolDao.updateTool(tool)
+    override suspend fun updateTool(vararg tools: Tool) = toolDao.updateTool(*tools)
 
-    override suspend fun deleteTool(tool: Tool) = toolDao.deleteTool(tool)
+    override suspend fun deleteTool(vararg tools: Tool) = toolDao.deleteTool(*tools)
 }

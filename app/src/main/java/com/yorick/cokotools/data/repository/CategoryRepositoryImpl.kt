@@ -13,7 +13,9 @@ class CategoryRepositoryImpl(
     override suspend fun getAllCategoryWithTools(): Flow<List<CategoryWithTools>> =
         categoryDao.allCategoryWithTools()
 
-    override suspend fun addNewCategory(category: Category) = categoryDao.addNewCategory(category)
+    override suspend fun addNewCategory(vararg categories: Category) =
+        categoryDao.addNewCategory(*categories)
 
-    override suspend fun deleteCategory(category: Category) = categoryDao.deleteCategory(category)
+    override suspend fun deleteCategory(vararg categories: Category) =
+        categoryDao.deleteCategory(*categories)
 }

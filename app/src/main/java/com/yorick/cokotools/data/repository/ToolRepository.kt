@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ToolRepository {
     suspend fun getAllTools(): Flow<List<Tool>>
-    suspend fun addNewTool(tool: Tool)
-    suspend fun updateTool(tool: Tool)
-    suspend fun deleteTool(tool: Tool)
+    suspend fun addNewTool(vararg tools: Tool)
+    suspend fun updateTool(vararg tools: Tool)
+    suspend fun deleteTool(vararg tools: Tool)
 }

@@ -1,7 +1,7 @@
 package com.yorick.cokotools
 
 import android.app.Application
-import com.yorick.cokotools.data.AppDatabase
+import com.yorick.cokotools.data.dao.AppDatabase
 import com.yorick.cokotools.data.repository.CategoryRepositoryImpl
 import com.yorick.cokotools.data.repository.ContributorRepositoryImpl
 import com.yorick.cokotools.data.repository.ToolRepositoryImpl
