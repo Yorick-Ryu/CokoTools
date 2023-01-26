@@ -1,6 +1,7 @@
 package com.yorick.cokotools.ui.screens
 
 import android.content.Context
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -18,6 +19,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -41,26 +43,35 @@ fun HomeScreen(
     scope: CoroutineScope = rememberCoroutineScope(),
     hostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    LazyColumn(modifier = modifier, state = rememberLazyListState()) {
-        items(
-            items = homeViewModel.categoryWithTools.filter { it.tools.isNotEmpty() },
-            key = { it.category.categoryId }) { categoryWithTools: CategoryWithTools ->
-            val rows = ceil(categoryWithTools.tools.size.toDouble() / 3).toInt()
-            val height: Dp = 60.dp + 60.dp * rows
-            CokoToolsCard(
-                modifier = Modifier.height(height),
-                toolsCategory = categoryWithTools.category.name,
-                toolsDesc = categoryWithTools.category.desc
-                    ?: stringResource(id = R.string.need_desc),
-                rows = StaggeredGridCells.Fixed(rows),
-                tools = categoryWithTools.tools,
-                toolOnClick = homeViewModel::startActivity,
-                isSuccess = homeViewModel.isSuccess,
-                closeErrorDialog = homeViewModel::closeErrorDialog,
-                scope = scope,
-                hostState = hostState
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+    if (homeViewModel.categoryWithTools.isNotEmpty()) {
+        LazyColumn(modifier = modifier, state = rememberLazyListState()) {
+            items(
+                items = homeViewModel.categoryWithTools.filter { it.tools.isNotEmpty() },
+                key = { it.category.categoryId }) { categoryWithTools: CategoryWithTools ->
+                val rows = ceil(categoryWithTools.tools.size.toDouble() / 3).toInt()
+                val height: Dp = 60.dp + 60.dp * rows
+                CokoToolsCard(
+                    modifier = Modifier.height(height),
+                    toolsCategory = categoryWithTools.category.name,
+                    toolsDesc = categoryWithTools.category.desc
+                        ?: stringResource(id = R.string.need_desc),
+                    rows = StaggeredGridCells.Fixed(rows),
+                    tools = categoryWithTools.tools,
+                    toolOnClick = homeViewModel::startActivity,
+                    isSuccess = homeViewModel.isSuccess,
+                    closeErrorDialog = homeViewModel::closeErrorDialog,
+                    scope = scope,
+                    hostState = hostState
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+    } else {
+        Column {
+            repeat(3) {
+                OnLoadingCard()
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
     }
 }
@@ -174,6 +185,29 @@ fun CokoToolsCard(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun OnLoadingCard(
+    modifier: Modifier = Modifier
+) {
+    val infiniteTransition = rememberInfiniteTransition()
+    val float by infiniteTransition.animateFloat(
+        initialValue = 0.2f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1200, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    Card(
+        modifier = modifier
+            .alpha(float)
+            .fillMaxWidth()
+            .height(200.dp)
+    ) {
+
     }
 }
 
