@@ -1,7 +1,8 @@
 package com.yorick.cokotools.ui.screens
 
-import android.content.Context
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -43,7 +44,51 @@ fun HomeScreen(
     scope: CoroutineScope = rememberCoroutineScope(),
     hostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    if (homeViewModel.categoryWithTools.isNotEmpty()) {
+    // 分类详细信息弹窗
+    var popState by remember {
+        mutableStateOf(false)
+    }
+    var cateTitle by remember { mutableStateOf("") }
+    var cateText by remember { mutableStateOf("") }
+    if (popState) {
+        BaseAlterDialog(
+            onDismissRequest = { popState = false },
+            title = cateTitle,
+            text = cateText,
+            onDismiss = { popState = false },
+            onConfirm = { popState = false },
+        )
+    }
+    // 功能打开失败弹窗
+    val context = LocalContext.current
+    val closeErrorDialog = homeViewModel::closeErrorDialog
+    var errMsg: String by remember { mutableStateOf("") }
+    if (!homeViewModel.isSuccess) {
+        ErrorDialog(
+            onDismissRequest = closeErrorDialog,
+            text = errMsg,
+            onConfirm = closeErrorDialog,
+            onDismiss = {
+                closeErrorDialog()
+                Utils.openDoc(context)
+            }
+        )
+    }
+    val needDesc = stringResource(id = R.string.need_desc)
+    val commonTips = stringResource(id = R.string.common_tips)
+    // 加载界面
+    if (homeViewModel.categoryWithTools.isEmpty()) {
+        Column {
+            repeat(3) {
+                OnLoadingCard()
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+    }
+    AnimatedVisibility(
+        visible = homeViewModel.categoryWithTools.isNotEmpty(),
+        enter = fadeIn()
+    ) {
         LazyColumn(modifier = modifier, state = rememberLazyListState()) {
             items(
                 items = homeViewModel.categoryWithTools.filter { it.tools.isNotEmpty() },
@@ -53,23 +98,25 @@ fun HomeScreen(
                 CokoToolsCard(
                     modifier = Modifier.height(height),
                     toolsCategory = categoryWithTools.category.name,
-                    toolsDesc = categoryWithTools.category.desc
-                        ?: stringResource(id = R.string.need_desc),
                     rows = StaggeredGridCells.Fixed(rows),
                     tools = categoryWithTools.tools,
-                    toolOnClick = homeViewModel::startActivity,
-                    isSuccess = homeViewModel.isSuccess,
-                    closeErrorDialog = homeViewModel::closeErrorDialog,
+                    onClickButton = { tool ->
+                        homeViewModel.startActivity(
+                            context,
+                            tool.tPackage,
+                            tool.activity,
+                            tool.okMsg
+                        )
+                        errMsg = tool.errMsg ?: commonTips
+                    },
                     scope = scope,
                     hostState = hostState
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
-    } else {
-        Column {
-            repeat(3) {
-                OnLoadingCard()
+                ) {
+                    cateTitle = categoryWithTools.category.name
+                    cateText =
+                        categoryWithTools.category.desc ?: needDesc
+                    popState = !popState
+                }
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
@@ -81,14 +128,12 @@ fun HomeScreen(
 fun CokoToolsCard(
     modifier: Modifier = Modifier,
     toolsCategory: String,
-    toolsDesc: String,
     rows: StaggeredGridCells,
     tools: List<Tool>,
-    toolOnClick: (context: Context, packageName: String, activityName: String, okMsg: String?) -> Unit,
-    isSuccess: Boolean,
-    closeErrorDialog: () -> Unit,
+    onClickButton: (tool: Tool) -> Unit,
     scope: CoroutineScope = rememberCoroutineScope(),
     hostState: SnackbarHostState = remember { SnackbarHostState() },
+    onClickCategoryInfo: () -> Unit // 点击分类详情信息
 ) {
     Card(
         modifier = modifier
@@ -103,32 +148,21 @@ fun CokoToolsCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                var popState by remember {
-                    mutableStateOf(false)
-                }
+
                 Text(
                     modifier = Modifier,
                     text = toolsCategory,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.outline
                 )
-                IconButton(onClick = { popState = !popState }) {
+                IconButton(onClick = onClickCategoryInfo) {
                     Icon(
                         imageVector = Icons.Outlined.Info,
                         contentDescription = stringResource(id = R.string.action_helps)
                     )
                 }
-                if (popState) {
-                    BaseAlterDialog(
-                        onDismissRequest = { popState = false },
-                        title = toolsCategory,
-                        text = toolsDesc,
-                        onDismiss = { popState = false },
-                        onConfirm = { popState = false }
-                    )
-                }
             }
-            val context = LocalContext.current
+            var onClick = onClickButton
             LazyHorizontalStaggeredGrid(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -140,7 +174,6 @@ fun CokoToolsCard(
                 items(items = tools, key = { it.id }) { tool ->
                     val interactionSource = remember { MutableInteractionSource() }
                     val isPressed by interactionSource.collectIsPressedAsState()
-                    var onClick = { toolOnClick(context, tool.tPackage, tool.activity, tool.okMsg) }
 
                     val desc = tool.desc ?: stringResource(id = R.string.need_desc)
                     val onLongPress = {
@@ -163,23 +196,12 @@ fun CokoToolsCard(
                     Button(
                         modifier = Modifier
                             .padding(start = 14.dp),
-                        onClick = onClick,
+                        onClick = { onClick(tool) },
                         interactionSource = interactionSource
                     ) {
                         Text(
                             text = tool.name,
                             style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                    if (!isSuccess) {
-                        ErrorDialog(
-                            onDismissRequest = closeErrorDialog,
-                            text = tool.errMsg ?: stringResource(id = R.string.common_tips),
-                            onConfirm = closeErrorDialog,
-                            onDismiss = {
-                                closeErrorDialog()
-                                Utils.openDoc(context)
-                            }
                         )
                     }
                 }
@@ -194,7 +216,7 @@ fun OnLoadingCard(
 ) {
     val infiniteTransition = rememberInfiniteTransition()
     val float by infiniteTransition.animateFloat(
-        initialValue = 0.2f,
+        initialValue = 0.1f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(1200, easing = LinearEasing),
