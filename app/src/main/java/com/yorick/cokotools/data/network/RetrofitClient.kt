@@ -11,7 +11,7 @@ import retrofit2.Retrofit
 
 import kotlin.random.Random
 
-private const val BASE_URL = "http://yorick.love:8088"
+private const val BASE_URL = "https://yorick.love:8443"
 
 private const val SALT = "yorick"
 
