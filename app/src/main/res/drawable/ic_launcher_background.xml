@@ -3,13 +3,13 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108"
-    android:tint="@color/color_ic_back">
+    android:tint="@color/material_dynamic_neutral_variant95">
   <group android:scaleX="4"
       android:scaleY="4"
       android:translateX="-162"
       android:translateY="-162">
       <path
-          android:fillColor="@color/color_ic_fore"
+          android:fillColor="@color/material_dynamic_primary30"
           android:pathData="
           M0,0
           L108,108
