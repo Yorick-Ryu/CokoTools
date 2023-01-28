@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Chip
 import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
@@ -17,8 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,8 +43,8 @@ import kotlinx.coroutines.launch
 fun DonateScreen(
     modifier: Modifier = Modifier,
     contributorViewModel: ContributorViewModel,
-    scope: CoroutineScope = rememberCoroutineScope(),
-    hostState: SnackbarHostState = remember { SnackbarHostState() },
+    scope: CoroutineScope,
+    hostState: SnackbarHostState,
 ) {
     val contributors = contributorViewModel.contributors
     val context = LocalContext.current
@@ -62,7 +62,9 @@ fun DonateScreen(
             }
         }
     }
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier.verticalScroll(rememberScrollState())
+    ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -98,7 +100,7 @@ fun DonateScreen(
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     rows = StaggeredGridCells.Fixed(4),
                 ) {
-                    items(items = contributors, key = { it.hashCode() }) { contributor ->
+                    items(items = contributors, key = { it.id }) { contributor ->
                         Chip(
                             modifier = Modifier.padding(start = 12.dp),
                             onClick = { /*TODO*/ },

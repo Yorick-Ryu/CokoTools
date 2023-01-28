@@ -8,55 +8,8 @@
     <string name="action_helps">帮助</string>
     <string name="feedback_url">https://support.qq.com/product/352780</string>
     <string name="help_doc">https://shimo.im/docs/R13j8x5vQ1ieogk5</string>
-    <string name="zen_mode">原生勿扰模式</string>
-    <string name="zen_mode_tips">打开安卓原生勿扰模式</string>
-    <string name="zen_mode_package">com.android.settings</string>
-    <string name="zen_mode_activity">com.android.settings.Settings$ZenModeSettingsActivity</string>
-    <string name="lock_bands">锁频段</string>
-    <string name="lock_bands_tips">通过手动锁定Band来提高某些场景下的网络速度。</string>
-    <string name="lock_bands_package">com.vivo.networkstate</string>
-    <string name="lock_bands_activity">com.vivo.networkstate.MainActivity</string>
-    <string name="show_seconds">状态栏显秒</string>
-    <string name="show_seconds_tips">点击[状态栏] 下滑找到[时间]</string>
-    <string name="show_seconds_package">com.android.systemui</string>
-    <string name="show_seconds_activity">com.android.systemui.DemoMode</string>
-    <string name="max_charging">满血充电</string>
-    <string name="max_charging_tips">点击[循环充电] 弹出[记录频率设置]点确定 插充电器 点击开始</string>
-    <string name="max_charging_package">com.vivo.fuelsummary</string>
-    <string name="max_charging_activity">com.vivo.fuelsummary.FuelSummary</string>
-    <string name="show_wifi_keys">WIFI密码查看</string>
-    <string name="show_wifi_key_tips">点击要查看密码的WiFi 点击[分享]后触摸指纹传感器</string>
-    <string name="show_wifi_keys_package">com.android.settings</string>
-    <string name="show_wifi_keys_activity">com.android.settings.Settings$SavedAccessPointsSettingsActivity</string>
-    <string name="show_wifi_list_activity">com.android.settings.Settings$WifiSettingsActivity</string>
-    <string name="engineer_mode">工厂测试</string>
-    <string name="engineer_mode_tips">据说可以锁屏幕帧率和5G，但是锁帧会掉，具体请在酷安里找教程。</string>
-    <string name="engineer_mode_package">com.iqoo.engineermode</string>
-    <string name="engineer_mode_activity">com.iqoo.engineermode.EngineerMode</string>
-    <string name="fuel_summary">电量统计</string>
-    <string name="fuel_summary_tips">请点击右上角三个点或者电池用量</string>
-    <string name="fuel_summary_package">com.android.settings</string>
-    <string name="fuel_summary_activity">com.android.settings.Settings$PowerUsageSummaryActivity</string>
-    <string name="storage_dashboard_activity">com.android.settings.Settings$StorageDashboardActivity</string>
-    <string name="notification_history_activity">com.android.settings.Settings$NotificationStationActivity</string>
-    <string name="urls_manage_activity">com.android.settings.Settings$ManageDomainUrlsActivity</string>
-    <string name="high_power">电池优化</string>
-    <string name="high_power_tips">电池优化</string>
-    <string name="high_power_package">com.android.settings</string>
-    <string name="high_power_activity">com.android.settings.Settings$HighPowerApplicationsActivity</string>
-    <string name="compose_needed">检测到缺少组件</string>
     <string name="title_error">打开失败</string>
     <string name="need_desc">暂无描述</string>
-    <string name="compose_satisfied">组件满足</string>
-    <string name="download_network_state">
-        缺少NetworkState组件，是否打开帮助文档下载？\n\n注意：此功能仅对蓝厂系手机有效，非蓝厂手机请勿下载使用。
-    </string>
-    <string name="download_engineer_model">
-        缺少工厂测试组件，是否打开帮助文档下载？\n\n注意：此功能仅对蓝厂系手机有效，非蓝厂手机请勿下载使用。
-    </string>
-    <string name="download_fuel_summary">
-        缺少FuelSummary组件，是否打开帮助文档下载？\n\n注意：此功能仅对蓝厂系手机有效，非蓝厂手机请勿下载使用。
-    </string>
     <string name="common_tips">这个功能可能不兼容你的设备，详情请查看文档。</string>
     <string name="cancel">取消</string>
     <string name="accept">确认</string>
@@ -73,25 +26,8 @@
     <string name="exceptions_read_help_doc">查看文档</string>
     <string name="feedback">反馈</string>
     <string name="title_tip">提示</string>
-    <string name="msg_high_version">这项功能无法在Android12+的系统上使用，您可以通过扫描WIFI分享的二维码获取密码。</string>
-    <string name="open_wifi_list">打开WIFI列表</string>
     <string name="home">主页</string>
     <string name="setting">设置</string>
     <string name="shell">Shell脚本</string>
-    <string name="common">安卓通用</string>
-    <string name="common_desc">调用原生安卓设置，只要系统没被厂家魔改就可以使用。</string>
-    <string name="blue">酷客专用</string>
-    <string name="blue_desc">蓝厂专属黑科技功能，使用前请下载安装所需组件。</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="storage_dashboard">原生存储</string>
-    <string name="storage_dashboard_tips">打开安卓原生存储</string>
-    <string name="notification_history">通知历史</string>
-    <string name="notification_history_tips">打开通知历史</string>
-    <string name="urls_manage">链接管理</string>
-    <string name="urls_manage_tips">设置链接跳转到对应的应用界面</string>
-    <string name="sub_setting">原生设置</string>
-    <string name="sub_setting_tips">打开安卓原生设置，仅限OriginOS2.0+</string>
-    <string name="sub_setting_package">com.vivo.settings.VivoSubSettings</string>
     <string name="back">返回</string>
 </resources>
