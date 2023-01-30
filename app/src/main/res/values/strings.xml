@@ -9,10 +9,20 @@
     <string name="feedback_url">https://support.qq.com/product/352780</string>
     <string name="help_doc">https://shimo.im/docs/R13j8x5vQ1ieogk5</string>
     <string name="title_error">打开失败</string>
+    <string name="theme">主题</string>
     <string name="need_desc">暂无描述</string>
+    <string name="dynamic_color">动态配色</string>
+    <string name="data">数据</string>
+    <string name="dynamic_color_desc">根据壁纸动态计算主题色</string>
+    <string name="dark_mode">深色模式</string>
+    <string name="refresh_data">重载本地数据</string>
+    <string name="refresh_data_desc">尝试从云端重新拉取数据</string>
     <string name="common_tips">这个功能可能不兼容你的设备，详情请查看文档。</string>
     <string name="cancel">取消</string>
     <string name="accept">确认</string>
+    <string name="auto">跟随系统</string>
+    <string name="dark">深色</string>
+    <string name="light">浅色</string>
     <string name="understand">明白</string>
     <string name="decline">拒绝</string>
     <string name="please_donate">如果本软件对您有帮助，可以请我喝杯冰镇可乐。(小声bb：截图后打开微信扫码哦，可以留言你的名字，我将会在下次版本更新中永远镌刻在贡献墙上！)</string>
@@ -28,6 +38,8 @@
     <string name="title_tip">提示</string>
     <string name="home">主页</string>
     <string name="setting">设置</string>
+    <string name="refresh_warning">尝试拉取远端数据并覆盖本地数据，该操作不可逆！是否继续？</string>
+    <string name="warning">警告</string>
     <string name="shell">Shell脚本</string>
     <string name="back">返回</string>
 </resources>

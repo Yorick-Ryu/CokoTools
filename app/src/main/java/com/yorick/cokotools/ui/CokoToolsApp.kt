@@ -21,6 +21,7 @@ import com.yorick.cokotools.ui.navigation.CookToolsRoute
 import com.yorick.cokotools.ui.navigation.NavigationActions
 import com.yorick.cokotools.ui.screens.DonateScreen
 import com.yorick.cokotools.ui.screens.HomeScreen
+import com.yorick.cokotools.ui.screens.SettingScreen
 import com.yorick.cokotools.ui.theme.CokoToolsTheme
 import com.yorick.cokotools.ui.viewmodels.ContributorViewModel
 import com.yorick.cokotools.ui.viewmodels.HomeViewModel
@@ -92,8 +93,7 @@ fun CokoToolsApp(
     ) {
         NavHost(
             modifier = Modifier
-                .padding(it)
-                .padding(horizontal = 16.dp),
+                .padding(it),
             navController = navController,
             startDestination = CookToolsRoute.HOME
         ) {
@@ -110,6 +110,7 @@ fun CokoToolsApp(
             }
             composable(route = CookToolsRoute.SETTING) {
                 barsVisibility = true
+                SettingScreen()
             }
             composable(route = CookToolsRoute.DONATE) {
                 barsVisibility = false

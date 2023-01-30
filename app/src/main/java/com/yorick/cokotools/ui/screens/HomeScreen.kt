@@ -89,7 +89,7 @@ fun HomeScreen(
         visible = homeViewModel.categoryWithTools.isNotEmpty(),
         enter = fadeIn()
     ) {
-        LazyColumn(modifier = modifier, state = rememberLazyListState()) {
+        LazyColumn(modifier = modifier.padding(horizontal = 16.dp), state = rememberLazyListState()) {
             items(
                 items = homeViewModel.categoryWithTools.filter { it.tools.isNotEmpty() },
                 key = { it.category.categoryId }) { categoryWithTools: CategoryWithTools ->

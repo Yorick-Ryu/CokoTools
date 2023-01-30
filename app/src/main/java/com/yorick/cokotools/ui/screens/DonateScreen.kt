@@ -63,7 +63,9 @@ fun DonateScreen(
         }
     }
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState())
+        modifier = modifier
+            .padding(horizontal = 16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         Card(
             modifier = Modifier

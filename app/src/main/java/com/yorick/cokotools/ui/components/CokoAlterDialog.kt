@@ -60,7 +60,7 @@ fun BaseAlterDialog(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CokoToolsLogo()
-                Spacer(modifier = Modifier.width(6.dp))
+                Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge
