@@ -1,6 +1,9 @@
 package com.yorick.cokotools.ui
 
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -22,6 +25,7 @@ import com.yorick.cokotools.ui.navigation.NavigationActions
 import com.yorick.cokotools.ui.screens.DonateScreen
 import com.yorick.cokotools.ui.screens.HomeScreen
 import com.yorick.cokotools.ui.screens.SettingScreen
+import com.yorick.cokotools.ui.screens.ToolScreen
 import com.yorick.cokotools.ui.theme.CokoToolsTheme
 import com.yorick.cokotools.ui.viewmodels.ContributorViewModel
 import com.yorick.cokotools.ui.viewmodels.HomeViewModel
@@ -41,26 +45,17 @@ fun CokoToolsApp(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val selectedDestination = navBackStackEntry?.destination?.route ?: CookToolsRoute.HOME
     var barsVisibility by remember { mutableStateOf(true) }
-
+    var topTitle by remember { mutableStateOf("") }
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.navigationBarsPadding(),
         topBar = {
-            AnimatedVisibility(
-                visible = barsVisibility,
-                enter = slideInVertically { -it },
-                exit = slideOutVertically { -it },
-            ) {
+            if (barsVisibility) {
                 CokoToolsAppBar(onClickDonate = {
                     navController.navigate(
                         CookToolsRoute.DONATE
                     ) { launchSingleTop = true }
                 })
-            }
-            AnimatedVisibility(
-                visible = !barsVisibility,
-                enter = slideInVertically { it } + fadeIn(),
-                exit = slideOutVertically { it } + fadeOut(),
-            ) {
+            } else {
                 TopAppBar(
                     navigationIcon = {
                         IconButton(
@@ -73,7 +68,7 @@ fun CokoToolsApp(
                             )
                         }
                     },
-                    title = { Text(text = stringResource(id = R.string.action_donate)) }
+                    title = { Text(text = topTitle) }
                 )
             }
         },
@@ -92,15 +87,21 @@ fun CokoToolsApp(
         snackbarHost = { SnackbarHost(hostState = hostState) }
     ) {
         NavHost(
-            modifier = Modifier
-                .padding(it),
+            modifier = Modifier.padding(it),
             navController = navController,
             startDestination = CookToolsRoute.HOME
         ) {
-            composable(route = CookToolsRoute.HOME) {
+            composable(
+                route = CookToolsRoute.HOME,
+
+            ) {
                 barsVisibility = true
                 HomeScreen(
                     homeViewModel = homeViewModel,
+                    onClickFab = {
+                        navController.navigate(CookToolsRoute.TOOL)
+                        homeViewModel.getAllRemoteTools()
+                    },
                     scope = scope,
                     hostState = hostState
                 )
@@ -112,7 +113,20 @@ fun CokoToolsApp(
                 barsVisibility = true
                 SettingScreen()
             }
+            composable(route = CookToolsRoute.TOOL) {
+                topTitle = stringResource(id = R.string.tool_management)
+                barsVisibility = false
+                ToolScreen(
+                    localTools = homeViewModel.tools,
+                    remoteTools = homeViewModel.remoteTools,
+                    categories = homeViewModel.categories,
+                    upLoadTool = homeViewModel::uploadTool,
+                    deleteTool = homeViewModel::deleteTool,
+                    downLoadTool = homeViewModel::downloadTool
+                )
+            }
             composable(route = CookToolsRoute.DONATE) {
+                topTitle = stringResource(id = R.string.action_donate)
                 barsVisibility = false
                 DonateScreen(
                     contributorViewModel = contributorViewModel,
@@ -123,6 +137,7 @@ fun CokoToolsApp(
         }
     }
 }
+
 
 @Preview
 @Composable

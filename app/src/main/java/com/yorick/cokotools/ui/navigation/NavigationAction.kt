@@ -17,6 +17,7 @@ object CookToolsRoute {
     const val SHELL = "Shell"
     const val SETTING = "Setting"
     const val DONATE = "Donate"
+    const val TOOL = "Tool"
 }
 
 data class CookToolsTopLevelDestination(

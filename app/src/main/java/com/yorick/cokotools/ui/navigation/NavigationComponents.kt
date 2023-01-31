@@ -38,3 +38,31 @@ fun CokoToolsNavigationBottomBar(
         }
     }
 }
+
+@Composable
+fun CokoToolsNavigationBottomBar(
+    selectedDestination: String,
+    onClick: () -> Unit
+) {
+    NavigationBar(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(77.dp)
+    ) {
+        TOP_LEVEL_DESTINATIONS.forEach { destination ->
+            NavigationBarItem(
+                selected = selectedDestination == destination.route,
+                onClick = {  },
+                icon = {
+                    Icon(
+                        imageVector = if (selectedDestination == destination.route) destination.selectedIcon
+                        else destination.unselectedIcon,
+                        contentDescription = stringResource(id = destination.iconTextId)
+                    )
+                },
+                label = { Text(text = stringResource(id = destination.iconTextId)) },
+                alwaysShowLabel = false
+            )
+        }
+    }
+}

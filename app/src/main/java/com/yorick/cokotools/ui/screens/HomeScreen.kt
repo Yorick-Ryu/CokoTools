@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGri
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -41,8 +42,9 @@ import kotlin.math.ceil
 fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
-    scope: CoroutineScope = rememberCoroutineScope(),
-    hostState: SnackbarHostState = remember { SnackbarHostState() },
+    onClickFab: () -> Unit,
+    scope: CoroutineScope,
+    hostState: SnackbarHostState,
 ) {
     // 分类详细信息弹窗
     var popState by remember {
@@ -85,40 +87,59 @@ fun HomeScreen(
             }
         }
     }
-    AnimatedVisibility(
-        visible = homeViewModel.categoryWithTools.isNotEmpty(),
-        enter = fadeIn()
-    ) {
-        LazyColumn(modifier = modifier.padding(horizontal = 16.dp), state = rememberLazyListState()) {
-            items(
-                items = homeViewModel.categoryWithTools.filter { it.tools.isNotEmpty() },
-                key = { it.category.categoryId }) { categoryWithTools: CategoryWithTools ->
-                val rows = ceil(categoryWithTools.tools.size.toDouble() / 3).toInt()
-                val height: Dp = 60.dp + 60.dp * rows
-                CokoToolsCard(
-                    modifier = Modifier.height(height),
-                    toolsCategory = categoryWithTools.category.name,
-                    rows = StaggeredGridCells.Fixed(rows),
-                    tools = categoryWithTools.tools,
-                    onClickButton = { tool ->
-                        homeViewModel.startActivity(
-                            context,
-                            tool.tPackage,
-                            tool.activity,
-                            tool.okMsg
-                        )
-                        errMsg = tool.errMsg ?: commonTips
-                    },
-                    scope = scope,
-                    hostState = hostState
-                ) {
-                    cateTitle = categoryWithTools.category.name
-                    cateText =
-                        categoryWithTools.category.desc ?: needDesc
-                    popState = !popState
+    Box(modifier = modifier.fillMaxSize()) {
+        AnimatedVisibility(
+            visible = homeViewModel.categoryWithTools.isNotEmpty(),
+            enter = fadeIn()
+        ) {
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                state = rememberLazyListState()
+            ) {
+                items(
+                    items = homeViewModel.categoryWithTools.filter { it.tools.isNotEmpty() },
+                    key = { it.category.categoryId }) { categoryWithTools: CategoryWithTools ->
+                    val rows = ceil(categoryWithTools.tools.size.toDouble() / 3).toInt()
+                    val height: Dp = 60.dp + 60.dp * rows
+                    CokoToolsCard(
+                        modifier = Modifier.height(height),
+                        toolsCategory = categoryWithTools.category.name,
+                        rows = StaggeredGridCells.Fixed(rows),
+                        tools = categoryWithTools.tools,
+                        onClickButton = { tool ->
+                            homeViewModel.startActivity(
+                                context,
+                                tool.tPackage,
+                                tool.activity,
+                                tool.okMsg
+                            )
+                            errMsg = tool.errMsg ?: commonTips
+                        },
+                        scope = scope,
+                        hostState = hostState
+                    ) {
+                        cateTitle = categoryWithTools.category.name
+                        cateText =
+                            categoryWithTools.category.desc ?: needDesc
+                        popState = !popState
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
-                Spacer(modifier = Modifier.height(16.dp))
             }
+        }
+        FloatingActionButton(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(20.dp),
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+            onClick = onClickFab
+        ) {
+            Icon(
+                modifier = Modifier.size(30.dp),
+                imageVector = Icons.Outlined.Edit,
+                contentDescription = stringResource(id = R.string.edit)
+            )
         }
     }
 }
@@ -148,7 +169,6 @@ fun CokoToolsCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-
                 Text(
                     modifier = Modifier,
                     text = toolsCategory,
@@ -219,7 +239,10 @@ fun OnLoadingCard(
         initialValue = 0.1f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1200, easing = LinearEasing),
+            animation = keyframes {
+                durationMillis = 1000
+                0.7f at 500
+            },
             repeatMode = RepeatMode.Reverse
         )
     )

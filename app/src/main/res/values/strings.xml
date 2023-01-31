@@ -11,6 +11,14 @@
     <string name="title_error">打开失败</string>
     <string name="theme">主题</string>
     <string name="need_desc">暂无描述</string>
+    <string name="download">下载</string>
+    <string name="delete">删除</string>
+    <string name="upload">上传</string>
+    <string name="open">打开</string>
+    <string name="empty_tool">暂无工具</string>
+    <string name="add">新增</string>
+    <string name="edit">编辑</string>
+    <string name="tool_management">工具管理</string>
     <string name="dynamic_color">动态配色</string>
     <string name="data">数据</string>
     <string name="dynamic_color_desc">根据壁纸动态计算主题色</string>
@@ -37,6 +45,8 @@
     <string name="feedback">反馈</string>
     <string name="title_tip">提示</string>
     <string name="home">主页</string>
+    <string name="local">本地</string>
+    <string name="remote">云端</string>
     <string name="setting">设置</string>
     <string name="refresh_warning">尝试拉取远端数据并覆盖本地数据，该操作不可逆！是否继续？</string>
     <string name="warning">警告</string>

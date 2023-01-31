@@ -12,8 +12,10 @@ import androidx.lifecycle.viewModelScope
 import com.yorick.cokotools.data.model.Category
 import com.yorick.cokotools.data.model.CategoryWithTools
 import com.yorick.cokotools.data.model.Tool
+import com.yorick.cokotools.data.network.ToolApi
 import com.yorick.cokotools.data.repository.CategoryRepository
 import com.yorick.cokotools.data.repository.ToolRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -22,6 +24,7 @@ class HomeViewModel(
 ) : ViewModel() {
 
     var tools by mutableStateOf(emptyList<Tool>())
+    var remoteTools by mutableStateOf(emptyList<Tool>())
     var categoryWithTools by mutableStateOf(emptyList<CategoryWithTools>())
     var categories by mutableStateOf(emptyList<Category>())
     var isSuccess by mutableStateOf(true)
@@ -54,6 +57,53 @@ class HomeViewModel(
                 categoryWithTools = it
             }
         }
+    }
+
+    private fun addNewTool(tool: Tool) {
+        viewModelScope.launch {
+            toolRepository.addNewTool(tool)
+        }
+    }
+
+    fun downloadTool(tool: Tool): Boolean {
+        val sameTools = tools.filter { it.name == tool.name && it.category == tool.category }
+        // 本地查重
+        if (sameTools.isEmpty()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                toolRepository.addNewTool(tool)
+            }
+            return true
+        }
+        return false
+    }
+
+    fun deleteTool(tool: Tool) {
+        viewModelScope.launch(Dispatchers.IO) {
+            toolRepository.deleteTool(tool)
+        }
+    }
+
+    fun getAllRemoteTools() {
+        viewModelScope.launch {
+            try {
+                remoteTools = ToolApi.toolApiService.getAllTools().filter { !it.release }
+                println(remoteTools.size)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun uploadTool(tool: Tool): Boolean {
+        var ctool: Tool? = null
+        viewModelScope.launch {
+            try {
+                ctool = ToolApi.toolApiService.addNewTool(tool)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        return ctool != null
     }
 
     // 打开Activity

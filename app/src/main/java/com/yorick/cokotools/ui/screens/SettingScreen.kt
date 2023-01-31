@@ -38,7 +38,7 @@ fun SettingScreen(
             onDismiss = { confirmDialogState = false }
         )
     }
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxSize()) {
         CokoClassRow(className = stringResource(id = R.string.theme)) {
             CokoSingleRowListItem(
                 modifier = Modifier.clickable {
