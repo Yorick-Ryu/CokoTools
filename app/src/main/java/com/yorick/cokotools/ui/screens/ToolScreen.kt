@@ -1,47 +1,76 @@
 package com.yorick.cokotools.ui.screens
 
+import android.annotation.SuppressLint
+import android.content.Context
+import androidx.compose.animation.*
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Upload
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yorick.cokotools.R
 import com.yorick.cokotools.data.model.Category
 import com.yorick.cokotools.data.model.Tool
+import com.yorick.cokotools.ui.components.AddNewToolDialog
 import com.yorick.cokotools.ui.components.ToolTabBar
 import com.yorick.cokotools.ui.theme.CokoToolsTheme
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@SuppressLint("UnrememberedMutableState")
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    ExperimentalAnimationApi::class
+)
 @Composable
 fun ToolScreen(
     modifier: Modifier = Modifier,
     localTools: List<Tool>,
     remoteTools: List<Tool>,
     categories: List<Category>,
-    upLoadTool: (tool: Tool) -> Unit,
+    addNewTool: (tool: Tool, context: Context) -> Unit,
+    upLoadTool: (tool: Tool, context: Context) -> Unit,
     deleteTool: (tool: Tool) -> Unit,
     downLoadTool: (tool: Tool) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
+    val state1 = rememberLazyListState()
+    val state2 = rememberLazyListState()
+    val fabVisibility by derivedStateOf {
+        state1.firstVisibleItemIndex == 0 && pagerState.currentPage == 0
+    }
+    var alterVisibility by remember { mutableStateOf(false) }
+    if (alterVisibility) {
+        AddNewToolDialog(
+            onDismissRequest = { alterVisibility = false },
+            onConfirm = { tool, context ->
+                addNewTool(tool, context)
+                alterVisibility = false
+            },
+            onDismiss = { alterVisibility = false },
+            categories = categories,
+            toolMaxID = localTools.last().id
+        )
+    }
     Scaffold(
         modifier = modifier
             .fillMaxSize(),
@@ -59,7 +88,29 @@ fun ToolScreen(
                     )
                 }
             }
-        })
+        },
+        floatingActionButton = {
+            AnimatedVisibility(
+                modifier = modifier,
+                visible = fabVisibility,
+                enter = scaleIn(),
+                exit = scaleOut()
+            ) {
+                FloatingActionButton(
+                    onClick = { alterVisibility = true },
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                ) {
+                    Icon(
+                        modifier = Modifier.size(30.dp),
+                        imageVector = Icons.Outlined.Add,
+                        contentDescription = stringResource(id = R.string.add)
+                    )
+                }
+            }
+        },
+        floatingActionButtonPosition = FabPosition.End
+    )
     { paddingValues ->
         val tabs = listOf<@Composable () -> Unit>(
             {
@@ -69,7 +120,8 @@ fun ToolScreen(
                     isLocal = true,
                     upLoadTool = upLoadTool,
                     deleteTool = deleteTool,
-                    downLoadTool = downLoadTool
+                    downLoadTool = downLoadTool,
+                    state = state1
                 )
             },
             {
@@ -79,7 +131,8 @@ fun ToolScreen(
                     isLocal = false,
                     upLoadTool = upLoadTool,
                     deleteTool = deleteTool,
-                    downLoadTool = downLoadTool
+                    downLoadTool = downLoadTool,
+                    state = state2
                 )
             }
         )
@@ -99,23 +152,25 @@ fun TooList(
     categories: List<Category>,
     tools: List<Tool>,
     isLocal: Boolean,
-    upLoadTool: (tool: Tool) -> Unit,
+    upLoadTool: (tool: Tool, context: Context) -> Unit,
     deleteTool: (tool: Tool) -> Unit,
     downLoadTool: (tool: Tool) -> Unit,
+    state: LazyListState
 ) {
+    val context = LocalContext.current
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .background(
                 color = MaterialTheme.colorScheme.surface
             ),
-        state = rememberLazyListState()
+        state = state
     ) {
         if (tools.isNotEmpty()) {
             if (isLocal) {
                 items(items = tools, key = { it.id }) { tool ->
                     ToolsListItem(tool = tool, categories = categories) {
-                        IconButton(onClick = { upLoadTool(tool) }) {
+                        IconButton(onClick = { upLoadTool(tool, context) }) {
                             Icon(
                                 imageVector = Icons.Outlined.Upload,
                                 contentDescription = stringResource(id = R.string.upload)

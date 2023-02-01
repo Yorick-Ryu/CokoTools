@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 fun ShellScreen(
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = Modifier.fillMaxSize()){
+    Box(modifier = modifier.fillMaxSize()) {
         Text(text = "Shell")
     }
 }

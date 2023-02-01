@@ -59,9 +59,15 @@ class HomeViewModel(
         }
     }
 
-    private fun addNewTool(tool: Tool) {
-        viewModelScope.launch {
-            toolRepository.addNewTool(tool)
+    fun addNewTool(tool: Tool, context: Context) {
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                toolRepository.addNewTool(tool)
+            }
+            successToast("添加成功", context = context)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            successToast("添加失败", context = context)
         }
     }
 
@@ -87,23 +93,31 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
                 remoteTools = ToolApi.toolApiService.getAllTools().filter { !it.release }
-                println(remoteTools.size)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    fun uploadTool(tool: Tool): Boolean {
+    fun uploadTool(tool: Tool, context: Context) {
+        // 远程查重
+        if (remoteTools.any { it.name == tool.name && it.category == tool.category }) {
+            successToast("与云端仓库重复", context)
+            return
+        }
         var ctool: Tool? = null
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 ctool = ToolApi.toolApiService.addNewTool(tool)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
-        return ctool != null
+        if (ctool != null) {
+            successToast("上传成功", context)
+        } else {
+            successToast("上传失败", context)
+        }
     }
 
     // 打开Activity
@@ -123,7 +137,7 @@ class HomeViewModel(
 
     private fun successToast(okMsg: String?, context: Context) {
         if (okMsg != null && okMsg != "") {
-            Toast.makeText(context, okMsg, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, okMsg, Toast.LENGTH_SHORT).show()
         }
     }
 

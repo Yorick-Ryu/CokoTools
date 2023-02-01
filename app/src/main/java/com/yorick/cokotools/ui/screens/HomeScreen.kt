@@ -152,8 +152,8 @@ fun CokoToolsCard(
     rows: StaggeredGridCells,
     tools: List<Tool>,
     onClickButton: (tool: Tool) -> Unit,
-    scope: CoroutineScope = rememberCoroutineScope(),
-    hostState: SnackbarHostState = remember { SnackbarHostState() },
+    scope: CoroutineScope,
+    hostState: SnackbarHostState,
     onClickCategoryInfo: () -> Unit // 点击分类详情信息
 ) {
     Card(

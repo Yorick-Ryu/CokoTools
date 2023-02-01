@@ -22,10 +22,7 @@ import com.yorick.cokotools.ui.components.CokoToolsAppBar
 import com.yorick.cokotools.ui.navigation.CokoToolsNavigationBottomBar
 import com.yorick.cokotools.ui.navigation.CookToolsRoute
 import com.yorick.cokotools.ui.navigation.NavigationActions
-import com.yorick.cokotools.ui.screens.DonateScreen
-import com.yorick.cokotools.ui.screens.HomeScreen
-import com.yorick.cokotools.ui.screens.SettingScreen
-import com.yorick.cokotools.ui.screens.ToolScreen
+import com.yorick.cokotools.ui.screens.*
 import com.yorick.cokotools.ui.theme.CokoToolsTheme
 import com.yorick.cokotools.ui.viewmodels.ContributorViewModel
 import com.yorick.cokotools.ui.viewmodels.HomeViewModel
@@ -94,7 +91,7 @@ fun CokoToolsApp(
             composable(
                 route = CookToolsRoute.HOME,
 
-            ) {
+                ) {
                 barsVisibility = true
                 HomeScreen(
                     homeViewModel = homeViewModel,
@@ -108,6 +105,7 @@ fun CokoToolsApp(
             }
             composable(route = CookToolsRoute.SHELL) {
                 barsVisibility = true
+                ShellScreen()
             }
             composable(route = CookToolsRoute.SETTING) {
                 barsVisibility = true
@@ -120,6 +118,7 @@ fun CokoToolsApp(
                     localTools = homeViewModel.tools,
                     remoteTools = homeViewModel.remoteTools,
                     categories = homeViewModel.categories,
+                    addNewTool = homeViewModel::addNewTool,
                     upLoadTool = homeViewModel::uploadTool,
                     deleteTool = homeViewModel::deleteTool,
                     downLoadTool = homeViewModel::downloadTool
