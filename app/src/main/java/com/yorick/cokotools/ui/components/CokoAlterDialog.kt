@@ -179,7 +179,7 @@ fun AddNewToolDialog(
         tPackage = tPackage,
         activity = activity,
         okMsg = okMsg,
-        errMsg = errMsg
+        errMsg = errMsg,
     )
     BaseAlterDialog(
         modifier = modifier,

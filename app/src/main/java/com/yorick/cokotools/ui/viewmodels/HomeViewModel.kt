@@ -17,6 +17,7 @@ import com.yorick.cokotools.data.repository.CategoryRepository
 import com.yorick.cokotools.data.repository.ToolRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel(
     private val toolRepository: ToolRepository,
@@ -105,18 +106,19 @@ class HomeViewModel(
             successToast("与云端仓库重复", context)
             return
         }
-        var ctool: Tool? = null
         viewModelScope.launch(Dispatchers.IO) {
+            var callBack = ""
             try {
-                ctool = ToolApi.toolApiService.addNewTool(tool)
+                callBack = withContext(Dispatchers.IO) {
+                    ToolApi.toolApiService.addNewTool(tool).string()
+                }
+                getAllRemoteTools()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }
-        if (ctool != null) {
-            successToast("上传成功", context)
-        } else {
-            successToast("上传失败", context)
+            withContext(Dispatchers.Main) {
+                successToast(if (callBack == "Tool stored correctly") "上传成功" else "上传失败", context)
+            }
         }
     }
 
