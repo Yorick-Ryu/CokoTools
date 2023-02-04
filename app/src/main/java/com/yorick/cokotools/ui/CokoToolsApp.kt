@@ -114,9 +114,7 @@ fun CokoToolsApp(
                 topTitle = stringResource(id = R.string.tool_management)
                 barsVisibility = false
                 ToolScreen(
-                    localTools = homeViewModel.tools,
-                    remoteTools = homeViewModel.remoteTools,
-                    categories = homeViewModel.categories,
+                    homeViewModel = homeViewModel,
                     addNewTool = homeViewModel::addNewTool,
                     upLoadTool = homeViewModel::uploadTool,
                     deleteTool = homeViewModel::deleteTool,

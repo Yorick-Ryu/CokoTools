@@ -16,6 +16,9 @@ import com.yorick.cokotools.data.network.ToolApi
 import com.yorick.cokotools.data.repository.CategoryRepository
 import com.yorick.cokotools.data.repository.ToolRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -24,38 +27,64 @@ class HomeViewModel(
     private val cateRepository: CategoryRepository
 ) : ViewModel() {
 
-    var tools by mutableStateOf(emptyList<Tool>())
-    var remoteTools by mutableStateOf(emptyList<Tool>())
-    var categoryWithTools by mutableStateOf(emptyList<CategoryWithTools>())
-    var categories by mutableStateOf(emptyList<Category>())
+    private val _uiState = MutableStateFlow(HomeUiState(loading = true))
+    val uiState: StateFlow<HomeUiState> = _uiState
+
     var isSuccess by mutableStateOf(true)
 
     init {
         observeCategories()
         observeCategoryWithTools()
         observeTools()
+        // 加载完成
+        _uiState.value = _uiState.value.copy(loading = false)
     }
 
     private fun observeTools() {
         viewModelScope.launch {
-            toolRepository.getAllTools().collect {
-                tools = it
+            toolRepository.getAllTools().catch { ex ->
+                _uiState.value = HomeUiState(error = ex.message)
+            }.collect {
+                _uiState.value = _uiState.value.copy(
+                    tools = it
+                )
             }
         }
     }
 
     private fun observeCategories() {
         viewModelScope.launch {
-            cateRepository.getAllCategory().collect {
-                categories = it
+            cateRepository.getAllCategory().catch { ex ->
+                _uiState.value = HomeUiState(error = ex.message)
+            }.collect {
+                _uiState.value = _uiState.value.copy(
+                    categories = it
+                )
             }
         }
     }
 
     private fun observeCategoryWithTools() {
         viewModelScope.launch {
-            cateRepository.getAllCategoryWithTools().collect {
-                categoryWithTools = it
+            cateRepository.getAllCategoryWithTools().catch { ex ->
+                _uiState.value = HomeUiState(error = ex.message)
+            }.collect {
+                _uiState.value = _uiState.value.copy(
+                    categoryWithTools = it
+                )
+            }
+        }
+    }
+
+    fun getAllRemoteTools() {
+        viewModelScope.launch {
+            try {
+                _uiState.value = _uiState.value.copy(
+                    remoteTools = ToolApi.toolApiService.getAllTools(),
+                    showTools = ToolApi.toolApiService.getAllTools().filter { it.release }
+                )
+            } catch (ex: Exception) {
+                _uiState.value = HomeUiState(error = ex.message)
             }
         }
     }
@@ -73,9 +102,8 @@ class HomeViewModel(
     }
 
     fun downloadTool(tool: Tool): Boolean {
-        val sameTools = tools.filter { it.name == tool.name && it.category == tool.category }
         // 本地查重
-        if (sameTools.isEmpty()) {
+        if (_uiState.value.tools.any { it.name == tool.name && it.category == tool.category }) {
             viewModelScope.launch(Dispatchers.IO) {
                 toolRepository.addNewTool(tool)
             }
@@ -90,19 +118,9 @@ class HomeViewModel(
         }
     }
 
-    fun getAllRemoteTools() {
-        viewModelScope.launch {
-            try {
-                remoteTools = ToolApi.toolApiService.getAllTools().filter { it.release }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
     fun uploadTool(tool: Tool, context: Context) {
         // 远程查重
-        if (remoteTools.any { it.name == tool.name && it.category == tool.category }) {
+        if (_uiState.value.remoteTools.any { it.name == tool.name && it.category == tool.category }) {
             successToast("与云端仓库重复", context)
             return
         }
@@ -147,3 +165,14 @@ class HomeViewModel(
         isSuccess = true
     }
 }
+
+data class HomeUiState(
+    val categories: List<Category> = emptyList(),
+    val tools: List<Tool> = emptyList(),
+    val remoteTools: List<Tool> = emptyList(),
+    val showTools: List<Tool> = emptyList(),
+    val categoryWithTools: List<CategoryWithTools> = emptyList(),
+    val loading: Boolean = false,
+    val error: String? = null
+)
+

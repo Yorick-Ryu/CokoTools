@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yorick.cokotools.R
 import com.yorick.cokotools.data.model.DarkThemeConfig
 import com.yorick.cokotools.ui.components.BaseAlterDialog
@@ -27,7 +28,7 @@ fun SettingScreen(
     modifier: Modifier = Modifier,
     settingsViewModel: SettingsViewModel
 ) {
-    val settingsUiState by settingsViewModel.settingsUiState.collectAsState()
+    val settingsUiState by settingsViewModel.settingsUiState.collectAsStateWithLifecycle()
 
     Column(modifier = modifier.fillMaxSize()) {
         when (settingsUiState) {

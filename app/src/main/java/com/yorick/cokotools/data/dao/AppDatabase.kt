@@ -48,7 +48,8 @@ abstract class AppDatabase : RoomDatabase() {
         // 填充工具
         suspend fun initTools(toolDao: ToolDao) {
             try {
-                toolDao.addNewTool(*ToolApi.toolApiService.getAllTools().toTypedArray())
+                toolDao.addNewTool(*ToolApi.toolApiService.getAllTools().filter { it.release }
+                    .toTypedArray())
             } catch (e: Exception) {
                 e.printStackTrace()
                 toolDao.addNewTool(*tools.toTypedArray())

@@ -27,12 +27,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yorick.cokotools.R
 import com.yorick.cokotools.data.model.Category
 import com.yorick.cokotools.data.model.Tool
 import com.yorick.cokotools.ui.components.AddNewToolDialog
 import com.yorick.cokotools.ui.components.ToolTabBar
 import com.yorick.cokotools.ui.theme.CokoToolsTheme
+import com.yorick.cokotools.ui.viewmodels.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -44,15 +46,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun ToolScreen(
     modifier: Modifier = Modifier,
-    localTools: List<Tool>,
-    remoteTools: List<Tool>,
-    categories: List<Category>,
+    homeViewModel: HomeViewModel,
     addNewTool: (tool: Tool, context: Context) -> Unit,
     upLoadTool: (tool: Tool, context: Context) -> Unit,
     deleteTool: (tool: Tool) -> Unit,
     downLoadTool: (tool: Tool) -> Unit,
     scope: CoroutineScope
 ) {
+    val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState()
     val state1 = rememberLazyListState()
     val state2 = rememberLazyListState()
@@ -68,8 +69,8 @@ fun ToolScreen(
                 alterVisibility = false
             },
             onDismiss = { alterVisibility = false },
-            categories = categories,
-            toolMaxID = localTools.last().id
+            categories = uiState.categories,
+            toolMaxID = uiState.tools.last().id
         )
     }
     Scaffold(
@@ -116,8 +117,8 @@ fun ToolScreen(
         val tabs = listOf<@Composable () -> Unit>(
             {
                 TooList(
-                    tools = localTools,
-                    categories = categories,
+                    tools = uiState.tools,
+                    categories = uiState.categories,
                     isLocal = true,
                     upLoadTool = upLoadTool,
                     deleteTool = deleteTool,
@@ -127,8 +128,8 @@ fun ToolScreen(
             },
             {
                 TooList(
-                    tools = remoteTools,
-                    categories = categories,
+                    tools = uiState.showTools,
+                    categories = uiState.categories,
                     isLocal = false,
                     upLoadTool = upLoadTool,
                     deleteTool = deleteTool,

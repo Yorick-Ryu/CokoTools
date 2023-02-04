@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yorick.cokotools.R
 import com.yorick.cokotools.data.model.CategoryWithTools
 import com.yorick.cokotools.data.model.Tool
@@ -46,6 +47,7 @@ fun HomeScreen(
     scope: CoroutineScope,
     hostState: SnackbarHostState,
 ) {
+    val homeUiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     // 分类详细信息弹窗
     var popState by remember {
         mutableStateOf(false)
@@ -79,7 +81,7 @@ fun HomeScreen(
     val needDesc = stringResource(id = R.string.need_desc)
     val commonTips = stringResource(id = R.string.common_tips)
     // 加载界面
-    if (homeViewModel.categoryWithTools.isEmpty()) {
+    if (homeUiState.loading) {
         Column {
             repeat(3) {
                 OnLoadingCard()
@@ -89,7 +91,7 @@ fun HomeScreen(
     }
     Box(modifier = modifier.fillMaxSize()) {
         AnimatedVisibility(
-            visible = homeViewModel.categoryWithTools.isNotEmpty(),
+            visible = !homeUiState.loading,
             enter = fadeIn()
         ) {
             LazyColumn(
@@ -97,7 +99,7 @@ fun HomeScreen(
                 state = rememberLazyListState()
             ) {
                 items(
-                    items = homeViewModel.categoryWithTools.filter { it.tools.isNotEmpty() },
+                    items = homeUiState.categoryWithTools.filter { it.tools.isNotEmpty() },
                     key = { it.category.categoryId }) { categoryWithTools: CategoryWithTools ->
                     val rows = ceil(categoryWithTools.tools.size.toDouble() / 3).toInt()
                     val height: Dp = 60.dp + 60.dp * rows
