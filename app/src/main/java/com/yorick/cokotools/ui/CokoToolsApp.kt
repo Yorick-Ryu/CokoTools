@@ -26,6 +26,7 @@ import com.yorick.cokotools.ui.screens.*
 import com.yorick.cokotools.ui.theme.CokoToolsTheme
 import com.yorick.cokotools.ui.viewmodels.ContributorViewModel
 import com.yorick.cokotools.ui.viewmodels.HomeViewModel
+import com.yorick.cokotools.ui.viewmodels.SettingsViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,6 +35,7 @@ fun CokoToolsApp(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
     contributorViewModel: ContributorViewModel,
+    settingsViewModel: SettingsViewModel
 ) {
     val scope = rememberCoroutineScope()
     val hostState = remember { SnackbarHostState() }
@@ -106,7 +108,7 @@ fun CokoToolsApp(
             }
             composable(route = CookToolsRoute.SETTING) {
                 barsVisibility = true
-                SettingScreen()
+                SettingScreen(settingsViewModel = settingsViewModel)
             }
             composable(route = CookToolsRoute.TOOL) {
                 topTitle = stringResource(id = R.string.tool_management)

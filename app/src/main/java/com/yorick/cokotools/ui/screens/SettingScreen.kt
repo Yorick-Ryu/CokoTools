@@ -14,18 +14,49 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.yorick.cokotools.R
+import com.yorick.cokotools.data.model.DarkThemeConfig
 import com.yorick.cokotools.ui.components.BaseAlterDialog
+import com.yorick.cokotools.ui.theme.supportsDynamicTheming
+import com.yorick.cokotools.ui.viewmodels.SettingsUiState.Loading
+import com.yorick.cokotools.ui.viewmodels.SettingsUiState.Success
+import com.yorick.cokotools.ui.viewmodels.SettingsViewModel
+import com.yorick.cokotools.ui.viewmodels.UserEditableSettings
 
 @Composable
 fun SettingScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    settingsViewModel: SettingsViewModel
+) {
+    val settingsUiState by settingsViewModel.settingsUiState.collectAsState()
+
+    Column(modifier = modifier.fillMaxSize()) {
+        when (settingsUiState) {
+            Loading -> {
+                Text(text = stringResource(id = R.string.input_required))
+            }
+            is Success -> {
+                SettingList(
+                    settings = (settingsUiState as Success).settings,
+                    onChangeDynamicColorPreference = settingsViewModel::updateDynamicColorPreference,
+                    onChangeDarkThemeConfig = settingsViewModel::updateDarkThemeConfig,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun SettingList(
+    modifier: Modifier = Modifier,
+    settings: UserEditableSettings,
+    supportDynamicColor: Boolean = supportsDynamicTheming(),
+    onChangeDynamicColorPreference: (useDynamicColor: Boolean) -> Unit,
+    onChangeDarkThemeConfig: (darkThemeConfig: DarkThemeConfig) -> Unit,
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
     }
-    var dynamicColors by remember {
-        mutableStateOf(true)
-    }
+
     var confirmDialogState by remember {
         mutableStateOf(false)
     }
@@ -47,31 +78,53 @@ fun SettingScreen(
                 icon = Icons.Outlined.DarkMode,
                 name = stringResource(id = R.string.dark_mode)
             ) {
-                Text(
-                    text = stringResource(id = R.string.auto),
-                    color = MaterialTheme.colorScheme.outline,
-                    style = MaterialTheme.typography.bodyMedium
-                )
+                CompositionLocalProvider(
+                    LocalTextStyle provides MaterialTheme.typography.bodyMedium,
+                    LocalContentColor provides MaterialTheme.colorScheme.outline
+                ) {
+                    when (settings.darkThemeConfig) {
+                        DarkThemeConfig.FOLLOW_SYSTEM -> {
+                            Text(text = stringResource(id = R.string.auto))
+                        }
+                        DarkThemeConfig.LIGHT -> {
+                            Text(text = stringResource(id = R.string.light))
+                        }
+                        DarkThemeConfig.DARK -> {
+                            Text(text = stringResource(id = R.string.dark))
+                        }
+                    }
+                }
                 DropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
                     DropdownMenuItem(
                         text = { Text(text = stringResource(id = R.string.auto)) },
-                        onClick = { isExpanded = false })
+                        onClick = {
+                            isExpanded = false
+                            onChangeDarkThemeConfig(DarkThemeConfig.FOLLOW_SYSTEM)
+                        })
                     DropdownMenuItem(
                         text = { Text(text = stringResource(id = R.string.light)) },
-                        onClick = { isExpanded = false })
+                        onClick = {
+                            isExpanded = false
+                            onChangeDarkThemeConfig(DarkThemeConfig.LIGHT)
+                        })
                     DropdownMenuItem(
                         text = { Text(text = stringResource(id = R.string.dark)) },
-                        onClick = { isExpanded = false })
+                        onClick = {
+                            isExpanded = false
+                            onChangeDarkThemeConfig(DarkThemeConfig.DARK)
+                        })
                 }
             }
-            CokoDualRowListItem(
-                icon = Icons.Outlined.ColorLens,
-                name = stringResource(id = R.string.dynamic_color),
-                desc = stringResource(id = R.string.dynamic_color_desc)
-            ) {
-                Switch(
-                    checked = dynamicColors,
-                    onCheckedChange = { dynamicColors = !dynamicColors })
+            if (supportDynamicColor) {
+                CokoDualRowListItem(
+                    icon = Icons.Outlined.ColorLens,
+                    name = stringResource(id = R.string.dynamic_color),
+                    desc = stringResource(id = R.string.dynamic_color_desc)
+                ) {
+                    Switch(
+                        checked = settings.useDynamicColor,
+                        onCheckedChange = { onChangeDynamicColorPreference(!settings.useDynamicColor) })
+                }
             }
         }
         CokoClassRow(className = stringResource(id = R.string.data)) {
