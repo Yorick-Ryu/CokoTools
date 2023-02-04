@@ -3,7 +3,6 @@ package com.yorick.cokotools.ui.screens
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
@@ -12,9 +11,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Chip
-import androidx.compose.material.ChipDefaults
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
@@ -38,7 +34,7 @@ import com.yorick.cokotools.util.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DonateScreen(
     modifier: Modifier = Modifier,
@@ -103,19 +99,21 @@ fun DonateScreen(
                     rows = StaggeredGridCells.Fixed(4),
                 ) {
                     items(items = contributors, key = { it.id }) { contributor ->
-                        Chip(
-                            modifier = Modifier.padding(start = 12.dp),
+                        AssistChip(
                             onClick = { /*TODO*/ },
-                            border = BorderStroke(
-                                width = 1.5.dp,
-                                color = MaterialTheme.colorScheme.primary
+                            label = {
+                                Text(text = contributor.name)
+                            },
+                            modifier = Modifier.padding(start = 12.dp),
+                            border = AssistChipDefaults.assistChipBorder(
+                                borderColor = MaterialTheme.colorScheme.primary,
+                                borderWidth = 1.5.dp
                             ),
-                            colors = ChipDefaults.chipColors(
-                                backgroundColor = MaterialTheme.colorScheme.secondaryContainer
-                            )
-                        ) {
-                            Text(text = contributor.name)
-                        }
+                            shape = MaterialTheme.shapes.medium,
+                            colors = AssistChipDefaults.assistChipColors(
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer
+                            ),
+                        )
                     }
                 }
             }

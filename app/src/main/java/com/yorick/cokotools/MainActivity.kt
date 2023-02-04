@@ -33,7 +33,6 @@ class MainActivity : ComponentActivity() {
 
         var uiState: SettingsUiState by mutableStateOf(SettingsUiState.Loading)
 
-
         preferences = getSharedPreferences("count", MODE_PRIVATE)
         var count: Int = preferences.getInt("count", 0)
         val editor: SharedPreferences.Editor = preferences.edit()
