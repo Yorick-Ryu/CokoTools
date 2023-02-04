@@ -93,7 +93,7 @@ class HomeViewModel(
     fun getAllRemoteTools() {
         viewModelScope.launch {
             try {
-                remoteTools = ToolApi.toolApiService.getAllTools().filter { !it.release }
+                remoteTools = ToolApi.toolApiService.getAllTools().filter { it.release }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

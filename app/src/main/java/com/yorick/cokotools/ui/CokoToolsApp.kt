@@ -88,10 +88,7 @@ fun CokoToolsApp(
             navController = navController,
             startDestination = CookToolsRoute.HOME
         ) {
-            composable(
-                route = CookToolsRoute.HOME,
-
-                ) {
+            composable(route = CookToolsRoute.HOME) {
                 barsVisibility = true
                 HomeScreen(
                     homeViewModel = homeViewModel,
@@ -121,7 +118,8 @@ fun CokoToolsApp(
                     addNewTool = homeViewModel::addNewTool,
                     upLoadTool = homeViewModel::uploadTool,
                     deleteTool = homeViewModel::deleteTool,
-                    downLoadTool = homeViewModel::downloadTool
+                    downLoadTool = homeViewModel::downloadTool,
+                    scope = scope
                 )
             }
             composable(route = CookToolsRoute.DONATE) {

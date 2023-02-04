@@ -33,6 +33,7 @@ import com.yorick.cokotools.data.model.Tool
 import com.yorick.cokotools.ui.components.AddNewToolDialog
 import com.yorick.cokotools.ui.components.ToolTabBar
 import com.yorick.cokotools.ui.theme.CokoToolsTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnrememberedMutableState")
@@ -50,8 +51,8 @@ fun ToolScreen(
     upLoadTool: (tool: Tool, context: Context) -> Unit,
     deleteTool: (tool: Tool) -> Unit,
     downLoadTool: (tool: Tool) -> Unit,
+    scope : CoroutineScope
 ) {
-    val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
     val state1 = rememberLazyListState()
     val state2 = rememberLazyListState()
@@ -160,10 +161,7 @@ fun TooList(
     val context = LocalContext.current
     LazyColumn(
         modifier = modifier
-            .fillMaxSize()
-            .background(
-                color = MaterialTheme.colorScheme.surface
-            ),
+            .fillMaxSize().padding(vertical = 5.dp),
         state = state
     ) {
         if (tools.isNotEmpty()) {
