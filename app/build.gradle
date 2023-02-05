@@ -6,20 +6,24 @@ plugins {
     id 'com.google.protobuf' version '0.8.17'
 }
 
+int incrementRefine() {
+    Properties properties = new Properties()
+    String fileName = "custom.properties"
+    def key = "build.refine"
+    File propertyFile = new File(rootDir.getAbsoluteFile(), fileName)
+    properties.load(propertyFile.newDataInputStream())
+    def refine = properties.getProperty(key).toInteger() + 1
+    properties.setProperty(key, refine.toString())
+    properties.store(propertyFile.newDataOutputStream(), 'Increment this value on every single build. ' +
+            'You can access this value by calling BuildConfig.REFINE')
+    return refine
+}
+
+def refine = incrementRefine()
 android {
-//    signingConfigs {
-//        debug {
-//            storeFile file('C:\\Users\\yurui\\android_dev_keys\\origin_key.jks')
-//        }
-//        release {
-//            v1SigningEnabled true
-//            v2SigningEnabled true
-//            storePassword 'cmwap964538YR'
-//            keyAlias 'key0'
-//            keyPassword 'cmwap964538YR'
-//            storeFile file('C:\\Users\\yurui\\android_dev_keys\\origin_key.jks')
-//        }
-//    }
+    signingConfigs {
+        sign
+    }
     namespace 'com.yorick.cokotools'
     compileSdk 33
 
@@ -28,9 +32,12 @@ android {
         minSdk 24
         targetSdk 33
         versionCode 2
-        versionName "2.0-penguin"
+        versionName "2.0" + "-penguin-" + refine
+        if (gradle.startParameter.taskNames.any { it.toLowerCase().contains("debug") }) {
+            versionName += "-debug"
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
+        buildConfigField "int", "REFINE", refine.toString()
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += [
@@ -46,7 +53,11 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.release
+            signingConfig signingConfigs.sign
+        }
+        debug {
+            debuggable true
+            signingConfig signingConfigs.sign
         }
     }
     compileOptions {
@@ -79,6 +90,23 @@ protobuf {
             }
         }
     }
+}
+
+def ksFile = rootProject.file('sign.properties')
+def props = new Properties()
+if (ksFile.canRead()) {
+    props.load(new FileInputStream(ksFile))
+    if (props != null) {
+        android.signingConfigs.sign.storeFile file(props['keystore.file'])
+        android.signingConfigs.sign.storePassword props['keystore.password']
+        android.signingConfigs.sign.keyAlias props['keystore.alias']
+        android.signingConfigs.sign.keyPassword props['keystore.keyPassword']
+    }
+} else {
+    android.signingConfigs.sign.storeFile = android.signingConfigs.debug.storeFile
+    android.signingConfigs.sign.storePassword = android.signingConfigs.debug.storePassword
+    android.signingConfigs.sign.keyAlias = android.signingConfigs.debug.keyAlias
+    android.signingConfigs.sign.keyPassword = android.signingConfigs.debug.keyPassword
 }
 
 dependencies {
@@ -135,6 +163,11 @@ dependencies {
     // Datastore
     implementation "androidx.datastore:datastore:1.0.0"
     implementation "com.google.protobuf:protobuf-javalite:3.21.12"
+
+    // Shizuku
+    def shizuku_version = "13.1.0"
+    implementation "dev.rikka.shizuku:api:$shizuku_version"
+    implementation "dev.rikka.shizuku:provider:$shizuku_version"
 
     // Test
     testImplementation 'junit:junit:4.13.2'

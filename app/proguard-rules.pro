@@ -20,10 +20,8 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keepattributes *Annotation*, InnerClasses
--dontnote kotlinx.serialization.AnnotationsKt # core serialization annotations
-
-# kotlinx-serialization-json specific. Add this if you have java.lang.NoClassDefFoundError kotlinx.serialization.json.JsonObjectSerializer
+# kotlinx-serialization-json specific.
+# Add this if you have java.lang.NoClassDefFoundError kotlinx.serialization.json.JsonObjectSerializer
 -keepclassmembers class kotlinx.serialization.json.** {
     *** Companion;
 }
@@ -31,11 +29,14 @@
     kotlinx.serialization.KSerializer serializer(...);
 }
 
-# Change here com.yourcompany.yourpackage
--keep,includedescriptorclasses class com.yorick.cokotools.**$$serializer { *; } # <-- change package name to your app's
--keepclassmembers class com.yorick.cokotools.** { # <-- change package name to your app's
+-keep,includedescriptorclasses class com.yorick.cokotools.**$$serializer { *; }
+-keepclassmembers class com.yorick.cokotools.** {
     *** Companion;
 }
--keepclasseswithmembers class com.yorick.cokotools.** { # <-- change package name to your app's
+-keepclasseswithmembers class com.yorick.cokotools.** {
     kotlinx.serialization.KSerializer serializer(...);
+}
+# Keep DataStore fields
+-keepclassmembers class * extends com.google.protobuf.GeneratedMessageLite* {
+   <fields>;
 }
