@@ -1,5 +1,6 @@
 package com.yorick.cokotools.ui.screens
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -11,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,13 +35,14 @@ fun SettingScreen(
     Column(modifier = modifier.fillMaxSize()) {
         when (settingsUiState) {
             Loading -> {
-                Text(text = stringResource(id = R.string.input_required))
+                Text(text = stringResource(id = R.string.loading))
             }
             is Success -> {
                 SettingList(
                     settings = (settingsUiState as Success).settings,
                     onChangeDynamicColorPreference = settingsViewModel::updateDynamicColorPreference,
                     onChangeDarkThemeConfig = settingsViewModel::updateDarkThemeConfig,
+                    reloadLocalData = settingsViewModel::reloadLocalData
                 )
             }
         }
@@ -53,7 +56,9 @@ fun SettingList(
     supportDynamicColor: Boolean = supportsDynamicTheming(),
     onChangeDynamicColorPreference: (useDynamicColor: Boolean) -> Unit,
     onChangeDarkThemeConfig: (darkThemeConfig: DarkThemeConfig) -> Unit,
+    reloadLocalData: (content: Context) -> Unit
 ) {
+    val context = LocalContext.current
     var isExpanded by remember {
         mutableStateOf(false)
     }
@@ -66,7 +71,10 @@ fun SettingList(
             onDismissRequest = { confirmDialogState = false },
             title = stringResource(id = R.string.warning),
             text = stringResource(id = R.string.refresh_warning),
-            onConfirm = { confirmDialogState = false },
+            onConfirm = {
+                confirmDialogState = false
+                reloadLocalData(context)
+            },
             onDismiss = { confirmDialogState = false }
         )
     }

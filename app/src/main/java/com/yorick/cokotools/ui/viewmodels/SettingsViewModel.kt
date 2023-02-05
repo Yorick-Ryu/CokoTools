@@ -1,5 +1,9 @@
 package com.yorick.cokotools.ui.viewmodels
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yorick.cokotools.data.datastore.UserPreferencesRepository
@@ -45,6 +49,20 @@ class SettingsViewModel(
         viewModelScope.launch {
             userPreferencesRepository.setDynamicColorPreference(useDynamicColor)
         }
+    }
+
+    fun reloadLocalData(context: Context) {
+        try {
+            context.startActivity(
+                Intent(
+                    android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", context.packageName, null)
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        Toast.makeText(context, "点击清除应用数据", Toast.LENGTH_SHORT).show()
     }
 }
 
