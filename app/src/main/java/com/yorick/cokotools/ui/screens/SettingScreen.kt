@@ -3,6 +3,8 @@ package com.yorick.cokotools.ui.screens
 import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material.icons.outlined.DarkMode
@@ -78,7 +80,11 @@ fun SettingList(
             onDismiss = { confirmDialogState = false }
         )
     }
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
         CokoClassRow(className = stringResource(id = R.string.theme)) {
             CokoSingleRowListItem(
                 modifier = Modifier.clickable {
