@@ -85,6 +85,10 @@ class HomeViewModel(
                 )
             } catch (ex: Exception) {
                 _uiState.value = HomeUiState(error = ex.message)
+                // 失败了要重新读取数据
+                observeCategories()
+                observeCategoryWithTools()
+                observeTools()
             }
         }
     }

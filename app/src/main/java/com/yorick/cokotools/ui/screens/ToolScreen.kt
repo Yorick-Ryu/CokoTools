@@ -122,7 +122,6 @@ fun ToolScreen(
                     isLocal = true,
                     upLoadTool = upLoadTool,
                     deleteTool = deleteTool,
-                    downLoadTool = downLoadTool,
                     state = state1
                 )
             },
@@ -131,8 +130,6 @@ fun ToolScreen(
                     tools = uiState.showTools,
                     categories = uiState.categories,
                     isLocal = false,
-                    upLoadTool = upLoadTool,
-                    deleteTool = deleteTool,
                     downLoadTool = downLoadTool,
                     state = state2
                 )
@@ -154,9 +151,9 @@ fun TooList(
     categories: List<Category>,
     tools: List<Tool>,
     isLocal: Boolean,
-    upLoadTool: (tool: Tool, context: Context) -> Unit,
-    deleteTool: (tool: Tool) -> Unit,
-    downLoadTool: (tool: Tool) -> Unit,
+    upLoadTool: (tool: Tool, context: Context) -> Unit = { _, _ -> },
+    deleteTool: (tool: Tool) -> Unit = {},
+    downLoadTool: (tool: Tool) -> Unit = {},
     state: LazyListState
 ) {
     val context = LocalContext.current

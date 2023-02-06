@@ -7,7 +7,9 @@ import java.io.InputStream
 import java.io.OutputStream
 
 object UserPreferencesSerializer : Serializer<UserPreferences> {
-    override val defaultValue: UserPreferences = UserPreferences.getDefaultInstance()
+    override val defaultValue: UserPreferences =
+        UserPreferences.getDefaultInstance().toBuilder().setUseDynamicColor(true).build()
+
     override suspend fun readFrom(input: InputStream): UserPreferences {
         try {
             return UserPreferences.parseFrom(input)
