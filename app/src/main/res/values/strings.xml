@@ -17,7 +17,16 @@
     <string name="open">打开</string>
     <string name="empty_tool">暂无工具</string>
     <string name="add">新增</string>
+    <string name="shizuku_state">Shizuku 状态</string>
+    <string name="not_running">Shizuku 没有运行</string>
+    <string name="not_running_tip">点击打开或下载 Shizuku</string>
+    <string name="running_and_connecting">Shizuku 正在运行，已获得授权</string>
+    <string name="running_but_not_connecting">Shizuku 正在运行 但未获得授权</string>
+    <string name="running_but_not_connecting_tip">点击前往 Shizuku 授权</string>
     <string name="add_new_tool">新增工具</string>
+    <string name="version">版本</string>
+    <string name="mode">模式</string>
+    <string name="not_find_qq">未安装手Q或安装的版本不支持</string>
     <string name="tool_name">名称</string>
     <string name="tool_desc">描述</string>
     <string name="tool_category">分类</string>

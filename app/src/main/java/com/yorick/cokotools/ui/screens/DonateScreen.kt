@@ -69,7 +69,7 @@ fun DonateScreen(
                 .height(240.dp)
                 .animateContentSize()
         ) {
-            Column(Modifier.padding(vertical = 4.dp)) {
+            Column(Modifier.padding(bottom = 4.dp)) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

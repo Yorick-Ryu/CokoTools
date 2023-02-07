@@ -3,6 +3,7 @@ package com.yorick.cokotools.util
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import com.yorick.cokotools.R
 
 object Utils {
@@ -21,6 +22,7 @@ object Utils {
             true
         } catch (e: java.lang.Exception) {
             // 未安装手Q或安装的版本不支持
+            Toast.makeText(context, R.string.not_find_qq, Toast.LENGTH_SHORT).show()
             false
         }
     }

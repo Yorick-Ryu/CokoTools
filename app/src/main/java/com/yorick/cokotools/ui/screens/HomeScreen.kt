@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Info
@@ -82,7 +84,7 @@ fun HomeScreen(
     val commonTips = stringResource(id = R.string.common_tips)
     // 加载界面
     if (homeUiState.loading) {
-        Column {
+        Column(modifier.verticalScroll(rememberScrollState())) {
             repeat(3) {
                 OnLoadingCard()
                 Spacer(modifier = Modifier.height(16.dp))
@@ -163,7 +165,7 @@ fun CokoToolsCard(
             .fillMaxWidth()
             .height(200.dp)
     ) {
-        Column(Modifier.padding(vertical = 4.dp)) {
+        Column(Modifier.padding(bottom = 4.dp)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -253,16 +255,6 @@ fun OnLoadingCard(
             .alpha(float)
             .fillMaxWidth()
             .height(200.dp)
-    ) {
-
-    }
+    ) {}
 }
-
-//@Preview
-//@Composable
-//fun HomeScreenPreview() {
-//    CokoToolsTheme {
-//        HomeScreen()
-//    }
-//}
 

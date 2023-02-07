@@ -27,6 +27,7 @@ import com.yorick.cokotools.ui.theme.CokoToolsTheme
 import com.yorick.cokotools.ui.viewmodels.ContributorViewModel
 import com.yorick.cokotools.ui.viewmodels.HomeViewModel
 import com.yorick.cokotools.ui.viewmodels.SettingsViewModel
+import com.yorick.cokotools.ui.viewmodels.ShellViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,6 +35,7 @@ import com.yorick.cokotools.ui.viewmodels.SettingsViewModel
 fun CokoToolsApp(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
+    shellViewModel: ShellViewModel,
     contributorViewModel: ContributorViewModel,
     settingsViewModel: SettingsViewModel
 ) {
@@ -104,7 +106,7 @@ fun CokoToolsApp(
             }
             composable(route = CookToolsRoute.SHELL) {
                 barsVisibility = true
-                ShellScreen()
+                ShellScreen(shellViewModel = shellViewModel)
             }
             composable(route = CookToolsRoute.SETTING) {
                 barsVisibility = true
