@@ -26,7 +26,7 @@ import com.yorick.cokotools.ui.screens.*
 import com.yorick.cokotools.ui.theme.CokoToolsTheme
 import com.yorick.cokotools.ui.viewmodels.ContributorViewModel
 import com.yorick.cokotools.ui.viewmodels.HomeViewModel
-import com.yorick.cokotools.ui.viewmodels.SettingsViewModel
+import com.yorick.cokotools.ui.viewmodels.SettingViewModel
 import com.yorick.cokotools.ui.viewmodels.ShellViewModel
 
 
@@ -37,7 +37,7 @@ fun CokoToolsApp(
     homeViewModel: HomeViewModel,
     shellViewModel: ShellViewModel,
     contributorViewModel: ContributorViewModel,
-    settingsViewModel: SettingsViewModel
+    settingViewModel: SettingViewModel
 ) {
     val scope = rememberCoroutineScope()
     val hostState = remember { SnackbarHostState() }
@@ -110,7 +110,7 @@ fun CokoToolsApp(
             }
             composable(route = CookToolsRoute.SETTING) {
                 barsVisibility = true
-                SettingScreen(settingsViewModel = settingsViewModel)
+                SettingScreen(settingViewModel = settingViewModel)
             }
             composable(route = CookToolsRoute.TOOL) {
                 topTitle = stringResource(id = R.string.tool_management)

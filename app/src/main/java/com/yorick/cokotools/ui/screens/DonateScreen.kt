@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.yorick.cokotools.R
+import com.yorick.cokotools.ui.components.CokoCard
 import com.yorick.cokotools.ui.viewmodels.ContributorViewModel
 import com.yorick.cokotools.util.Utils
 import kotlinx.coroutines.CoroutineScope
@@ -63,58 +64,44 @@ fun DonateScreen(
             .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Card(
+        CokoCard(
             modifier = Modifier
-                .fillMaxWidth()
                 .height(240.dp)
-                .animateContentSize()
-        ) {
-            Column(Modifier.padding(bottom = 4.dp)) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        modifier = Modifier,
-                        text = stringResource(id = R.string.contributors),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.outline
+                .animateContentSize(),
+            cardTitle = stringResource(id = R.string.contributors),
+            trailingIcon = {
+                IconButton(onClick = onClickInfo) {
+                    Icon(
+                        imageVector = Icons.Outlined.Info,
+                        contentDescription = stringResource(id = R.string.action_helps)
                     )
-                    IconButton(onClick = onClickInfo) {
-                        Icon(
-                            imageVector = Icons.Outlined.Info,
-                            contentDescription = stringResource(id = R.string.action_helps)
-                        )
-                    }
                 }
-                LazyHorizontalStaggeredGrid(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 4.dp, bottom = 14.dp),
-                    horizontalArrangement = Arrangement.spacedBy(0.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    rows = StaggeredGridCells.Fixed(4),
-                ) {
-                    items(items = contributors, key = { it.id }) { contributor ->
-                        AssistChip(
-                            onClick = { /*TODO*/ },
-                            label = {
-                                Text(text = contributor.name)
-                            },
-                            modifier = Modifier.padding(start = 12.dp),
-                            border = AssistChipDefaults.assistChipBorder(
-                                borderColor = MaterialTheme.colorScheme.primary,
-                                borderWidth = 1.5.dp
-                            ),
-                            shape = MaterialTheme.shapes.medium,
-                            colors = AssistChipDefaults.assistChipColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer
-                            ),
-                        )
-                    }
+            }
+        ) {
+            LazyHorizontalStaggeredGrid(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, bottom = 14.dp),
+                horizontalArrangement = Arrangement.spacedBy(0.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                rows = StaggeredGridCells.Fixed(4),
+            ) {
+                items(items = contributors, key = { it.id }) { contributor ->
+                    AssistChip(
+                        onClick = { /*TODO*/ },
+                        label = {
+                            Text(text = contributor.name)
+                        },
+                        modifier = Modifier.padding(start = 12.dp),
+                        border = AssistChipDefaults.assistChipBorder(
+                            borderColor = MaterialTheme.colorScheme.primary,
+                            borderWidth = 1.5.dp
+                        ),
+                        shape = MaterialTheme.shapes.medium,
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer
+                        ),
+                    )
                 }
             }
         }
@@ -196,7 +183,8 @@ fun DonateScreen(
                 text = text, onClick = {
                     val uri: Uri = Uri.parse(blogUri)
                     context.startActivity(Intent(Intent.ACTION_VIEW, uri))
-                })
+                }
+            )
         }
     }
 }

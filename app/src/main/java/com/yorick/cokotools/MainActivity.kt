@@ -40,11 +40,11 @@ class MainActivity : ComponentActivity() {
         val homeViewModel: HomeViewModel by viewModels { CokoViewModelFactory }
         val contributorViewModel: ContributorViewModel by viewModels { CokoViewModelFactory }
         val shellViewModel: ShellViewModel by viewModels()
-        val settingsViewModel: SettingsViewModel by viewModels { CokoViewModelFactory }
+        val settingViewModel: SettingViewModel by viewModels { CokoViewModelFactory }
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                settingsViewModel.settingsUiState
+                settingViewModel.settingsUiState
                     .onEach {
                         uiState = it
                     }
@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
                     homeViewModel = homeViewModel,
                     contributorViewModel = contributorViewModel,
                     shellViewModel = shellViewModel,
-                    settingsViewModel = settingsViewModel
+                    settingViewModel = settingViewModel
                 )
                 // 判断程序与第几次运行，如果是第一次运行则开启弹窗
                 if (isFirst) {

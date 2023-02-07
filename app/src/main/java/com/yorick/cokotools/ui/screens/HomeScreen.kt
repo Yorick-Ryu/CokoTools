@@ -33,6 +33,7 @@ import com.yorick.cokotools.R
 import com.yorick.cokotools.data.model.CategoryWithTools
 import com.yorick.cokotools.data.model.Tool
 import com.yorick.cokotools.ui.components.BaseAlterDialog
+import com.yorick.cokotools.ui.components.CokoCard
 import com.yorick.cokotools.ui.components.ErrorDialog
 import com.yorick.cokotools.ui.viewmodels.HomeViewModel
 import com.yorick.cokotools.util.Utils
@@ -105,7 +106,7 @@ fun HomeScreen(
                     key = { it.category.categoryId }) { categoryWithTools: CategoryWithTools ->
                     val rows = ceil(categoryWithTools.tools.size.toDouble() / 3).toInt()
                     val height: Dp = 60.dp + 60.dp * rows
-                    CokoToolsCard(
+                    ToolsCard(
                         modifier = Modifier.height(height),
                         toolsCategory = categoryWithTools.category.name,
                         rows = StaggeredGridCells.Fixed(rows),
@@ -150,7 +151,7 @@ fun HomeScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CokoToolsCard(
+fun ToolsCard(
     modifier: Modifier = Modifier,
     toolsCategory: String,
     rows: StaggeredGridCells,
@@ -160,74 +161,58 @@ fun CokoToolsCard(
     hostState: SnackbarHostState,
     onClickCategoryInfo: () -> Unit // 点击分类详情信息
 ) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(200.dp)
-    ) {
-        Column(Modifier.padding(bottom = 4.dp)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    modifier = Modifier,
-                    text = toolsCategory,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.outline
+    var onClick = onClickButton
+    CokoCard(
+        modifier = modifier.height(200.dp),
+        cardTitle = toolsCategory,
+        trailingIcon = {
+            IconButton(onClick = onClickCategoryInfo) {
+                Icon(
+                    imageVector = Icons.Outlined.Info,
+                    contentDescription = stringResource(id = R.string.action_helps)
                 )
-                IconButton(onClick = onClickCategoryInfo) {
-                    Icon(
-                        imageVector = Icons.Outlined.Info,
-                        contentDescription = stringResource(id = R.string.action_helps)
-                    )
-                }
             }
-            var onClick = onClickButton
-            LazyHorizontalStaggeredGrid(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp, bottom = 14.dp),
-                horizontalArrangement = Arrangement.spacedBy(0.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp),
-                rows = rows
-            ) {
-                items(items = tools, key = { it.id }) { tool ->
-                    val interactionSource = remember { MutableInteractionSource() }
-                    val isPressed by interactionSource.collectIsPressedAsState()
-
-                    val desc = tool.desc ?: stringResource(id = R.string.need_desc)
-                    val onLongPress = {
-                        scope.launch {
-                            val result = hostState.showSnackbar(
-                                message = desc,
-                                duration = SnackbarDuration.Short,
-                                withDismissAction = true
-                            )
-                            when (result) {
-                                SnackbarResult.ActionPerformed -> {}
-                                SnackbarResult.Dismissed -> {}
-                            }
+        }
+    ) {
+        LazyHorizontalStaggeredGrid(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp, bottom = 14.dp),
+            horizontalArrangement = Arrangement.spacedBy(0.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+            rows = rows
+        ) {
+            items(items = tools, key = { it.id }) { tool ->
+                val interactionSource = remember { MutableInteractionSource() }
+                val isPressed by interactionSource.collectIsPressedAsState()
+                val desc = tool.desc ?: stringResource(id = R.string.need_desc)
+                val onLongPress = {
+                    scope.launch {
+                        val result = hostState.showSnackbar(
+                            message = desc,
+                            duration = SnackbarDuration.Short,
+                            withDismissAction = true
+                        )
+                        when (result) {
+                            SnackbarResult.ActionPerformed -> {}
+                            SnackbarResult.Dismissed -> {}
                         }
                     }
-                    if (isPressed) {
-                        onLongPress()
-                        onClick = {}
-                    }
-                    Button(
-                        modifier = Modifier
-                            .padding(start = 14.dp),
-                        onClick = { onClick(tool) },
-                        interactionSource = interactionSource
-                    ) {
-                        Text(
-                            text = tool.name,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
+                }
+                if (isPressed) {
+                    onLongPress()
+                    onClick = {}
+                }
+                Button(
+                    modifier = Modifier
+                        .padding(start = 14.dp),
+                    onClick = { onClick(tool) },
+                    interactionSource = interactionSource
+                ) {
+                    Text(
+                        text = tool.name,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
             }
         }
@@ -251,7 +236,7 @@ fun OnLoadingCard(
         )
     )
     Card(
-        modifier = modifier
+        modifier
             .alpha(float)
             .fillMaxWidth()
             .height(200.dp)

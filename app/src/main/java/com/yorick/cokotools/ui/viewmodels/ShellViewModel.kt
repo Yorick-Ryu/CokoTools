@@ -1,28 +1,76 @@
 package com.yorick.cokotools.ui.viewmodels
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import rikka.shizuku.Shizuku.*
 
-class ShellViewModel : ViewModel() {
-    private val _uiState =
-        MutableStateFlow(ShellUiState(shizukuState = ShizukuState.RUNNING_AND_CONNECTING))
+class ShellViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val _uiState = MutableStateFlow(ShellUiState(shizukuState = ShizukuState.NOT_RUNNING))
     val uiState: StateFlow<ShellUiState> = _uiState
+
+    private val binderReceivedListener = OnBinderReceivedListener {
+        if (isPreV11()) {
+            _uiState.value = _uiState.value.copy(
+                shizukuState = ShizukuState.RUNNING_BUT_LOW_VERSION
+            )
+        } else {
+            if (checkSelfPermission() == PERMISSION_GRANTED) {
+                _uiState.value = _uiState.value.copy(
+                    shizukuState = ShizukuState.RUNNING_AND_GRANTED,
+                    shizukuVersion = getVersion().toString()
+                )
+            } else {
+                _uiState.value = _uiState.value.copy(
+                    shizukuState = ShizukuState.RUNNING_BUT_NOT_GRANTED,
+                )
+            }
+        }
+    }
+
+    private val binderDeadListener = OnBinderDeadListener {
+        Log.d("yu111", "binderDeadListener:")
+        _uiState.value = _uiState.value.copy(shizukuState = ShizukuState.NOT_RUNNING)
+    }
+
+    private val requestPermissionResultListener =
+        OnRequestPermissionResultListener { _, grantResult: Int ->
+            Log.d("yu111", "requestPermissionResultListener:$grantResult ")
+            if (grantResult == PERMISSION_GRANTED) {
+                _uiState.value = _uiState.value.copy(
+                    shizukuState = ShizukuState.RUNNING_AND_GRANTED,
+                    shizukuVersion = getVersion().toString()
+                )
+            }
+        }
+
+    init {
+        addBinderReceivedListenerSticky(binderReceivedListener)
+        addBinderDeadListener(binderDeadListener)
+        addRequestPermissionResultListener(requestPermissionResultListener)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        removeBinderReceivedListener(binderReceivedListener)
+        removeBinderDeadListener(binderDeadListener)
+        removeRequestPermissionResultListener(requestPermissionResultListener)
+    }
 }
 
 data class ShellUiState(
     val shizukuState: ShizukuState = ShizukuState.NOT_RUNNING,
-    val shizukuVersion: String = "12.12",
-    val shizukuMode: String = ShizukuMode.ROOT
+    val shizukuVersion: String? = null,
+    val error: String? = null
 )
 
-object ShizukuMode {
-    const val ROOT = "Root"
-    const val ADB = "ADB"
-}
-
 enum class ShizukuState {
-    RUNNING_AND_CONNECTING,
-    RUNNING_BUT_NOT_CONNECTING,
+    RUNNING_AND_GRANTED,
+    RUNNING_BUT_NOT_GRANTED,
+    RUNNING_BUT_LOW_VERSION,
     NOT_RUNNING,
 }

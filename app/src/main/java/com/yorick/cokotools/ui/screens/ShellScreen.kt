@@ -1,5 +1,6 @@
 package com.yorick.cokotools.ui.screens
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,6 +30,7 @@ import com.yorick.cokotools.ui.theme.CokoToolsTheme
 import com.yorick.cokotools.ui.viewmodels.ShellUiState
 import com.yorick.cokotools.ui.viewmodels.ShellViewModel
 import com.yorick.cokotools.ui.viewmodels.ShizukuState
+import rikka.shizuku.Shizuku
 
 @Composable
 fun ShellScreen(
@@ -57,7 +60,16 @@ fun ShellCards(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(120.dp)
-                    .clickable {}
+                    .clickable {
+                        when (uiState.shizukuState) {
+                            ShizukuState.NOT_RUNNING -> {}
+                            ShizukuState.RUNNING_BUT_LOW_VERSION -> {}
+                            ShizukuState.RUNNING_BUT_NOT_GRANTED -> {
+                                Shizuku.requestPermission(1)
+                            }
+                            ShizukuState.RUNNING_AND_GRANTED -> {}
+                        }
+                    }
                     .padding(vertical = 10.dp, horizontal = 16.dp),
             ) {
                 Text(
@@ -70,25 +82,34 @@ fun ShellCards(
                     ShizukuState.NOT_RUNNING -> {
                         ShizukuStateCardContent(
                             icon = Icons.Outlined.HighlightOff,
-                            stateText = stringResource(id = R.string.not_running),
-                            stateDesc = stringResource(id = R.string.not_running_tip)
+                            shizukuState = stringResource(id = R.string.not_running),
+                            stateDesc = stringResource(id = R.string.not_running_tip),
                         )
                     }
-                    ShizukuState.RUNNING_BUT_NOT_CONNECTING -> {
+                    ShizukuState.RUNNING_BUT_LOW_VERSION -> {
                         ShizukuStateCardContent(
                             icon = Icons.Outlined.ErrorOutline,
-                            stateText = stringResource(id = R.string.running_but_not_connecting),
-                            stateDesc = stringResource(id = R.string.running_but_not_connecting_tip)
+                            shizukuState = stringResource(id = R.string.running),
+                            permissionState = stringResource(id = R.string.low_version),
+                            stateDesc = stringResource(id = R.string.current_version) + " "
+                                    + uiState.shizukuVersion + " "
+                                    + stringResource(id = R.string.running_but_low_version_tip),
                         )
                     }
-                    ShizukuState.RUNNING_AND_CONNECTING -> {
+                    ShizukuState.RUNNING_BUT_NOT_GRANTED -> {
+                        ShizukuStateCardContent(
+                            icon = Icons.Outlined.ErrorOutline,
+                            shizukuState = stringResource(id = R.string.running),
+                            permissionState = stringResource(id = R.string.not_granted),
+                            stateDesc = stringResource(id = R.string.click_to_grant),
+                        )
+                    }
+                    ShizukuState.RUNNING_AND_GRANTED -> {
                         ShizukuStateCardContent(
                             icon = Icons.Outlined.CheckCircle,
-                            stateText = stringResource(id = R.string.running_and_connecting),
-                            stateDesc = stringResource(id = R.string.version) + " "
-                                    + uiState.shizukuVersion + "  "
-                                    + stringResource(id = R.string.mode) + " "
-                                    + uiState.shizukuMode
+                            shizukuState = stringResource(id = R.string.running),
+                            permissionState = stringResource(id = R.string.granted),
+                            stateDesc = stringResource(id = R.string.version) + " " + uiState.shizukuVersion,
                         )
                     }
                 }
@@ -101,9 +122,19 @@ fun ShellCards(
 fun ShizukuStateCardContent(
     modifier: Modifier = Modifier,
     icon: ImageVector,
-    stateText: String,
-    stateDesc: String = ""
+    shizukuState: String,
+    permissionState: String? = null,
+    stateDesc: String = "",
 ) {
+    val stateColor by animateColorAsState(
+        if (shizukuState == stringResource(id = R.string.running) &&
+            permissionState == stringResource(id = R.string.granted)
+        ) {
+            MaterialTheme.colorScheme.secondary
+        } else {
+            MaterialTheme.colorScheme.tertiary
+        }
+    )
     Row(
         modifier = modifier
             .fillMaxWidth(),
@@ -114,14 +145,14 @@ fun ShizukuStateCardContent(
             modifier = Modifier
                 .size(50.dp)
                 .clip(shape = CircleShape)
-                .background(color = MaterialTheme.colorScheme.primaryContainer),
+                .background(color = stateColor),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 modifier = modifier,
                 imageVector = icon,
-                contentDescription = stateText,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                contentDescription = shizukuState,
+                tint = MaterialTheme.colorScheme.onTertiary
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -129,15 +160,47 @@ fun ShizukuStateCardContent(
             modifier = Modifier.height(45.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = stateText,
-                style = MaterialTheme.typography.bodyLarge
-            )
+            Row(horizontalArrangement = Arrangement.Center) {
+                Text(
+                    text = shizukuState,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                if (permissionState != null) {
+                    Spacer(modifier = Modifier.width(10.dp))
+                    StateDescTag(
+                        stateDesc = permissionState,
+                        stateColor = stateColor
+                    )
+                }
+            }
             Text(
                 text = stateDesc,
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Normal)
             )
         }
+    }
+}
+
+@Composable
+fun StateDescTag(
+    modifier: Modifier = Modifier,
+    stateDesc: String,
+    stateColor: Color,
+) {
+    Box(
+        modifier = modifier
+            .background(
+                color = stateColor,
+                shape = MaterialTheme.shapes.small
+            )
+            .padding(horizontal = 5.dp, vertical = 2.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stateDesc,
+            color = MaterialTheme.colorScheme.onTertiary,
+            style = MaterialTheme.typography.labelLarge
+        )
     }
 }
 

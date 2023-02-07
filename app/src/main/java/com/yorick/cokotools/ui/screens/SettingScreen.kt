@@ -24,15 +24,15 @@ import com.yorick.cokotools.ui.components.BaseAlterDialog
 import com.yorick.cokotools.ui.theme.supportsDynamicTheming
 import com.yorick.cokotools.ui.viewmodels.SettingsUiState.Loading
 import com.yorick.cokotools.ui.viewmodels.SettingsUiState.Success
-import com.yorick.cokotools.ui.viewmodels.SettingsViewModel
+import com.yorick.cokotools.ui.viewmodels.SettingViewModel
 import com.yorick.cokotools.ui.viewmodels.UserEditableSettings
 
 @Composable
 fun SettingScreen(
     modifier: Modifier = Modifier,
-    settingsViewModel: SettingsViewModel
+    settingViewModel: SettingViewModel
 ) {
-    val settingsUiState by settingsViewModel.settingsUiState.collectAsStateWithLifecycle()
+    val settingsUiState by settingViewModel.settingsUiState.collectAsStateWithLifecycle()
 
     Column(modifier = modifier.fillMaxSize()) {
         when (settingsUiState) {
@@ -42,9 +42,9 @@ fun SettingScreen(
             is Success -> {
                 SettingList(
                     settings = (settingsUiState as Success).settings,
-                    onChangeDynamicColorPreference = settingsViewModel::updateDynamicColorPreference,
-                    onChangeDarkThemeConfig = settingsViewModel::updateDarkThemeConfig,
-                    reloadLocalData = settingsViewModel::reloadLocalData
+                    onChangeDynamicColorPreference = settingViewModel::updateDynamicColorPreference,
+                    onChangeDarkThemeConfig = settingViewModel::updateDarkThemeConfig,
+                    reloadLocalData = settingViewModel::reloadLocalData
                 )
             }
         }
