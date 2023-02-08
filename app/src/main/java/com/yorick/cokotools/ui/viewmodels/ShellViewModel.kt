@@ -1,6 +1,9 @@
 package com.yorick.cokotools.ui.viewmodels
 
 import android.app.Application
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -52,6 +55,22 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
         addBinderReceivedListenerSticky(binderReceivedListener)
         addBinderDeadListener(binderDeadListener)
         addRequestPermissionResultListener(requestPermissionResultListener)
+    }
+
+    fun openShizuku(context: Context): Boolean {
+        try {
+            val intent = Intent(Intent.ACTION_MAIN)
+            context.startActivity(
+                intent.setClassName(
+                    "moe.shizuku.privileged.api",
+                    "moe.shizuku.manager.MainActivity"
+                )
+            )
+        } catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+            return false
+        }
+        return true
     }
 
     override fun onCleared() {

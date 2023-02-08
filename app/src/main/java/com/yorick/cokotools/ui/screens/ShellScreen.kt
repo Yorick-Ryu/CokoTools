@@ -1,5 +1,6 @@
 package com.yorick.cokotools.ui.screens
 
+import android.content.Context
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -9,10 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.HighlightOff
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,34 +18,65 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yorick.cokotools.R
-import com.yorick.cokotools.ui.theme.CokoToolsTheme
 import com.yorick.cokotools.ui.viewmodels.ShellUiState
 import com.yorick.cokotools.ui.viewmodels.ShellViewModel
 import com.yorick.cokotools.ui.viewmodels.ShizukuState
+import com.yorick.cokotools.util.Utils.openUrl
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import rikka.shizuku.Shizuku
 
 @Composable
 fun ShellScreen(
     modifier: Modifier = Modifier,
     shellViewModel: ShellViewModel,
+    scope: CoroutineScope,
+    hostState: SnackbarHostState,
 ) {
     val uiState by shellViewModel.uiState.collectAsStateWithLifecycle()
     Box(modifier = modifier.fillMaxSize()) {
-        ShellCards(uiState = uiState)
+        ShellCards(
+            uiState = uiState,
+            openShizuku = shellViewModel::openShizuku,
+            scope = scope,
+            hostState = hostState,
+        )
     }
 }
 
 @Composable
 fun ShellCards(
     modifier: Modifier = Modifier,
-    uiState: ShellUiState
+    uiState: ShellUiState,
+    openShizuku: (context: Context) -> Boolean = { _ -> true },
+    scope: CoroutineScope,
+    hostState: SnackbarHostState,
 ) {
+    val context = LocalContext.current
+    val message = stringResource(id = R.string.no_shizuku)
+    val actionLabel = stringResource(id = R.string.download_shizuku)
+    val errInfo: () -> Unit = {
+        scope.launch {
+            val result = hostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short,
+                actionLabel = actionLabel,
+                withDismissAction = true
+            )
+            when (result) {
+                SnackbarResult.ActionPerformed -> {
+                    openUrl("https://shizuku.rikka.app/zh-hans/download/", context)
+                }
+                SnackbarResult.Dismissed -> {}
+            }
+        }
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -62,8 +91,12 @@ fun ShellCards(
                     .height(120.dp)
                     .clickable {
                         when (uiState.shizukuState) {
-                            ShizukuState.NOT_RUNNING -> {}
-                            ShizukuState.RUNNING_BUT_LOW_VERSION -> {}
+                            ShizukuState.NOT_RUNNING -> {
+                                if (!openShizuku(context)) errInfo()
+                            }
+                            ShizukuState.RUNNING_BUT_LOW_VERSION -> {
+                                openUrl("https://shizuku.rikka.app/zh-hans/download/", context)
+                            }
                             ShizukuState.RUNNING_BUT_NOT_GRANTED -> {
                                 Shizuku.requestPermission(1)
                             }
@@ -201,13 +234,5 @@ fun StateDescTag(
             color = MaterialTheme.colorScheme.onTertiary,
             style = MaterialTheme.typography.labelLarge
         )
-    }
-}
-
-@Preview
-@Composable
-fun ShellCardsPreview() {
-    CokoToolsTheme {
-        ShellCards(uiState = ShellUiState(shizukuState = ShizukuState.NOT_RUNNING))
     }
 }

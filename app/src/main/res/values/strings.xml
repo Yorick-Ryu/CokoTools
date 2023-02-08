@@ -51,6 +51,8 @@
     <string name="shizuku_state">Shizuku 状态</string>
     <string name="not_running">Shizuku 没有运行</string>
     <string name="not_running_tip">点击打开或下载 Shizuku</string>
+    <string name="no_shizuku">未安装 Shizuku</string>
+    <string name="download_shizuku">下载 Shizuku</string>
     <string name="running">Shizuku 正在运行</string>
     <string name="granted">已获得授权</string>
     <string name="not_granted">未获得授权</string>

@@ -3,7 +3,6 @@ package com.yorick.cokotools.ui.viewmodels
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,6 +15,7 @@ import com.yorick.cokotools.data.model.Tool
 import com.yorick.cokotools.data.network.ToolApi
 import com.yorick.cokotools.data.repository.CategoryRepository
 import com.yorick.cokotools.data.repository.ToolRepository
+import com.yorick.cokotools.util.Utils.mToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -109,10 +109,10 @@ class HomeViewModel(
             viewModelScope.launch(Dispatchers.IO) {
                 toolRepository.addNewTool(tool)
             }
-            successToast("添加成功", context = context)
+            mToast("添加成功", context = context)
         } catch (e: Exception) {
             e.printStackTrace()
-            successToast("添加失败", context = context)
+            mToast("添加失败", context = context)
         }
     }
 
@@ -136,7 +136,7 @@ class HomeViewModel(
     fun uploadTool(tool: Tool, context: Context) {
         // 远程查重
         if (_uiState.value.remoteTools.any { it.name == tool.name && it.category == tool.category }) {
-            successToast("与云端仓库重复", context)
+            mToast("与云端仓库重复", context)
             return
         }
         viewModelScope.launch(Dispatchers.IO) {
@@ -150,7 +150,7 @@ class HomeViewModel(
                 e.printStackTrace()
             }
             withContext(Dispatchers.Main) {
-                successToast(if (callBack == "Tool stored correctly") "上传成功" else "上传失败", context)
+                mToast(if (callBack == "Tool stored correctly") "上传成功" else "上传失败", context)
             }
         }
     }
@@ -164,17 +164,11 @@ class HomeViewModel(
                 intent.setClassName(packageName, activityName)
             )
             if (okToast) {
-                successToast(okMsg, context)
+                mToast(okMsg, context)
             }
         } catch (e: ActivityNotFoundException) {
             e.printStackTrace()
             isSuccess = false
-        }
-    }
-
-    private fun successToast(okMsg: String?, context: Context) {
-        if (okMsg != null && okMsg != "") {
-            Toast.makeText(context, okMsg, Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -106,7 +106,11 @@ fun CokoToolsApp(
             }
             composable(route = CookToolsRoute.SHELL) {
                 barsVisibility = true
-                ShellScreen(shellViewModel = shellViewModel)
+                ShellScreen(
+                    shellViewModel = shellViewModel,
+                    scope = scope,
+                    hostState = hostState
+                )
             }
             composable(route = CookToolsRoute.SETTING) {
                 barsVisibility = true

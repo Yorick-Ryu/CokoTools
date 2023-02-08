@@ -22,13 +22,28 @@ object Utils {
             true
         } catch (e: java.lang.Exception) {
             // 未安装手Q或安装的版本不支持
-            Toast.makeText(context, R.string.not_find_qq, Toast.LENGTH_SHORT).show()
+            mToast(R.string.not_find_qq, context)
             false
         }
     }
 
+    fun mToast(msg: String?, context: Context) {
+        if (msg != null && msg != "") {
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun mToast(msg: Int, context: Context) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
     fun openDoc(context: Context) {
         val uri: Uri = Uri.parse(context.resources.getString(R.string.help_doc))
+        context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+    }
+
+    fun openUrl(url: String, context: Context) {
+        val uri: Uri = Uri.parse(url)
         context.startActivity(Intent(Intent.ACTION_VIEW, uri))
     }
 }
