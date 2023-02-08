@@ -13,4 +13,5 @@ enum DarkThemeConfigProto {
 message UserPreferences {
   DarkThemeConfigProto dark_theme_config = 1;
   bool use_dynamic_color = 2 ;
+  bool ok_toast = 3;
 }

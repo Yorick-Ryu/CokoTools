@@ -17,7 +17,7 @@ val CokoViewModelFactory = object : ViewModelProvider.Factory {
             val userPreferencesRepository = application.userPreferencesRepository
             when {
                 isAssignableFrom(HomeViewModel::class.java) -> {
-                    HomeViewModel(toolRepository, categoryRepository)
+                    HomeViewModel(toolRepository, categoryRepository, userPreferencesRepository)
                 }
                 isAssignableFrom(ContributorViewModel::class.java) -> {
                     ContributorViewModel(contributorRepository)

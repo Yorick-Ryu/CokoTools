@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yorick.cokotools.data.datastore.UserPreferencesRepository
 import com.yorick.cokotools.data.model.DarkThemeConfig
+import com.yorick.cokotools.data.model.UserData
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -21,12 +22,7 @@ class SettingViewModel(
     val settingsUiState: StateFlow<SettingsUiState> =
         userPreferencesRepository.userPreferencesFlow
             .map { userData ->
-                SettingsUiState.Success(
-                    settings = UserEditableSettings(
-                        useDynamicColor = userData.useDynamicColor,
-                        darkThemeConfig = userData.darkThemeConfig,
-                    ),
-                )
+                SettingsUiState.Success(settings = userData)
             }
             .stateIn(
                 scope = viewModelScope,
@@ -51,6 +47,12 @@ class SettingViewModel(
         }
     }
 
+    fun updateOkToastPreference(okToast: Boolean) {
+        viewModelScope.launch {
+            userPreferencesRepository.setOkToastPreference(okToast)
+        }
+    }
+
     fun reloadLocalData(context: Context) {
         try {
             context.startActivity(
@@ -66,15 +68,7 @@ class SettingViewModel(
     }
 }
 
-/**
- * Represents the settings which the user can edit within the app.
- */
-data class UserEditableSettings(
-    val useDynamicColor: Boolean,
-    val darkThemeConfig: DarkThemeConfig,
-)
-
 sealed interface SettingsUiState {
     object Loading : SettingsUiState
-    data class Success(val settings: UserEditableSettings) : SettingsUiState
+    data class Success(val settings: UserData) : SettingsUiState
 }

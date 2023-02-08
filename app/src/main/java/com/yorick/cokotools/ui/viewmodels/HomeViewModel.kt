@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yorick.cokotools.data.datastore.UserPreferencesRepository
 import com.yorick.cokotools.data.model.Category
 import com.yorick.cokotools.data.model.CategoryWithTools
 import com.yorick.cokotools.data.model.Tool
@@ -24,7 +25,8 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel(
     private val toolRepository: ToolRepository,
-    private val cateRepository: CategoryRepository
+    private val cateRepository: CategoryRepository,
+    private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState(loading = true))
@@ -32,12 +34,21 @@ class HomeViewModel(
 
     var isSuccess by mutableStateOf(true)
 
+    private var okToast: Boolean = true
+
     init {
+        observeUserPreferences()
         observeCategories()
         observeCategoryWithTools()
         observeTools()
         // 加载完成
         _uiState.value = _uiState.value.copy(loading = false)
+    }
+
+    private fun observeUserPreferences() {
+        viewModelScope.launch {
+            userPreferencesRepository.userPreferencesFlow.collect { okToast = it.okToast }
+        }
     }
 
     private fun observeTools() {
@@ -152,7 +163,9 @@ class HomeViewModel(
             context.startActivity(
                 intent.setClassName(packageName, activityName)
             )
-            successToast(okMsg, context)
+            if (okToast) {
+                successToast(okMsg, context)
+            }
         } catch (e: ActivityNotFoundException) {
             e.printStackTrace()
             isSuccess = false

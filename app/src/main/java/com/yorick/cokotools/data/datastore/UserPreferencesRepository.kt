@@ -28,6 +28,7 @@ class UserPreferencesRepository(
                 DarkThemeConfigProto.DARK_THEME_CONFIG_DARK -> DarkThemeConfig.DARK
             },
             useDynamicColor = it.useDynamicColor,
+            okToast = it.okToast
         )
     }
         .catch { exception ->
@@ -53,6 +54,12 @@ class UserPreferencesRepository(
     suspend fun setDynamicColorPreference(useDynamicColor: Boolean) {
         userPreferencesStore.updateData { preferences ->
             preferences.toBuilder().setUseDynamicColor(useDynamicColor).build()
+        }
+    }
+
+    suspend fun setOkToastPreference(okToast: Boolean) {
+        userPreferencesStore.updateData { preferences ->
+            preferences.toBuilder().setOkToast(okToast).build()
         }
     }
 }

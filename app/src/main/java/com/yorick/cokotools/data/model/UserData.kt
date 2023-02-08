@@ -6,4 +6,5 @@ import androidx.annotation.Keep
 data class UserData(
     val darkThemeConfig: DarkThemeConfig,
     val useDynamicColor: Boolean,
+    val okToast: Boolean
 )

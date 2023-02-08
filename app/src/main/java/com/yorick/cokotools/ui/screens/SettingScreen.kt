@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material.icons.outlined.SpeakerNotesOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,12 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yorick.cokotools.R
 import com.yorick.cokotools.data.model.DarkThemeConfig
+import com.yorick.cokotools.data.model.UserData
 import com.yorick.cokotools.ui.components.BaseAlterDialog
 import com.yorick.cokotools.ui.theme.supportsDynamicTheming
+import com.yorick.cokotools.ui.viewmodels.SettingViewModel
 import com.yorick.cokotools.ui.viewmodels.SettingsUiState.Loading
 import com.yorick.cokotools.ui.viewmodels.SettingsUiState.Success
-import com.yorick.cokotools.ui.viewmodels.SettingViewModel
-import com.yorick.cokotools.ui.viewmodels.UserEditableSettings
 
 @Composable
 fun SettingScreen(
@@ -44,6 +45,7 @@ fun SettingScreen(
                     settings = (settingsUiState as Success).settings,
                     onChangeDynamicColorPreference = settingViewModel::updateDynamicColorPreference,
                     onChangeDarkThemeConfig = settingViewModel::updateDarkThemeConfig,
+                    onChangeOkToastConfig = settingViewModel::updateOkToastPreference,
                     reloadLocalData = settingViewModel::reloadLocalData
                 )
             }
@@ -54,10 +56,11 @@ fun SettingScreen(
 @Composable
 fun SettingList(
     modifier: Modifier = Modifier,
-    settings: UserEditableSettings,
+    settings: UserData,
     supportDynamicColor: Boolean = supportsDynamicTheming(),
     onChangeDynamicColorPreference: (useDynamicColor: Boolean) -> Unit,
     onChangeDarkThemeConfig: (darkThemeConfig: DarkThemeConfig) -> Unit,
+    onChangeOkToastConfig: (okToast: Boolean) -> Unit,
     reloadLocalData: (content: Context) -> Unit
 ) {
     val context = LocalContext.current
@@ -138,8 +141,21 @@ fun SettingList(
                 ) {
                     Switch(
                         checked = settings.useDynamicColor,
-                        onCheckedChange = { onChangeDynamicColorPreference(!settings.useDynamicColor) })
+                        onCheckedChange = { onChangeDynamicColorPreference(!settings.useDynamicColor) }
+                    )
                 }
+            }
+        }
+        CokoClassRow(className = stringResource(id = R.string.function)) {
+            CokoSingleRowListItem(
+                modifier = Modifier,
+                icon = Icons.Outlined.SpeakerNotesOff,
+                name = stringResource(id = R.string.ok_toast),
+            ) {
+                Switch(
+                    checked = settings.okToast,
+                    onCheckedChange = { onChangeOkToastConfig(!settings.okToast) }
+                )
             }
         }
         CokoClassRow(className = stringResource(id = R.string.data)) {

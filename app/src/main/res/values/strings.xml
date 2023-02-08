@@ -73,6 +73,8 @@
     <string name="refresh_data">重载本地数据</string>
     <string name="refresh_warning">尝试拉取远端数据并覆盖本地数据，该操作不可逆！是否继续？</string>
     <string name="refresh_data_desc">尝试从云端重新拉取数据</string>
+    <string name="function">功能</string>
+    <string name="ok_toast">打开成功提示</string>
 
     <!--    DonateScreen    -->
     <string name="contributors">贡献墙</string>

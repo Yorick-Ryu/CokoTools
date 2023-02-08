@@ -70,7 +70,6 @@ val tools = listOf(
         category = 1,
         tPackage = "com.android.settings",
         activity = "com.android.settings.Settings\$ManageDomainUrlsActivity",
-        okMsg = "点击要查看密码的WiFi 点击[分享]后触摸指纹传感器"
     ),
     Tool(
         7,
