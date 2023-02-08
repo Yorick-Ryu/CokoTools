@@ -73,6 +73,8 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
         return true
     }
 
+
+
     override fun onCleared() {
         super.onCleared()
         removeBinderReceivedListener(binderReceivedListener)

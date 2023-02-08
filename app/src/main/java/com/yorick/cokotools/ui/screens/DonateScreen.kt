@@ -11,8 +11,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.yorick.cokotools.R
-import com.yorick.cokotools.ui.components.CokoCard
+import com.yorick.cokotools.ui.components.CardWithTitle
 import com.yorick.cokotools.ui.viewmodels.ContributorViewModel
 import com.yorick.cokotools.util.Utils
 import kotlinx.coroutines.CoroutineScope
@@ -64,19 +62,12 @@ fun DonateScreen(
             .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        CokoCard(
+        CardWithTitle(
             modifier = Modifier
                 .height(240.dp)
                 .animateContentSize(),
             cardTitle = stringResource(id = R.string.contributors),
-            trailingIcon = {
-                IconButton(onClick = onClickInfo) {
-                    Icon(
-                        imageVector = Icons.Outlined.Info,
-                        contentDescription = stringResource(id = R.string.action_helps)
-                    )
-                }
-            }
+            onClickInfo = onClickInfo
         ) {
             LazyHorizontalStaggeredGrid(
                 modifier = Modifier

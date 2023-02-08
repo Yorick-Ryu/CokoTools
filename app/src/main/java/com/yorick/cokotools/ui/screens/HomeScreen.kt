@@ -18,7 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -33,7 +32,7 @@ import com.yorick.cokotools.R
 import com.yorick.cokotools.data.model.CategoryWithTools
 import com.yorick.cokotools.data.model.Tool
 import com.yorick.cokotools.ui.components.BaseAlterDialog
-import com.yorick.cokotools.ui.components.CokoCard
+import com.yorick.cokotools.ui.components.CardWithTitle
 import com.yorick.cokotools.ui.components.ErrorDialog
 import com.yorick.cokotools.ui.viewmodels.HomeViewModel
 import com.yorick.cokotools.util.Utils
@@ -105,7 +104,7 @@ fun HomeScreen(
                     items = homeUiState.categoryWithTools.filter { it.tools.isNotEmpty() },
                     key = { it.category.categoryId }) { categoryWithTools: CategoryWithTools ->
                     val rows = ceil(categoryWithTools.tools.size.toDouble() / 3).toInt()
-                    val height: Dp = 60.dp + 60.dp * rows
+                    val height: Dp = 50.dp + 60.dp * rows
                     ToolsCard(
                         modifier = Modifier.height(height),
                         toolsCategory = categoryWithTools.category.name,
@@ -162,17 +161,10 @@ fun ToolsCard(
     onClickCategoryInfo: () -> Unit // 点击分类详情信息
 ) {
     var onClick = onClickButton
-    CokoCard(
+    CardWithTitle(
         modifier = modifier.height(200.dp),
         cardTitle = toolsCategory,
-        trailingIcon = {
-            IconButton(onClick = onClickCategoryInfo) {
-                Icon(
-                    imageVector = Icons.Outlined.Info,
-                    contentDescription = stringResource(id = R.string.action_helps)
-                )
-            }
-        }
+        onClickInfo = onClickCategoryInfo,
     ) {
         LazyHorizontalStaggeredGrid(
             modifier = Modifier

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yorick.cokotools.R
+import com.yorick.cokotools.ui.components.CardWithTitle
 import com.yorick.cokotools.ui.viewmodels.ShellUiState
 import com.yorick.cokotools.ui.viewmodels.ShellViewModel
 import com.yorick.cokotools.ui.viewmodels.ShizukuState
@@ -40,10 +41,20 @@ fun ShellScreen(
     hostState: SnackbarHostState,
 ) {
     val uiState by shellViewModel.uiState.collectAsStateWithLifecycle()
-    Box(modifier = modifier.fillMaxSize()) {
-        ShellCards(
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+    ) {
+        ShizukuCard(
             uiState = uiState,
             openShizuku = shellViewModel::openShizuku,
+            scope = scope,
+            hostState = hostState,
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        InstallComponentCard(
+            uiState = uiState,
             scope = scope,
             hostState = hostState,
         )
@@ -51,7 +62,7 @@ fun ShellScreen(
 }
 
 @Composable
-fun ShellCards(
+fun ShizukuCard(
     modifier: Modifier = Modifier,
     uiState: ShellUiState,
     openShizuku: (context: Context) -> Boolean = { _ -> true },
@@ -59,14 +70,32 @@ fun ShellCards(
     hostState: SnackbarHostState,
 ) {
     val context = LocalContext.current
-    val message = stringResource(id = R.string.no_shizuku)
-    val actionLabel = stringResource(id = R.string.download_shizuku)
+    val aboutMessage = stringResource(id = R.string.about_shizuku_introduction)
+    val aboutActionLabel = stringResource(id = R.string.about_more)
+    val aboutInfo: () -> Unit = {
+        scope.launch {
+            val result = hostState.showSnackbar(
+                message = aboutMessage,
+                duration = SnackbarDuration.Short,
+                actionLabel = aboutActionLabel,
+                withDismissAction = true
+            )
+            when (result) {
+                SnackbarResult.ActionPerformed -> {
+                    openUrl("https://shizuku.rikka.app/zh-hans/introduction/", context)
+                }
+                SnackbarResult.Dismissed -> {}
+            }
+        }
+    }
+    val errMessage = stringResource(id = R.string.no_shizuku)
+    val errActionLabel = stringResource(id = R.string.download_shizuku)
     val errInfo: () -> Unit = {
         scope.launch {
             val result = hostState.showSnackbar(
-                message = message,
+                message = errMessage,
                 duration = SnackbarDuration.Short,
-                actionLabel = actionLabel,
+                actionLabel = errActionLabel,
                 withDismissAction = true
             )
             when (result) {
@@ -77,76 +106,99 @@ fun ShellCards(
             }
         }
     }
-    Column(
+    CardWithTitle(
         modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
-    ) {
-        Card(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .clickable {
-                        when (uiState.shizukuState) {
-                            ShizukuState.NOT_RUNNING -> {
-                                if (!openShizuku(context)) errInfo()
-                            }
-                            ShizukuState.RUNNING_BUT_LOW_VERSION -> {
-                                openUrl("https://shizuku.rikka.app/zh-hans/download/", context)
-                            }
-                            ShizukuState.RUNNING_BUT_NOT_GRANTED -> {
-                                Shizuku.requestPermission(1)
-                            }
-                            ShizukuState.RUNNING_AND_GRANTED -> {}
-                        }
-                    }
-                    .padding(vertical = 10.dp, horizontal = 16.dp),
-            ) {
-                Text(
-                    text = stringResource(id = R.string.shizuku_state),
-                    color = MaterialTheme.colorScheme.outline,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Spacer(modifier = Modifier.height(16.dp))
+            .fillMaxWidth()
+            .height(120.dp)
+            .clickable {
                 when (uiState.shizukuState) {
                     ShizukuState.NOT_RUNNING -> {
-                        ShizukuStateCardContent(
-                            icon = Icons.Outlined.HighlightOff,
-                            shizukuState = stringResource(id = R.string.not_running),
-                            stateDesc = stringResource(id = R.string.not_running_tip),
-                        )
+                        if (!openShizuku(context)) errInfo()
                     }
                     ShizukuState.RUNNING_BUT_LOW_VERSION -> {
-                        ShizukuStateCardContent(
-                            icon = Icons.Outlined.ErrorOutline,
-                            shizukuState = stringResource(id = R.string.running),
-                            permissionState = stringResource(id = R.string.low_version),
-                            stateDesc = stringResource(id = R.string.current_version) + " "
-                                    + uiState.shizukuVersion + " "
-                                    + stringResource(id = R.string.running_but_low_version_tip),
-                        )
+                        openUrl("https://shizuku.rikka.app/zh-hans/download/", context)
                     }
                     ShizukuState.RUNNING_BUT_NOT_GRANTED -> {
-                        ShizukuStateCardContent(
-                            icon = Icons.Outlined.ErrorOutline,
-                            shizukuState = stringResource(id = R.string.running),
-                            permissionState = stringResource(id = R.string.not_granted),
-                            stateDesc = stringResource(id = R.string.click_to_grant),
-                        )
+                        Shizuku.requestPermission(0)
                     }
-                    ShizukuState.RUNNING_AND_GRANTED -> {
-                        ShizukuStateCardContent(
-                            icon = Icons.Outlined.CheckCircle,
-                            shizukuState = stringResource(id = R.string.running),
-                            permissionState = stringResource(id = R.string.granted),
-                            stateDesc = stringResource(id = R.string.version) + " " + uiState.shizukuVersion,
-                        )
-                    }
+                    ShizukuState.RUNNING_AND_GRANTED -> {}
                 }
+            },
+        cardTitle = stringResource(id = R.string.shizuku_state),
+        onClickInfo = aboutInfo
+    ) {
+        when (uiState.shizukuState) {
+            ShizukuState.NOT_RUNNING -> {
+                ShizukuStateCardContent(
+                    icon = Icons.Outlined.HighlightOff,
+                    shizukuState = stringResource(id = R.string.not_running),
+                    stateDesc = stringResource(id = R.string.not_running_tip),
+                )
             }
+            ShizukuState.RUNNING_BUT_LOW_VERSION -> {
+                ShizukuStateCardContent(
+                    icon = Icons.Outlined.ErrorOutline,
+                    shizukuState = stringResource(id = R.string.running),
+                    permissionState = stringResource(id = R.string.low_version),
+                    stateDesc = stringResource(id = R.string.current_version) + " "
+                            + uiState.shizukuVersion + " "
+                            + stringResource(id = R.string.running_but_low_version_tip),
+                )
+            }
+            ShizukuState.RUNNING_BUT_NOT_GRANTED -> {
+                ShizukuStateCardContent(
+                    icon = Icons.Outlined.ErrorOutline,
+                    shizukuState = stringResource(id = R.string.running),
+                    permissionState = stringResource(id = R.string.not_granted),
+                    stateDesc = stringResource(id = R.string.click_to_grant),
+                )
+            }
+            ShizukuState.RUNNING_AND_GRANTED -> {
+                ShizukuStateCardContent(
+                    icon = Icons.Outlined.CheckCircle,
+                    shizukuState = stringResource(id = R.string.running),
+                    permissionState = stringResource(id = R.string.granted),
+                    stateDesc = stringResource(id = R.string.version) + " " + uiState.shizukuVersion,
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun InstallComponentCard(
+    modifier: Modifier = Modifier,
+    uiState: ShellUiState,
+    scope: CoroutineScope,
+    hostState: SnackbarHostState,
+) {
+    val aboutMessage = stringResource(id = R.string.install_component_desc)
+    val onClickInfo: () -> Unit = {
+        scope.launch {
+            val result = hostState.showSnackbar(
+                message = aboutMessage,
+                duration = SnackbarDuration.Short,
+                withDismissAction = true
+            )
+            when (result) {
+                SnackbarResult.ActionPerformed -> {}
+                SnackbarResult.Dismissed -> {}
+            }
+        }
+    }
+    CardWithTitle(
+        modifier = modifier.height(110.dp),
+        cardTitle = stringResource(id = R.string.install_component),
+        onClickInfo = onClickInfo
+    ) {
+        val enabled = uiState.shizukuState == ShizukuState.RUNNING_AND_GRANTED
+        Button(
+            modifier = Modifier.padding(start = 16.dp),
+            enabled = enabled,
+            onClick = { /*TODO*/ }
+        ) {
+            Text(text = stringResource(id = R.string.install_component))
         }
     }
 }
@@ -170,7 +222,8 @@ fun ShizukuStateCardContent(
     )
     Row(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {

@@ -16,6 +16,7 @@
     <string name="exceptions_message">本软件部分功能可能对某些机型产生如发热等不可预知的后果，使用需谨慎，造成的一切后果请用户自行承担。使用本软件代表您接受此声明。强烈建议阅读《帮助文档》后使用!\n\nTips：点击接受后不再提示</string>
     <string name="exceptions_accept">接受</string>
     <string name="exceptions_read_help_doc">查看文档</string>
+    <string name="more_info">详情</string>
 
     <!--    HomeScreen      -->
     <string name="home">主页</string>
@@ -48,6 +49,9 @@
 
     <!--    ShellScreen     -->
     <string name="shell">Shell脚本</string>
+    <string name="about_shizuku">了解 Shizuku</string>
+    <string name="about_shizuku_introduction">Shizuku 可以帮助普通应用直接以 adb 或 root 特权使用系统 API。</string>
+    <string name="about_more">了解更多</string>
     <string name="shizuku_state">Shizuku 状态</string>
     <string name="not_running">Shizuku 没有运行</string>
     <string name="not_running_tip">点击打开或下载 Shizuku</string>
@@ -61,6 +65,8 @@
     <string name="click_to_grant">点击获取 Shizuku 授权</string>
     <string name="version">版本</string>
     <string name="current_version">当前版本</string>
+    <string name="install_component">安装应用</string>
+    <string name="install_component_desc">以更高的权限安装应用，可降级安装。</string>
 
     <!--    SettingScreen   -->
     <string name="setting">设置</string>
