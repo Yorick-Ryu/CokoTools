@@ -1,6 +1,10 @@
 package com.yorick.cokotools.ui.screens
 
 import android.content.Context
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,6 +44,7 @@ fun ShellScreen(
     scope: CoroutineScope,
     hostState: SnackbarHostState,
 ) {
+    val context = LocalContext.current
     val uiState by shellViewModel.uiState.collectAsStateWithLifecycle()
     Column(
         modifier = modifier
@@ -51,12 +56,15 @@ fun ShellScreen(
             openShizuku = shellViewModel::openShizuku,
             scope = scope,
             hostState = hostState,
+            context = context
         )
         Spacer(modifier = Modifier.height(16.dp))
         InstallComponentCard(
             uiState = uiState,
             scope = scope,
             hostState = hostState,
+            context = context,
+            installApks = shellViewModel::installApks
         )
     }
 }
@@ -68,8 +76,8 @@ fun ShizukuCard(
     openShizuku: (context: Context) -> Boolean = { _ -> true },
     scope: CoroutineScope,
     hostState: SnackbarHostState,
+    context: Context
 ) {
-    val context = LocalContext.current
     val aboutMessage = stringResource(id = R.string.about_shizuku_introduction)
     val aboutActionLabel = stringResource(id = R.string.about_more)
     val aboutInfo: () -> Unit = {
@@ -172,6 +180,8 @@ fun InstallComponentCard(
     uiState: ShellUiState,
     scope: CoroutineScope,
     hostState: SnackbarHostState,
+    installApks: (result: ActivityResult, context: Context) -> Unit,
+    context: Context
 ) {
     val aboutMessage = stringResource(id = R.string.install_component_desc)
     val onClickInfo: () -> Unit = {
@@ -187,18 +197,35 @@ fun InstallComponentCard(
             }
         }
     }
+    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+        addCategory(Intent.CATEGORY_OPENABLE)
+        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        type = "application/vnd.android.package-archive"
+    }
+    val launcherForActivityResult = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) {
+        installApks(it, context)
+    }
     CardWithTitle(
         modifier = modifier.height(110.dp),
         cardTitle = stringResource(id = R.string.install_component),
         onClickInfo = onClickInfo
     ) {
-        val enabled = uiState.shizukuState == ShizukuState.RUNNING_AND_GRANTED
+        val enabled =
+            uiState.shizukuState == ShizukuState.RUNNING_AND_GRANTED && !uiState.isInstallApk
         Button(
             modifier = Modifier.padding(start = 16.dp),
             enabled = enabled,
-            onClick = { /*TODO*/ }
+            onClick = {
+                launcherForActivityResult.launch(intent)
+            }
         ) {
-            Text(text = stringResource(id = R.string.install_component))
+            Text(
+                text = stringResource(
+                    id = if (uiState.isInstallApk) R.string.installing else R.string.install_component
+                )
+            )
         }
     }
 }

@@ -1,14 +1,23 @@
 package com.yorick.cokotools.ui.viewmodels
 
+import android.app.Activity.RESULT_OK
 import android.app.Application
 import android.content.ActivityNotFoundException
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.net.Uri
 import android.util.Log
+import androidx.activity.result.ActivityResult
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.yorick.cokotools.R
+import com.yorick.cokotools.util.Utils
+import com.yorick.cokotools.util.Utils.mToast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import rikka.shizuku.Shizuku.*
 
 class ShellViewModel(application: Application) : AndroidViewModel(application) {
@@ -73,7 +82,37 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
         return true
     }
 
-
+    fun installApks(result: ActivityResult, context: Context) {
+        if (result.resultCode == RESULT_OK) {
+            val uris: MutableList<Uri>
+            val clipData: ClipData? = result.data?.clipData
+            if (clipData != null) {
+                uris = ArrayList(clipData.itemCount)
+                for (i in 0 until clipData.itemCount) {
+                    val uri = clipData.getItemAt(i).uri
+                    if (uri != null) {
+                        uris.add(uri)
+                    }
+                }
+            } else {
+                uris = ArrayList()
+                result.data?.data?.let { uris.add(it) }
+            }
+            _uiState.value = _uiState.value.copy(
+                isInstallApk = true
+            )
+            mToast(R.string.install_start, context)
+            viewModelScope.launch {
+                mToast(
+                    if (Utils.doInstallApks(uris, context))
+                        R.string.install_done else R.string.install_err, context
+                )
+                _uiState.value = _uiState.value.copy(
+                    isInstallApk = false
+                )
+            }
+        }
+    }
 
     override fun onCleared() {
         super.onCleared()
@@ -86,6 +125,7 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
 data class ShellUiState(
     val shizukuState: ShizukuState = ShizukuState.NOT_RUNNING,
     val shizukuVersion: String? = null,
+    val isInstallApk: Boolean = false,
     val error: String? = null
 )
 

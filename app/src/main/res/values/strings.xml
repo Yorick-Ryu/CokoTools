@@ -67,6 +67,10 @@
     <string name="current_version">当前版本</string>
     <string name="install_component">安装应用</string>
     <string name="install_component_desc">以更高的权限安装应用，可降级安装。</string>
+    <string name="install_start">开始安装</string>
+    <string name="installing">正在安装</string>
+    <string name="install_err">安装失败</string>
+    <string name="install_done">安装完成</string>
 
     <!--    SettingScreen   -->
     <string name="setting">设置</string>

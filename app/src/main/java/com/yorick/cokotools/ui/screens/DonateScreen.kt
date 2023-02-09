@@ -1,7 +1,5 @@
 package com.yorick.cokotools.ui.screens
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -30,6 +28,7 @@ import com.yorick.cokotools.R
 import com.yorick.cokotools.ui.components.CardWithTitle
 import com.yorick.cokotools.ui.viewmodels.ContributorViewModel
 import com.yorick.cokotools.util.Utils
+import com.yorick.cokotools.util.Utils.openUrl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -149,8 +148,7 @@ fun DonateScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(onClick = {
-                    val uri: Uri = Uri.parse("http://www.coolapk.com/u/3774603")
-                    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                    openUrl("http://www.coolapk.com/u/3774603", context)
                 }) {
                     Text(text = stringResource(id = R.string.coolapk_index))
                 }
@@ -172,8 +170,7 @@ fun DonateScreen(
             ClickableText(
                 modifier = Modifier.padding(start = 12.dp, bottom = 10.dp),
                 text = text, onClick = {
-                    val uri: Uri = Uri.parse(blogUri)
-                    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                    openUrl(blogUri, context)
                 }
             )
         }
