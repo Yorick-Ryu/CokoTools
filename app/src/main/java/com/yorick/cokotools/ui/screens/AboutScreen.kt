@@ -34,14 +34,14 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun DonateScreen(
+fun AboutScreen(
     modifier: Modifier = Modifier,
     contributorViewModel: ContributorViewModel,
     scope: CoroutineScope,
     hostState: SnackbarHostState,
 ) {
-    val contributors = contributorViewModel.contributors
     val context = LocalContext.current
+    val contributors = contributorViewModel.contributors.sortedBy { -it.amount }
     val message = stringResource(id = R.string.contributors_info)
     val onClickInfo: () -> Unit = {
         scope.launch {
@@ -54,6 +54,44 @@ fun DonateScreen(
                 SnackbarResult.ActionPerformed -> {}
                 SnackbarResult.Dismissed -> {}
             }
+        }
+    }
+    val donateTips = stringResource(id = R.string.donate_tips)
+    val onClickDonateInfo: () -> Unit = {
+        scope.launch {
+            val result = hostState.showSnackbar(
+                message = donateTips,
+                duration = SnackbarDuration.Short,
+                withDismissAction = true
+            )
+            when (result) {
+                SnackbarResult.ActionPerformed -> {}
+                SnackbarResult.Dismissed -> {}
+            }
+        }
+    }
+    val blogInfo = buildAnnotatedString {
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.outline)) {
+            append(stringResource(id = R.string.visit_blog))
+        }
+        withStyle(
+            style = SpanStyle(
+                color = MaterialTheme.colorScheme.primary,
+            )
+        ) {
+            append(Utils.BLOG_URL)
+        }
+    }
+    val openSourceInfo = buildAnnotatedString {
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.outline)) {
+            append(stringResource(id = R.string.open_source_desc))
+        }
+        withStyle(
+            style = SpanStyle(
+                color = MaterialTheme.colorScheme.primary,
+            )
+        ) {
+            append(stringResource(id = R.string.open_source))
         }
     }
     Column(
@@ -96,15 +134,15 @@ fun DonateScreen(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .animateContentSize()
+        CardWithTitle(
+            modifier = Modifier,
+            cardTitle = stringResource(id = R.string.donate),
+            onClickInfo = onClickDonateInfo
         ) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 10.dp, horizontal = 10.dp),
+                    .padding(vertical = 0.dp, horizontal = 16.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.Top
             ) {
@@ -117,38 +155,53 @@ fun DonateScreen(
                             .size(150.dp)
                             .clip(MaterialTheme.shapes.medium),
                         model = ImageRequest.Builder(context)
-                            .data("https://yorick.love/img/qrcode/wechat_donate_code.png")
+                            .data(Utils.DONATE_CODE_URL)
                             .crossfade(true)
                             .build(),
                         error = painterResource(id = R.drawable.donate_code),
                         contentScale = ContentScale.Fit,
-                        contentDescription = stringResource(id = R.string.action_donate)
+                        contentDescription = stringResource(id = R.string.donate)
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(text = stringResource(id = R.string.wx_donate_code))
                 }
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = stringResource(id = R.string.please_donate),
-                    style = MaterialTheme.typography.bodyLarge
-                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Column {
+                    Text(
+                        text = stringResource(id = R.string.donate_info),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Button(onClick = { Utils.openWeChatScan(context) }) {
+                        Text(text = stringResource(id = R.string.open_wechat))
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Button(onClick = {
+                        Utils.openAlipayPayPage(
+                            Utils.ALIPAY_DONATE_URL,
+                            context
+                        )
+                    }) {
+                        Text(text = stringResource(id = R.string.donate_by_alipay))
+                    }
+                }
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Card(
+        CardWithTitle(
             modifier = Modifier
-                .fillMaxWidth()
-                .animateContentSize()
+                .animateContentSize(),
+            cardTitle = stringResource(id = R.string.about)
         ) {
             Row(
                 Modifier
-                    .padding(horizontal = 12.dp)
-                    .padding(top = 12.dp, bottom = 6.dp)
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 6.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(onClick = {
-                    openUrl("http://www.coolapk.com/u/3774603", context)
+                    openUrl(Utils.COOLAPK_URL, context)
                 }) {
                     Text(text = stringResource(id = R.string.coolapk_index))
                 }
@@ -156,21 +209,16 @@ fun DonateScreen(
                     Text(text = stringResource(id = R.string.joinGroup))
                 }
             }
-            val blogUri = "https://yorick.love"
-            val text = buildAnnotatedString {
-                append(stringResource(id = R.string.visit_blog))
-                withStyle(
-                    style = SpanStyle(
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                ) {
-                    append(blogUri)
-                }
-            }
             ClickableText(
-                modifier = Modifier.padding(start = 12.dp, bottom = 10.dp),
-                text = text, onClick = {
-                    openUrl(blogUri, context)
+                modifier = Modifier.padding(start = 16.dp, bottom = 10.dp),
+                text = blogInfo, onClick = {
+                    openUrl(Utils.BLOG_URL, context)
+                }
+            )
+            ClickableText(
+                modifier = Modifier.padding(start = 16.dp, bottom = 10.dp),
+                text = openSourceInfo, onClick = {
+                    openUrl(Utils.OPEN_SOURCE_URL, context)
                 }
             )
         }

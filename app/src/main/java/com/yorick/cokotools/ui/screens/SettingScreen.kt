@@ -6,10 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ColorLens
-import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material.icons.outlined.SpeakerNotesOff
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -149,7 +146,7 @@ fun SettingList(
         CokoClassRow(className = stringResource(id = R.string.function)) {
             CokoSingleRowListItem(
                 modifier = Modifier,
-                icon = Icons.Outlined.SpeakerNotesOff,
+                icon = if (settings.okToast) Icons.Outlined.SpeakerNotes else Icons.Outlined.SpeakerNotesOff,
                 name = stringResource(id = R.string.ok_toast),
             ) {
                 Switch(

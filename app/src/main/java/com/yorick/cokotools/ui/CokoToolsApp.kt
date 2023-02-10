@@ -129,9 +129,9 @@ fun CokoToolsApp(
                 )
             }
             composable(route = CookToolsRoute.DONATE) {
-                topTitle = stringResource(id = R.string.action_donate)
+                topTitle = stringResource(id = R.string.about)
                 barsVisibility = false
-                DonateScreen(
+                AboutScreen(
                     contributorViewModel = contributorViewModel,
                     scope = scope,
                     hostState = hostState

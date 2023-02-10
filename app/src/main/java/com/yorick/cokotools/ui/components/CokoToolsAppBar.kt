@@ -43,7 +43,7 @@ fun CokoToolsAppBar(
             IconButton(onClick = onClickDonate) {
                 Icon(
                     imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = stringResource(id = R.string.action_donate)
+                    contentDescription = stringResource(id = R.string.donate)
                 )
             }
         }

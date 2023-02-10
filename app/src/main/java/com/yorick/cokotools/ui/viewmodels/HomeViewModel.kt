@@ -1,13 +1,12 @@
 package com.yorick.cokotools.ui.viewmodels
 
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yorick.cokotools.R
 import com.yorick.cokotools.data.datastore.UserPreferencesRepository
 import com.yorick.cokotools.data.model.Category
 import com.yorick.cokotools.data.model.CategoryWithTools
@@ -15,6 +14,7 @@ import com.yorick.cokotools.data.model.Tool
 import com.yorick.cokotools.data.network.ToolApi
 import com.yorick.cokotools.data.repository.CategoryRepository
 import com.yorick.cokotools.data.repository.ToolRepository
+import com.yorick.cokotools.util.Utils
 import com.yorick.cokotools.util.Utils.mToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +28,10 @@ class HomeViewModel(
     private val cateRepository: CategoryRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
+
+    companion object {
+        const val CALL_BACK_SUCCESS = "Tool stored correctly"
+    }
 
     private val _uiState = MutableStateFlow(HomeUiState(loading = true))
     val uiState: StateFlow<HomeUiState> = _uiState
@@ -109,22 +113,22 @@ class HomeViewModel(
             viewModelScope.launch(Dispatchers.IO) {
                 toolRepository.addNewTool(tool)
             }
-            mToast("添加成功", context = context)
+            mToast(R.string.add_success, context = context)
         } catch (e: Exception) {
             e.printStackTrace()
-            mToast("添加失败", context = context)
+            mToast(R.string.add_err, context = context)
         }
     }
 
-    fun downloadTool(tool: Tool): Boolean {
+    fun downloadTool(tool: Tool, context: Context) {
         // 本地查重
         if (_uiState.value.tools.any { it.name == tool.name && it.category == tool.category }) {
             viewModelScope.launch(Dispatchers.IO) {
                 toolRepository.addNewTool(tool)
             }
-            return true
+            mToast(R.string.download_success, context)
         }
-        return false
+        mToast(R.string.download_redundant, context)
     }
 
     fun deleteTool(tool: Tool) {
@@ -136,38 +140,32 @@ class HomeViewModel(
     fun uploadTool(tool: Tool, context: Context) {
         // 远程查重
         if (_uiState.value.remoteTools.any { it.name == tool.name && it.category == tool.category }) {
-            mToast("与云端仓库重复", context)
+            mToast(R.string.upload_redundant, context)
             return
         }
         viewModelScope.launch(Dispatchers.IO) {
-            var callBack = ""
+            var callBack: String? = null
             try {
                 callBack = withContext(Dispatchers.IO) {
                     ToolApi.toolApiService.addNewTool(tool).string()
                 }
-                getAllRemoteTools()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
             withContext(Dispatchers.Main) {
-                mToast(if (callBack == "Tool stored correctly") "上传成功" else "上传失败", context)
+                mToast(
+                    if (callBack == CALL_BACK_SUCCESS) R.string.upload_success else R.string.upload_err,
+                    context
+                )
             }
         }
     }
 
     // 打开Activity
     fun startActivity(context: Context, packageName: String, activityName: String, okMsg: String?) {
-        try {
-            val intent = Intent()
-//            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK 打开后是否返回原程序
-            context.startActivity(
-                intent.setClassName(packageName, activityName)
-            )
-            if (okToast) {
-                mToast(okMsg, context)
-            }
-        } catch (e: ActivityNotFoundException) {
-            e.printStackTrace()
+        if (Utils.startActivity(context, packageName, activityName)) {
+            if (okToast) mToast(okMsg, context)
+        } else {
             isSuccess = false
         }
     }

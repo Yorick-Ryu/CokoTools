@@ -1,14 +1,12 @@
 package com.yorick.cokotools.ui.viewmodels
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yorick.cokotools.data.datastore.UserPreferencesRepository
 import com.yorick.cokotools.data.model.DarkThemeConfig
 import com.yorick.cokotools.data.model.UserData
+import com.yorick.cokotools.util.Utils
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -54,17 +52,7 @@ class SettingViewModel(
     }
 
     fun reloadLocalData(context: Context) {
-        try {
-            context.startActivity(
-                Intent(
-                    android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                    Uri.fromParts("package", context.packageName, null)
-                )
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        Toast.makeText(context, "点击清除应用数据", Toast.LENGTH_SHORT).show()
+        Utils.openAppDetail(context)
     }
 }
 

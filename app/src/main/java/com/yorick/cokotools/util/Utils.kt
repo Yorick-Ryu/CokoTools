@@ -1,9 +1,6 @@
 package com.yorick.cokotools.util
 
-import android.content.ContentResolver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentSender
+import android.content.*
 import android.content.pm.IPackageInstaller
 import android.content.pm.IPackageInstallerSession
 import android.content.pm.PackageInstaller
@@ -17,17 +14,29 @@ import kotlinx.coroutines.withContext
 import rikka.shizuku.Shizuku
 import rikka.shizuku.ShizukuBinderWrapper
 import java.io.IOException
+import java.net.URLEncoder
 import java.util.concurrent.CountDownLatch
 
 object Utils {
 
+    private const val QQ_GROUP_URL =
+        "mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26jump_from%3Dwebapi%26k%3D"
+    private const val QQ_GROUP_KEY = "lFuzgAHN-Q_4j7fodzBaOtKrc_q6NYg9"
+    private const val SHIZUKU_PACKAGE = "moe.shizuku.privileged.api"
+    private const val SHIZUKU_ACTIVITY = "moe.shizuku.manager.MainActivity"
+    const val HELP_DOC_URL = "https://shimo.im/docs/R13j8x5vQ1ieogk5"
+    const val ALIPAY_DONATE_URL = "https://qr.alipay.com/fkx17875qbw3mypdlenhee2"
+    const val COOLAPK_URL = "http://www.coolapk.com/u/3774603"
+    const val DONATE_CODE_URL = "https://yorick.love/img/qrcode/wechat_donate_code.png"
+    const val BLOG_URL = "https://yorick.love"
+    const val OPEN_SOURCE_URL = "https://github.com/Yorick-Ryu/CokoTools"
+    const val SHIZUKU_DOWNLOAD_URL = "https://shizuku.rikka.app/zh-hans/download/"
+    const val SHIZUKU_INTRODUCTION_URL = "https://shizuku.rikka.app/zh-hans/introduction/"
+
     fun joinQQGroup(context: Context): Boolean {
         val intent = Intent()
         intent.data =
-            Uri.parse(
-                "mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26jump_from%3Dwebapi%26k%3D"
-                        + "lFuzgAHN-Q_4j7fodzBaOtKrc_q6NYg9"
-            )
+            Uri.parse(QQ_GROUP_URL + QQ_GROUP_KEY)
         // 此Flag可根据具体产品需要自定义，如设置，则在加群界面按返回，返回手Q主界面，不设置，按返回会返回到呼起产品界面
         // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         return try {
@@ -50,14 +59,85 @@ object Utils {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    fun openDoc(context: Context) {
-        val uri: Uri = Uri.parse(context.resources.getString(R.string.help_doc))
-        context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+    fun openUrl(url: String, context: Context) {
+        try {
+            val uri: Uri = Uri.parse(url)
+            context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
-    fun openUrl(url: String, context: Context) {
-        val uri: Uri = Uri.parse(url)
-        context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+    fun startActivity(
+        context: Context,
+        packageName: String,
+        activityName: String,
+    ): Boolean {
+        return try {
+            context.startActivity(
+                Intent().setClassName(packageName, activityName)
+            )
+            true
+        } catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    fun openWeChatScan(context: Context) {
+        try {
+            Intent(Intent.ACTION_MAIN).apply {
+                putExtra("LauncherUI.From.Scaner.Shortcut", true)
+                addCategory(Intent.CATEGORY_LAUNCHER)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                component = ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI")
+                context.startActivity(this)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun openAlipayPayPage(qrcode: String, context: Context): Boolean {
+        var qrEncode = qrcode
+        try {
+            qrEncode = URLEncoder.encode(qrEncode, "utf-8")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
+            val alipayqr =
+                "alipayqr://platformapi/startapp?saId=10000007&clientVersion=3.7.0.0718&qrcode=$qrEncode"
+            openUrl(alipayqr + "%3F_s%3Dweb-other&_t=" + System.currentTimeMillis(), context)
+            return true
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return false
+    }
+
+    fun openAppDetail(context: Context) {
+        try {
+            context.startActivity(
+                Intent(
+                    android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", context.packageName, null)
+                )
+            )
+            mToast(R.string.clean_app_data, context)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun openShizuku(context: Context): Boolean {
+        try {
+            startActivity(context, SHIZUKU_PACKAGE, SHIZUKU_ACTIVITY)
+        } catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+            return false
+        }
+        return true
     }
 
     suspend fun doInstallApks(uris: List<Uri>, context: Context): Boolean {

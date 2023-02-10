@@ -1,7 +1,7 @@
 <resources>
     <!--    CokoToolsApp    -->
     <string name="empty"> </string>
-    <string name="action_donate">捐赠</string>
+    <string name="about">关于</string>
     <string name="action_helps">帮助</string>
     <string name="loading">加载中</string>
     <string name="back">返回</string>
@@ -11,7 +11,6 @@
     <string name="decline">拒绝</string>
     <string name="accept">确认</string>
     <string name="cancel">取消</string>
-    <string name="help_doc">https://shimo.im/docs/R13j8x5vQ1ieogk5</string>
     <string name="exceptions_title">免责声明</string>
     <string name="exceptions_message">本软件部分功能可能对某些机型产生如发热等不可预知的后果，使用需谨慎，造成的一切后果请用户自行承担。使用本软件代表您接受此声明。强烈建议阅读《帮助文档》后使用!\n\nTips：点击接受后不再提示</string>
     <string name="exceptions_accept">接受</string>
@@ -29,11 +28,18 @@
     <string name="tool_management">工具管理</string>
     <string name="need_desc">暂无描述</string>
     <string name="download">下载</string>
+    <string name="download_redundant">本地已存在</string>
+    <string name="download_success">下载成功</string>
     <string name="delete">删除</string>
     <string name="upload">上传</string>
+    <string name="upload_err">上传失败</string>
+    <string name="upload_success">上传成功</string>
+    <string name="upload_redundant">与云端仓库重复</string>
     <string name="open">打开</string>
     <string name="empty_tool">暂无工具</string>
     <string name="add">新增</string>
+    <string name="add_err">添加失败</string>
+    <string name="add_success">添加成功</string>
     <string name="add_new_tool">新增工具</string>
     <string name="tool_name">名称</string>
     <string name="tool_desc">描述</string>
@@ -50,7 +56,7 @@
     <!--    ShellScreen     -->
     <string name="shell">Shell脚本</string>
     <string name="about_shizuku">了解 Shizuku</string>
-    <string name="about_shizuku_introduction">Shizuku 可以帮助普通应用直接以 adb 或 root 特权使用系统 API。</string>
+    <string name="about_shizuku_introduction">Shizuku 是一款可以让普通应用使用系统 API的软件。</string>
     <string name="about_more">了解更多</string>
     <string name="shizuku_state">Shizuku 状态</string>
     <string name="not_running">Shizuku 没有运行</string>
@@ -85,16 +91,23 @@
     <string name="refresh_data">重载本地数据</string>
     <string name="refresh_warning">尝试拉取远端数据并覆盖本地数据，该操作不可逆！是否继续？</string>
     <string name="refresh_data_desc">尝试从云端重新拉取数据</string>
+    <string name="clean_app_data">点击清除应用数据</string>
     <string name="function">功能</string>
     <string name="ok_toast">打开成功提示</string>
 
-    <!--    DonateScreen    -->
+    <!--    AboutScreen    -->
     <string name="contributors">贡献墙</string>
-    <string name="contributors_info">排名不分先后。由于数量限制，可能以后仅展示捐赠金额大于1.0的捐赠者，感谢理解。</string>
+    <string name="contributors_info">排名不分先后。由于数量限制，以后仅展示捐赠金额大于1.0的捐赠者，更新不及时，请见谅。</string>
     <string name="wx_donate_code">微信赞赏码</string>
     <string name="joinGroup">加入酷客群</string>
     <string name="coolapk_index">关注作者</string>
     <string name="not_find_qq">未安装手Q或安装的版本不支持</string>
-    <string name="please_donate">如果本软件对您有帮助，可以请我喝杯冰镇可乐。(小声bb：截图后打开微信扫码哦，可以留言你的名字，我将会在下次版本更新中永远镌刻在贡献墙上！)</string>
-    <string name="visit_blog">访问作者的博客：</string>
+    <string name="open_source">开源</string>
+    <string name="open_source_desc">应用采用Apache-2.0 License协议</string>
+    <string name="donate">捐赠</string>
+    <string name="donate_info">如果喜欢本软件，可以请我喝杯冰可乐。</string>
+    <string name="donate_tips">截图打开微信扫一扫，可以留言你的名字，我将会在下次版本更新中永远镌刻在贡献墙上！</string>
+    <string name="donate_by_alipay">支付宝捐赠</string>
+    <string name="open_wechat">打开微信扫一扫</string>
+    <string name="visit_blog">欢迎访问作者的博客：</string>
 </resources>

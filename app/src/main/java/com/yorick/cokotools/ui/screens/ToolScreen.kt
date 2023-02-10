@@ -50,7 +50,7 @@ fun ToolScreen(
     addNewTool: (tool: Tool, context: Context) -> Unit,
     upLoadTool: (tool: Tool, context: Context) -> Unit,
     deleteTool: (tool: Tool) -> Unit,
-    downLoadTool: (tool: Tool) -> Unit,
+    downLoadTool: (tool: Tool, context: Context) -> Unit,
     scope: CoroutineScope
 ) {
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
@@ -152,8 +152,8 @@ fun TooList(
     tools: List<Tool>,
     isLocal: Boolean,
     upLoadTool: (tool: Tool, context: Context) -> Unit = { _, _ -> },
-    deleteTool: (tool: Tool) -> Unit = {},
-    downLoadTool: (tool: Tool) -> Unit = {},
+    deleteTool: (tool: Tool) -> Unit = { },
+    downLoadTool: (tool: Tool, context: Context) -> Unit = { _, _ -> },
     state: LazyListState
 ) {
     val context = LocalContext.current
@@ -185,7 +185,7 @@ fun TooList(
                 items(items = tools, key = { it.id }) { tool ->
                     ToolsListItem(tool = tool, categories = categories) {
                         IconButton(
-                            onClick = { downLoadTool(tool) },
+                            onClick = { downLoadTool(tool, context) },
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.Download,

@@ -76,7 +76,7 @@ fun HomeScreen(
             onConfirm = closeErrorDialog,
             onDismiss = {
                 closeErrorDialog()
-                Utils.openDoc(context)
+                Utils.openUrl(Utils.HELP_DOC_URL, context)
             }
         )
     }

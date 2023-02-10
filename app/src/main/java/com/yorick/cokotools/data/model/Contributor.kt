@@ -19,7 +19,7 @@ val contributors = listOf(
     Contributor(
         id = 1,
         name = "张三",
-        amount = 0.0,
+        amount = 100.0,
     ),
     Contributor(
         id = 2,
@@ -113,7 +113,42 @@ val contributors = listOf(
     ),
     Contributor(
         id = 20,
+        name = "至",
+        amount = 0.3,
+    ),
+    Contributor(
+        id = 21,
+        name = "Hanson",
+        amount = 10.0,
+    ),
+    Contributor(
+        id = 22,
+        name = "浮光.卍",
+        amount = 15.0,
+    ),
+    Contributor(
+        id = 23,
+        name = "辛宸宸",
+        amount = 10.0,
+    ),
+    Contributor(
+        id = 24,
+        name = "无敌小毛",
+        amount = 3.0,
+    ),
+    Contributor(
+        id = 25,
+        name = "luomiku",
+        amount = 2.34,
+    ),
+    Contributor(
+        id = 26,
+        name = "最爱黄琬芯",
+        amount = 6.0,
+    ),
+    Contributor(
+        id = 27,
         name = "匿名",
-        amount = 2.0 + 1.0 + 20.0 + 3.0 + 0.11 + 0.01,
+        amount = 2.0 + 1.0 + 20.0 + 3.0 + 0.11 + 0.01 + 1.0 + 0.01 + 1.0 + 3.0,
     ),
 )

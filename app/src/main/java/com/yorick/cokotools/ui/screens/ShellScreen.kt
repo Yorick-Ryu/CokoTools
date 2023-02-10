@@ -32,6 +32,7 @@ import com.yorick.cokotools.ui.components.CardWithTitle
 import com.yorick.cokotools.ui.viewmodels.ShellUiState
 import com.yorick.cokotools.ui.viewmodels.ShellViewModel
 import com.yorick.cokotools.ui.viewmodels.ShizukuState
+import com.yorick.cokotools.util.Utils
 import com.yorick.cokotools.util.Utils.openUrl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -90,7 +91,7 @@ fun ShizukuCard(
             )
             when (result) {
                 SnackbarResult.ActionPerformed -> {
-                    openUrl("https://shizuku.rikka.app/zh-hans/introduction/", context)
+                    openUrl(Utils.SHIZUKU_INTRODUCTION_URL, context)
                 }
                 SnackbarResult.Dismissed -> {}
             }
@@ -108,7 +109,7 @@ fun ShizukuCard(
             )
             when (result) {
                 SnackbarResult.ActionPerformed -> {
-                    openUrl("https://shizuku.rikka.app/zh-hans/download/", context)
+                    openUrl(Utils.SHIZUKU_DOWNLOAD_URL, context)
                 }
                 SnackbarResult.Dismissed -> {}
             }
@@ -124,7 +125,7 @@ fun ShizukuCard(
                         if (!openShizuku(context)) errInfo()
                     }
                     ShizukuState.RUNNING_BUT_LOW_VERSION -> {
-                        openUrl("https://shizuku.rikka.app/zh-hans/download/", context)
+                        openUrl(Utils.SHIZUKU_DOWNLOAD_URL, context)
                     }
                     ShizukuState.RUNNING_BUT_NOT_GRANTED -> {
                         Shizuku.requestPermission(0)
@@ -306,7 +307,7 @@ fun StateDescTag(
                 color = stateColor,
                 shape = MaterialTheme.shapes.small
             )
-            .padding(horizontal = 5.dp, vertical = 2.dp),
+            .padding(horizontal = 6.dp, vertical = 2.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(

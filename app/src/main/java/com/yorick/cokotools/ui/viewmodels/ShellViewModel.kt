@@ -2,13 +2,10 @@ package com.yorick.cokotools.ui.viewmodels
 
 import android.app.Activity.RESULT_OK
 import android.app.Application
-import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
-import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -45,13 +42,11 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private val binderDeadListener = OnBinderDeadListener {
-        Log.d("yu111", "binderDeadListener:")
         _uiState.value = _uiState.value.copy(shizukuState = ShizukuState.NOT_RUNNING)
     }
 
     private val requestPermissionResultListener =
         OnRequestPermissionResultListener { _, grantResult: Int ->
-            Log.d("yu111", "requestPermissionResultListener:$grantResult ")
             if (grantResult == PERMISSION_GRANTED) {
                 _uiState.value = _uiState.value.copy(
                     shizukuState = ShizukuState.RUNNING_AND_GRANTED,
@@ -67,19 +62,7 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun openShizuku(context: Context): Boolean {
-        try {
-            val intent = Intent(Intent.ACTION_MAIN)
-            context.startActivity(
-                intent.setClassName(
-                    "moe.shizuku.privileged.api",
-                    "moe.shizuku.manager.MainActivity"
-                )
-            )
-        } catch (e: ActivityNotFoundException) {
-            e.printStackTrace()
-            return false
-        }
-        return true
+        return Utils.openShizuku(context)
     }
 
     fun installApks(result: ActivityResult, context: Context) {
