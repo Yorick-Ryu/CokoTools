@@ -3,6 +3,9 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        sign
+    }
     namespace 'com.yorick.hidden_api'
     compileSdk 33
 
@@ -16,12 +19,36 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sign
+        }
+        debug {
+            debuggable true
+            signingConfig signingConfigs.sign
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+
+def ksFile = rootProject.file('sign.properties')
+def props = new Properties()
+if (ksFile.canRead()) {
+    props.load(new FileInputStream(ksFile))
+    if (props != null) {
+        android.signingConfigs.sign.storeFile file(props['keystore.file'])
+        android.signingConfigs.sign.storePassword props['keystore.password']
+        android.signingConfigs.sign.keyAlias props['keystore.alias']
+        android.signingConfigs.sign.keyPassword props['keystore.keyPassword']
+        android.signingConfigs.sign.v1SigningEnabled  true
+        android.signingConfigs.sign.v2SigningEnabled  true
+    }
+} else {
+    android.signingConfigs.sign.storeFile = android.signingConfigs.debug.storeFile
+    android.signingConfigs.sign.storePassword = android.signingConfigs.debug.storePassword
+    android.signingConfigs.sign.keyAlias = android.signingConfigs.debug.keyAlias
+    android.signingConfigs.sign.keyPassword = android.signingConfigs.debug.keyPassword
 }
 
 dependencies {

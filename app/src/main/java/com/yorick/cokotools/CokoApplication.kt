@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
+import com.tencent.bugly.crashreport.CrashReport
 import com.yorick.cokotools.data.dao.AppDatabase
 import com.yorick.cokotools.data.datastore.UserPreferences
 import com.yorick.cokotools.data.datastore.UserPreferencesRepository
@@ -18,6 +19,7 @@ import kotlinx.coroutines.SupervisorJob
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 
 private const val DATA_STORE_FILE_NAME = "user_prefs.pb"
+private const val BUGLY_APP_ID = "008eabd5e5"
 
 private val Context.userPreferencesStore: DataStore<UserPreferences> by dataStore(
     fileName = DATA_STORE_FILE_NAME,
@@ -31,6 +33,11 @@ class CokoApplication : Application() {
     val categoryRepository by lazy { CategoryRepositoryImpl(db.categoryDao()) }
     val contributorRepository by lazy { ContributorRepositoryImpl(db.contributorDao()) }
     val userPreferencesRepository by lazy { UserPreferencesRepository(userPreferencesStore) }
+
+    override fun onCreate() {
+        super.onCreate()
+        CrashReport.initCrashReport(applicationContext, BUGLY_APP_ID, true)
+    }
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
