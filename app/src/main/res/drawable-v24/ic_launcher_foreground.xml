@@ -3,13 +3,13 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108"
-    android:tint="@color/material_dynamic_primary30">
+    android:tint="@color/color_ic_fore">
     <group
         android:scaleX="0.5"
         android:scaleY="0.5">
         <path
             android:fillAlpha="0.9"
-            android:fillColor="@color/material_dynamic_neutral_variant95"
+            android:fillColor="@color/color_ic_back"
             android:pathData="
           M97,66
           Q79,66 71.5,84
@@ -20,7 +20,7 @@
 
         <path
             android:fillAlpha="0.72"
-            android:fillColor="@color/material_dynamic_neutral_variant95"
+            android:fillColor="@color/color_ic_back"
             android:pathData="
           M97,90
           Q79,90 71.5,108
@@ -31,7 +31,7 @@
 
         <path
             android:fillAlpha="0.56"
-            android:fillColor="@color/material_dynamic_neutral_variant95"
+            android:fillColor="@color/color_ic_back"
             android:pathData="
           M97,114
           Q79,114 71.5,132

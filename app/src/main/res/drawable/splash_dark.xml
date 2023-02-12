@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/material_dynamic_secondary20" />
+    <item android:drawable="@color/color_ic_fore" />
 
     <item
         android:width="200dp"

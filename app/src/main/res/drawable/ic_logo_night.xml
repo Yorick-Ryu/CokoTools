@@ -1,11 +1,11 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
-    android:tint="@color/material_dynamic_primary70"
+    android:tint="@color/color_ic_back"
     android:viewportWidth="108"
     android:viewportHeight="108">
     <path
-        android:fillColor="@color/material_dynamic_primary70"
+        android:fillColor="@color/color_ic_back"
         android:fillAlpha="0.9"
         android:pathData="
         M43,12
@@ -16,7 +16,7 @@
         Q98,12 80,12" />
 
     <path
-        android:fillColor="@color/material_dynamic_primary70"
+        android:fillColor="@color/color_ic_back"
         android:fillAlpha="0.72"
         android:pathData="
         M43,36
@@ -27,7 +27,7 @@
         Q98,36 80,36" />
 
     <path
-        android:fillColor="@color/material_dynamic_primary70"
+        android:fillColor="@color/color_ic_back"
         android:fillAlpha="0.56"
         android:pathData="
         M43,60

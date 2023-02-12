@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/color_ic_back" />
+    <item android:drawable="@color/material_dynamic_secondary20" />
 
     <item
         android:width="200dp"
         android:height="200dp"
-        android:drawable="@drawable/ic_logo"
+
+        android:drawable="@drawable/ic_logo_night"
         android:gravity="center" />
 </layer-list>
