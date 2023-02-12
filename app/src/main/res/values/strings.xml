@@ -77,6 +77,7 @@
     <string name="installing">正在安装</string>
     <string name="install_err">安装失败</string>
     <string name="install_done">安装完成</string>
+    <string name="empty_url">Url为空</string>
 
     <!--    SettingScreen   -->
     <string name="setting">设置</string>
@@ -108,6 +109,6 @@
     <string name="donate_info">如果喜欢本软件，可以请我喝杯冰可乐。</string>
     <string name="donate_tips">截图打开微信扫一扫，可以留言你的名字，我将会在下次版本更新中永远镌刻在贡献墙上！</string>
     <string name="donate_by_alipay">支付宝捐赠</string>
-    <string name="open_wechat">打开微信扫一扫</string>
+    <string name="open_wechat">微信扫一扫</string>
     <string name="visit_blog">欢迎访问作者的博客：</string>
 </resources>

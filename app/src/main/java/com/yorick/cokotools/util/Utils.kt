@@ -8,6 +8,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.widget.Toast
+import com.tencent.bugly.crashreport.BuglyLog
+import com.tencent.bugly.crashreport.CrashReport
 import com.yorick.cokotools.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -73,14 +75,20 @@ object Utils {
         packageName: String,
         activityName: String,
     ): Boolean {
+        val intent = Intent().setClassName(packageName, activityName)
         return try {
-            context.startActivity(
-                Intent().setClassName(packageName, activityName)
-            )
+            context.startActivity(intent)
             true
-        } catch (e: ActivityNotFoundException) {
+        } catch (e: Exception) {
             e.printStackTrace()
-            false
+            try {
+                context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                true
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+                CrashReport.postCatchedException(ex)
+                false
+            }
         }
     }
 
@@ -95,6 +103,7 @@ object Utils {
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            CrashReport.postCatchedException(e)
         }
     }
 
@@ -110,8 +119,9 @@ object Utils {
                 "alipayqr://platformapi/startapp?saId=10000007&clientVersion=3.7.0.0718&qrcode=$qrEncode"
             openUrl(alipayqr + "%3F_s%3Dweb-other&_t=" + System.currentTimeMillis(), context)
             return true
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
+            CrashReport.postCatchedException(e)
         }
         return false
     }
@@ -131,13 +141,17 @@ object Utils {
     }
 
     fun openShizuku(context: Context): Boolean {
-        try {
-            startActivity(context, SHIZUKU_PACKAGE, SHIZUKU_ACTIVITY)
-        } catch (e: ActivityNotFoundException) {
-            e.printStackTrace()
-            return false
+        return startActivity(context, SHIZUKU_PACKAGE, SHIZUKU_ACTIVITY)
+    }
+
+    suspend fun doInstallApk(uri: Uri?, context: Context): Boolean {
+        mToast(R.string.install_start, context)
+        return if (uri == null) {
+            mToast(R.string.empty, context)
+            false
+        } else {
+            doInstallApks(listOf(uri), context)
         }
-        return true
     }
 
     suspend fun doInstallApks(uris: List<Uri>, context: Context): Boolean {
@@ -246,6 +260,10 @@ object Utils {
                         res.append(tr)
                     }
                 }
+            }
+            withContext(Dispatchers.Main) {
+                BuglyLog.e("Install", "$res")
+                mToast(res.toString().split("\n").last(), context)
             }
         }
         return true
