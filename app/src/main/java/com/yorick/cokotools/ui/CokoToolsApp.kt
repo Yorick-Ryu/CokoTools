@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,7 @@ import com.yorick.cokotools.ui.viewmodels.ContributorViewModel
 import com.yorick.cokotools.ui.viewmodels.HomeViewModel
 import com.yorick.cokotools.ui.viewmodels.SettingViewModel
 import com.yorick.cokotools.ui.viewmodels.ShellViewModel
+import com.yorick.cokotools.util.Utils
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,6 +41,7 @@ fun CokoToolsApp(
     contributorViewModel: ContributorViewModel,
     settingViewModel: SettingViewModel
 ) {
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val hostState = remember { SnackbarHostState() }
     val navController = rememberNavController()
@@ -51,11 +54,18 @@ fun CokoToolsApp(
         modifier = modifier.navigationBarsPadding(),
         topBar = {
             if (barsVisibility) {
-                CokoToolsAppBar(onClickDonate = {
-                    navController.navigate(
-                        CookToolsRoute.DONATE
-                    ) { launchSingleTop = true }
-                })
+                CokoToolsAppBar(
+                    onClickDonate = {
+                        navController.navigate(
+                            CookToolsRoute.DONATE
+                        ) {
+                            launchSingleTop = true
+                        }
+                    },
+                    onClickHelp = {
+                        Utils.openUrl(Utils.HELP_DOC_URL, context)
+                    }
+                )
             } else {
                 TopAppBar(
                     navigationIcon = {
