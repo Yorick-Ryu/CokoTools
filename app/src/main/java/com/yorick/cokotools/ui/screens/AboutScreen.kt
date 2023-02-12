@@ -171,11 +171,11 @@ fun AboutScreen(
                         text = stringResource(id = R.string.donate_info),
                         style = MaterialTheme.typography.bodyLarge
                     )
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
                     Button(onClick = { Utils.openWeChatScan(context) }) {
                         Text(text = stringResource(id = R.string.open_wechat))
                     }
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                     Button(onClick = {
                         Utils.openAlipayPayPage(
                             Utils.ALIPAY_DONATE_URL,
