@@ -123,12 +123,13 @@ class HomeViewModel(
     fun downloadTool(tool: Tool, context: Context) {
         // 本地查重
         if (_uiState.value.tools.any { it.name == tool.name && it.category == tool.category }) {
+            mToast(R.string.download_redundant, context)
+        } else {
             viewModelScope.launch(Dispatchers.IO) {
                 toolRepository.addNewTool(tool)
             }
             mToast(R.string.download_success, context)
         }
-        mToast(R.string.download_redundant, context)
     }
 
     fun deleteTool(tool: Tool) {
