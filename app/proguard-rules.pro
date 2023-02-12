@@ -40,3 +40,6 @@
 -keepclassmembers class * extends com.google.protobuf.GeneratedMessageLite* {
    <fields>;
 }
+
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
