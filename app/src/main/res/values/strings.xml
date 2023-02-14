@@ -12,7 +12,7 @@
     <string name="accept">确认</string>
     <string name="cancel">取消</string>
     <string name="exceptions_title">免责声明</string>
-    <string name="exceptions_message">本软件部分功能可能对某些机型产生如发热等不可预知的后果，使用需谨慎，造成的一切后果请用户自行承担。使用本软件代表您接受此声明。强烈建议阅读《帮助文档》后使用!\n\nTips：点击接受后不再提示</string>
+    <string name="exceptions_message">本软件部分功能可能对某些机型产生如发热等不可预知的后果，使用需谨慎，造成的一切后果请用户自行承担。使用本软件代表您接受此声明并接受隐私协议。强烈建议阅读《帮助文档》后使用!\n\nTips：点击接受后不再提示</string>
     <string name="exceptions_accept">接受</string>
     <string name="exceptions_read_help_doc">查看文档</string>
     <string name="more_info">详情</string>
@@ -60,6 +60,7 @@
     <string name="about_more">了解更多</string>
     <string name="shizuku_state">Shizuku 状态</string>
     <string name="not_running">Shizuku 没有运行</string>
+    <string name="enable_it">请先激活Shizuku</string>
     <string name="not_running_tip">点击打开或下载 Shizuku</string>
     <string name="no_shizuku">未安装 Shizuku</string>
     <string name="download_shizuku">下载 Shizuku</string>
@@ -78,6 +79,7 @@
     <string name="install_err">安装失败</string>
     <string name="install_done">安装完成</string>
     <string name="empty_url">Url为空</string>
+    <string name="unknown">未知路径</string>
 
     <!--    SettingScreen   -->
     <string name="setting">设置</string>

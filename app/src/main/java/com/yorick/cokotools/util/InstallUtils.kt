@@ -31,6 +31,7 @@ import java.util.regex.Pattern
 object InstallUtils {
 
     private val sessionIdPattern = Pattern.compile("(\\d+)")
+    private val TAG = "InstallUtils"
 
     suspend fun doInstallApk(uri: Uri?, context: Context): Boolean {
         Utils.mToast(R.string.install_start, context)
@@ -114,6 +115,8 @@ object InstallUtils {
             } catch (tr: Throwable) {
                 tr.printStackTrace()
                 res.append(tr)
+                CrashReport.postCatchedException(tr)
+                BuglyLog.e(TAG, res.toString())
                 return@withContext false
             } finally {
                 try {
@@ -122,14 +125,14 @@ object InstallUtils {
                     res.append(tr)
                 }
             }
-            withContext(Dispatchers.Main) {
-                BuglyLog.e("Install", "$res")
-                Utils.mToast(res.toString().split("\n").last(), context)
-            }
+//            withContext(Dispatchers.Main) {
+//                Utils.mToast(res.toString().split("\n").last(), context)
+//            }
         }
         return true
     }
 
+    // 可以安装但是不能降级安装
     suspend fun doInstallApks(uris: List<Uri>, context: Context): Boolean {
         val sessionId = getSessionID(context) ?: return false
         val session = getSession(sessionId) ?: return false
@@ -140,7 +143,7 @@ object InstallUtils {
         var session: Session? = null
         try {
             val _packageInstaller: IPackageInstaller =
-                ShizukuSystemServerApi.PackageManager_getPackageInstaller()
+                ShizukuSystemServerApi.getPackageInstallerByPackageManager()
 
             val _session: IPackageInstallerSession = IPackageInstallerSession.Stub.asInterface(
                 _packageInstaller.openSession(sessionId)?.asBinder()?.let {
@@ -166,7 +169,7 @@ object InstallUtils {
         val isRoot: Boolean
         try {
             val _packageInstaller: IPackageInstaller =
-                ShizukuSystemServerApi.PackageManager_getPackageInstaller()
+                ShizukuSystemServerApi.getPackageInstallerByPackageManager()
             isRoot = Shizuku.getUid() == 0
 
             // the reason for use "com.android.shell" as installer package under adb is that getMySessions will check installer package's owner

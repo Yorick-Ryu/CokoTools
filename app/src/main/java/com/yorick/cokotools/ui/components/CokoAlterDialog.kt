@@ -102,6 +102,7 @@ fun BaseAlterDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     cancelable: Boolean = true,
+    buttonEnable:Boolean = true,
     text: @Composable () -> Unit,
 ) {
     AlertDialog(
@@ -121,12 +122,12 @@ fun BaseAlterDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onConfirm) {
+            TextButton(onClick = onConfirm, enabled = buttonEnable) {
                 Text(text = stringResource(id = positiveText))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, enabled = buttonEnable) {
                 Text(text = stringResource(id = negativeText))
             }
         },

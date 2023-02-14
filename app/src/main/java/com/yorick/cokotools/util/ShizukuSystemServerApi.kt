@@ -19,7 +19,7 @@ object ShizukuSystemServerApi {
         }
 
     @Throws(RemoteException::class)
-    fun PackageManager_getPackageInstaller(): IPackageInstaller {
+    fun getPackageInstallerByPackageManager(): IPackageInstaller {
         val packageInstaller = PACKAGE_MANAGER.get()!!.packageInstaller
         return IPackageInstaller.Stub.asInterface(ShizukuBinderWrapper(packageInstaller.asBinder()))
     }

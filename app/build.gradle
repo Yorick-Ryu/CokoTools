@@ -32,8 +32,8 @@ android {
         applicationId "com.yorick.cokotools"
         minSdk 24
         targetSdk 33
-        versionCode 4
-        versionName "3.0.1" + "-lion-" + refine
+        versionCode 5
+        versionName "3.0.2" + "-lion-" + refine
         if (gradle.startParameter.taskNames.any { it.toLowerCase().contains("debug") }) {
             versionName += "-debug"
         }
@@ -106,8 +106,8 @@ if (ksFile.canRead()) {
         android.signingConfigs.sign.storePassword props['keystore.password']
         android.signingConfigs.sign.keyAlias props['keystore.alias']
         android.signingConfigs.sign.keyPassword props['keystore.keyPassword']
-        android.signingConfigs.sign.v1SigningEnabled  true
-        android.signingConfigs.sign.v2SigningEnabled  true
+        android.signingConfigs.sign.v1SigningEnabled true
+        android.signingConfigs.sign.v2SigningEnabled true
     }
 } else {
     android.signingConfigs.sign.storeFile = android.signingConfigs.debug.storeFile

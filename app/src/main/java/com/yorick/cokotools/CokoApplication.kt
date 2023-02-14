@@ -36,7 +36,11 @@ class CokoApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        CrashReport.initCrashReport(applicationContext, BUGLY_APP_ID, true)
+        val preferences = getSharedPreferences("count", MODE_PRIVATE)
+        val count: Int = preferences.getInt("count", 0)
+        if (count > 0) {
+            CrashReport.initCrashReport(applicationContext, BUGLY_APP_ID, true)
+        }
     }
 
     override fun attachBaseContext(base: Context?) {
