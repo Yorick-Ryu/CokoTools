@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResult
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.yorick.cokotools.R
+import com.yorick.cokotools.util.InstallUtils
 import com.yorick.cokotools.util.Utils
 import com.yorick.cokotools.util.Utils.mToast
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,6 +66,7 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
         return Utils.openShizuku(context)
     }
 
+
     fun installApks(result: ActivityResult, context: Context) {
         if (result.resultCode == RESULT_OK) {
             val uris: MutableList<Uri>
@@ -85,9 +87,10 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
                 isInstallApk = true
             )
             mToast(R.string.install_start, context)
+
             viewModelScope.launch {
                 mToast(
-                    if (Utils.doInstallApks(uris, context))
+                    if (InstallUtils.installApkByShell(uris, context))
                         R.string.install_done else R.string.install_err, context
                 )
                 _uiState.value = _uiState.value.copy(

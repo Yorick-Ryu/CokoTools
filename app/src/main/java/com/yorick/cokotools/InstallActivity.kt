@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import com.yorick.cokotools.ui.components.BaseAlterDialog
 import com.yorick.cokotools.ui.theme.CokoToolsTheme
+import com.yorick.cokotools.util.InstallUtils
 import com.yorick.cokotools.util.Utils
 import kotlinx.coroutines.launch
 
@@ -31,7 +32,7 @@ class InstallActivity : ComponentActivity() {
                         onConfirm = {
                             scope.launch {
                                 Utils.mToast(
-                                    if (Utils.doInstallApk(uri, applicationContext))
+                                    if (InstallUtils.doInstallApk(uri, applicationContext))
                                         R.string.install_done else R.string.install_err,
                                     applicationContext
                                 )

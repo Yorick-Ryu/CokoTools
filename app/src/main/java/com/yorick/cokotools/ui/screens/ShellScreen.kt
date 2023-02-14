@@ -174,7 +174,6 @@ fun ShizukuCard(
     }
 }
 
-
 @Composable
 fun InstallComponentCard(
     modifier: Modifier = Modifier,
@@ -213,20 +212,22 @@ fun InstallComponentCard(
         cardTitle = stringResource(id = R.string.install_component),
         onClickInfo = onClickInfo
     ) {
-        val enabled =
-            uiState.shizukuState == ShizukuState.RUNNING_AND_GRANTED && !uiState.isInstallApk
-        Button(
-            modifier = Modifier.padding(start = 16.dp),
-            enabled = enabled,
-            onClick = {
-                launcherForActivityResult.launch(intent)
-            }
-        ) {
-            Text(
-                text = stringResource(
-                    id = if (uiState.isInstallApk) R.string.installing else R.string.install_component
+        Row {
+            val enabled =
+                uiState.shizukuState == ShizukuState.RUNNING_AND_GRANTED && !uiState.isInstallApk
+            Button(
+                modifier = Modifier.padding(start = 16.dp),
+                enabled = enabled,
+                onClick = {
+                    launcherForActivityResult.launch(intent)
+                }
+            ) {
+                Text(
+                    text = stringResource(
+                        id = if (uiState.isInstallApk) R.string.installing else R.string.install_component
+                    )
                 )
-            )
+            }
         }
     }
 }
@@ -269,7 +270,7 @@ fun ShizukuStateCardContent(
                 tint = MaterialTheme.colorScheme.onTertiary
             )
         }
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(10.dp))
         Column(
             modifier = Modifier.height(45.dp),
             verticalArrangement = Arrangement.SpaceBetween
@@ -280,7 +281,7 @@ fun ShizukuStateCardContent(
                     style = MaterialTheme.typography.bodyLarge
                 )
                 if (permissionState != null) {
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     StateDescTag(
                         stateDesc = permissionState,
                         stateColor = stateColor
