@@ -16,6 +16,7 @@ object Utils {
     private const val QQ_GROUP_KEY = "lFuzgAHN-Q_4j7fodzBaOtKrc_q6NYg9"
     private const val SHIZUKU_PACKAGE = "moe.shizuku.privileged.api"
     private const val SHIZUKU_ACTIVITY = "moe.shizuku.manager.MainActivity"
+    private const val REGEX_MATCH_PACKAGE = "^([A-Za-z]{1}[A-Za-z\\d_]*\\.)+[A-Za-z][A-Za-z\\d_]*\$"
     const val HELP_DOC_URL = "https://yorick.love/2023/02/11/Project/CookTools-doc/"
     const val ALIPAY_DONATE_URL = "https://qr.alipay.com/fkx17875qbw3mypdlenhee2"
     const val COOLAPK_URL = "http://www.coolapk.com/u/3774603"
@@ -132,5 +133,18 @@ object Utils {
 
     fun openShizuku(context: Context): Boolean {
         return startActivity(context, SHIZUKU_PACKAGE, SHIZUKU_ACTIVITY)
+    }
+
+    /**
+     *  正则匹配包名
+     */
+    fun matchPackageName(packageName: String): Int {
+        if (packageName.trim() == "") {
+            return R.string.not_empty
+        }
+        if (!Regex(pattern = REGEX_MATCH_PACKAGE).matches(packageName.trim())) {
+            return R.string.illegal_package_name
+        }
+        return 0
     }
 }

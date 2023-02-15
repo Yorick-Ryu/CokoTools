@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResult
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.yorick.cokotools.R
+import com.yorick.cokotools.util.FreezeUtils
 import com.yorick.cokotools.util.InstallUtils
 import com.yorick.cokotools.util.Utils
 import com.yorick.cokotools.util.Utils.mToast
@@ -34,6 +35,7 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
                     shizukuState = ShizukuState.RUNNING_AND_GRANTED,
                     shizukuVersion = getVersion().toString()
                 )
+                getFreezeList()
             } else {
                 _uiState.value = _uiState.value.copy(
                     shizukuState = ShizukuState.RUNNING_BUT_NOT_GRANTED,
@@ -53,6 +55,7 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
                     shizukuState = ShizukuState.RUNNING_AND_GRANTED,
                     shizukuVersion = getVersion().toString()
                 )
+                getFreezeList()
             }
         }
 
@@ -60,6 +63,7 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
         addBinderReceivedListenerSticky(binderReceivedListener)
         addBinderDeadListener(binderDeadListener)
         addRequestPermissionResultListener(requestPermissionResultListener)
+        getFreezeList()
     }
 
     fun openShizuku(context: Context): Boolean {
@@ -100,6 +104,33 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun freezePackage(packageName: String, context: Context) {
+        mToast(
+            if (FreezeUtils.freezeApk(packageName))
+                R.string.freeze_ok else R.string.freeze_err,
+            context
+        )
+        getFreezeList()
+    }
+
+    fun unFreezePackage(packageName: String, context: Context) {
+        mToast(
+            if (FreezeUtils.unFreezeApk(packageName))
+                R.string.unfreeze_ok else R.string.unfreeze_err,
+            context
+        )
+        getFreezeList()
+    }
+
+
+    private fun getFreezeList() {
+        if (_uiState.value.shizukuState == ShizukuState.RUNNING_AND_GRANTED) {
+            _uiState.value = _uiState.value.copy(
+                freezeList = FreezeUtils.getFreezeList()
+            )
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         removeBinderReceivedListener(binderReceivedListener)
@@ -112,6 +143,7 @@ data class ShellUiState(
     val shizukuState: ShizukuState = ShizukuState.NOT_RUNNING,
     val shizukuVersion: String? = null,
     val isInstallApk: Boolean = false,
+    val freezeList: List<String> = emptyList(),
     val error: String? = null
 )
 

@@ -5,6 +5,7 @@ import java.io.*
 
 object IOUtils {
     private const val TAG = "IOUtils"
+
     @Throws(IOException::class)
     fun copyStream(from: InputStream, to: OutputStream) {
         val buf = ByteArray(1024 * 1024)

@@ -9,11 +9,8 @@ import rikka.shizuku.ShizukuRemoteProcess
 import java.io.InputStream
 import java.io.OutputStream
 
-class ShizukuShell private constructor() : Shell {
-    init {
-        sInstance = this
-    }
-
+object ShizukuShell : Shell {
+    private const val TAG = "ShizukuShell"
     override val isAvailable: Boolean
         get() = if (!Shizuku.pingBinder()) {
             false
@@ -47,7 +44,7 @@ class ShizukuShell private constructor() : Shell {
                 IOUtils.writeStreamToStringBuilder(stdOutSb, process.inputStream)
             val stdErrD: Thread =
                 IOUtils.writeStreamToStringBuilder(stdErrSb, process.errorStream)
-            val outputStream: OutputStream = process.getOutputStream()
+            val outputStream: OutputStream = process.outputStream
             outputStream.write(command.toString().toByteArray())
             outputStream.flush()
             if (inputPipe != null && process.alive()) {
@@ -78,17 +75,8 @@ class ShizukuShell private constructor() : Shell {
             Shell.Result(
                 command, -1, "", """
 
-<!> SAI ShizukuShell Java exception: ${ResultUtil.throwableToString(e)}"""
+                <!> SAI ShizukuShell Java exception: ${ResultUtil.throwableToString(e)}"""
             )
         }
-    }
-
-    companion object {
-        private const val TAG = "ShizukuShell"
-        private var sInstance: ShizukuShell? = null
-        val instance: ShizukuShell?
-            get() {
-                synchronized(ShizukuShell::class.java) { return if (sInstance != null) sInstance else ShizukuShell() }
-            }
     }
 }

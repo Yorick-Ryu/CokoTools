@@ -6,25 +6,35 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.HighlightOff
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yorick.cokotools.R
@@ -33,6 +43,7 @@ import com.yorick.cokotools.ui.viewmodels.ShellUiState
 import com.yorick.cokotools.ui.viewmodels.ShellViewModel
 import com.yorick.cokotools.ui.viewmodels.ShizukuState
 import com.yorick.cokotools.util.Utils
+import com.yorick.cokotools.util.Utils.mToast
 import com.yorick.cokotools.util.Utils.openUrl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -47,10 +58,13 @@ fun ShellScreen(
 ) {
     val context = LocalContext.current
     val uiState by shellViewModel.uiState.collectAsStateWithLifecycle()
+    var packageName by remember { mutableStateOf("") }
+    val onPackageNameChange: (packageName: String) -> Unit = { packageName = it }
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         ShizukuCard(
             uiState = uiState,
@@ -67,6 +81,28 @@ fun ShellScreen(
             context = context,
             installApks = shellViewModel::installApks
         )
+        Spacer(modifier = Modifier.height(16.dp))
+        FreezeComponentCard(
+            uiState = uiState,
+            scope = scope,
+            hostState = hostState,
+            freeze = shellViewModel::freezePackage,
+            unfreeze = shellViewModel::unFreezePackage,
+            context = context,
+            packageName = packageName,
+            onPackageNameChange = onPackageNameChange
+        )
+        if (uiState.freezeList.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(16.dp))
+            FreezeListCard(
+                uiState = uiState,
+                onPackageNameChange = onPackageNameChange,
+                scope = scope,
+                hostState = hostState,
+                context = context
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
 }
 
@@ -179,8 +215,8 @@ fun InstallComponentCard(
     modifier: Modifier = Modifier,
     uiState: ShellUiState,
     scope: CoroutineScope,
-    hostState: SnackbarHostState,
     installApks: (result: ActivityResult, context: Context) -> Unit,
+    hostState: SnackbarHostState,
     context: Context
 ) {
     val aboutMessage = stringResource(id = R.string.install_component_desc)
@@ -227,6 +263,177 @@ fun InstallComponentCard(
                         id = if (uiState.isInstallApk) R.string.installing else R.string.install_component
                     )
                 )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@Composable
+fun FreezeComponentCard(
+    modifier: Modifier = Modifier,
+    uiState: ShellUiState,
+    freeze: (packageName: String, context: Context) -> Unit,
+    unfreeze: (packageName: String, context: Context) -> Unit,
+    hostState: SnackbarHostState,
+    scope: CoroutineScope,
+    context: Context,
+    packageName: String,
+    onPackageNameChange: (packageName: String) -> Unit,
+) {
+    var res: Int
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val enabled = uiState.shizukuState == ShizukuState.RUNNING_AND_GRANTED
+    val confirmMessage = stringResource(id = R.string.freeze_confirm)
+    val label = stringResource(id = R.string.accept)
+    val onConfirmInfo: () -> Unit = {
+        scope.launch {
+            val result = hostState.showSnackbar(
+                message = String.format(confirmMessage, packageName),
+                duration = SnackbarDuration.Short,
+                actionLabel = label,
+                withDismissAction = true
+            )
+            when (result) {
+                SnackbarResult.ActionPerformed -> {
+                    res = Utils.matchPackageName(packageName.trim())
+                    if (res == 0) freeze(packageName, context) else mToast(res, context)
+                }
+                SnackbarResult.Dismissed -> {}
+            }
+        }
+    }
+    val aboutMessage = stringResource(id = R.string.freeze_desc)
+    val onClickInfo: () -> Unit = {
+        scope.launch {
+            val result = hostState.showSnackbar(
+                message = aboutMessage,
+                duration = SnackbarDuration.Short,
+                withDismissAction = true
+            )
+            when (result) {
+                SnackbarResult.ActionPerformed -> {}
+                SnackbarResult.Dismissed -> {}
+            }
+        }
+    }
+    CardWithTitle(
+        modifier = modifier,
+        cardTitle = stringResource(id = R.string.freeze_component),
+        onClickInfo = onClickInfo
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 10.dp)
+        ) {
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .widthIn(max = 300.dp),
+                value = packageName,
+                label = {
+                    Text(text = stringResource(id = R.string.input_package))
+                },
+                trailingIcon = {
+                    if (packageName != "") {
+                        IconButton(onClick = { onPackageNameChange("") }) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = stringResource(id = R.string.clear)
+                            )
+                        }
+                    }
+                },
+                onValueChange = onPackageNameChange,
+                enabled = enabled,
+                singleLine = true,
+                shape = MaterialTheme.shapes.small,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = { keyboardController?.hide() })
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(
+                    modifier = Modifier,
+                    enabled = enabled,
+                    onClick = {
+                        keyboardController?.hide()
+                        res = Utils.matchPackageName(packageName.trim())
+                        if (res == 0) unfreeze(packageName, context) else mToast(res, context)
+                    }
+                ) {
+                    Text(text = stringResource(id = R.string.unfreeze_component))
+                }
+                Spacer(modifier = Modifier.width(10.dp))
+                Button(
+                    enabled = enabled,
+                    onClick = {
+                        keyboardController?.hide()
+                        res = Utils.matchPackageName(packageName.trim())
+                        if (res == 0) onConfirmInfo() else mToast(res, context)
+                    }
+                ) {
+                    Text(text = stringResource(id = R.string.freeze_component))
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun FreezeListCard(
+    modifier: Modifier = Modifier,
+    uiState: ShellUiState,
+    onPackageNameChange: (packageName: String) -> Unit,
+    hostState: SnackbarHostState,
+    scope: CoroutineScope,
+    context: Context,
+) {
+    val clipboardManager: ClipboardManager = LocalClipboardManager.current
+    val aboutMessage = stringResource(id = R.string.freeze_list_desc)
+    val copyDone = stringResource(id = R.string.copy_done)
+    val onClickInfo: () -> Unit = {
+        scope.launch {
+            val result = hostState.showSnackbar(
+                message = aboutMessage,
+                duration = SnackbarDuration.Short,
+                withDismissAction = true
+            )
+            when (result) {
+                SnackbarResult.ActionPerformed -> {}
+                SnackbarResult.Dismissed -> {}
+            }
+        }
+    }
+    CardWithTitle(
+        cardTitle = stringResource(id = R.string.freeze_list),
+        onClickInfo = onClickInfo
+    ) {
+        Column(
+            modifier = modifier.height(300.dp)
+        ) {
+            LazyColumn(state = rememberLazyListState()) {
+                items(items = uiState.freezeList) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .combinedClickable(
+                                onClick = { onPackageNameChange(it) },
+                                onLongClick = {
+                                    clipboardManager.setText(AnnotatedString(it))
+                                    mToast(String.format(copyDone, it), context)
+                                }
+                            )
+                            .padding(horizontal = 16.dp, vertical = 3.dp),
+                        text = it
+                    )
+                }
             }
         }
     }

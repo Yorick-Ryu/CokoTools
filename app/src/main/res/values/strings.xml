@@ -16,6 +16,7 @@
     <string name="exceptions_accept">接受</string>
     <string name="exceptions_read_help_doc">查看文档</string>
     <string name="more_info">详情</string>
+    <string name="clear">清除</string>
 
     <!--    HomeScreen      -->
     <string name="home">主页</string>
@@ -73,6 +74,7 @@
     <string name="version">版本</string>
     <string name="current_version">当前版本</string>
     <string name="install_component">安装应用</string>
+    <string name="install_component_down_grade">降级安装</string>
     <string name="install_component_desc">以更高的权限安装应用，可降级安装。</string>
     <string name="install_start">开始安装</string>
     <string name="installing">正在安装</string>
@@ -80,6 +82,23 @@
     <string name="install_done">安装完成</string>
     <string name="empty_url">Url为空</string>
     <string name="unknown">未知路径</string>
+    <string name="freeze_component">冻结应用</string>
+    <string name="freeze_err">冻结失败</string>
+    <string name="freeze_ok">冻结成功</string>
+    <string name="freeze_power">冻结电池</string>
+    <string name="freeze_confirm">确认冻结 %s ?</string>
+    <string name="freeze_desc">冻结软件，使其不占用系统资源。玩机有风险，冻结需谨慎！</string>
+    <string name="unfreeze_power">解冻电池</string>
+    <string name="unfreeze_err">解冻失败</string>
+    <string name="unfreeze_ok">解冻成功</string>
+    <string name="check_freeze_list">查看冻结列表</string>
+    <string name="freeze_list">冻结列表</string>
+    <string name="freeze_list_desc">长按复制包名</string>
+    <string name="input_package">包名</string>
+    <string name="unfreeze_component">解冻应用</string>
+    <string name="not_empty">输入不能为空</string>
+    <string name="illegal_package_name">请输入正确的包名</string>
+    <string name="copy_done">已复制 %s</string>
 
     <!--    SettingScreen   -->
     <string name="setting">设置</string>

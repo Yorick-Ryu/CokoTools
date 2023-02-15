@@ -40,21 +40,22 @@ class InstallActivity : ComponentActivity() {
                     BaseAlterDialog(
                         modifier = Modifier.animateContentSize(),
                         onDismissRequest = onDismissRequest,
-                        title = stringResource(id = R.string.install_component),
+                        title = stringResource(id = R.string.install_component_down_grade),
                         onConfirm = {
-                            isInstall = true
-                            if (ShizukuShell.instance?.isAvailable == true) {
+                            if (ShizukuShell.isAvailable) {
+                                isInstall = true
                                 scope.launch {
                                     Utils.mToast(
                                         if (InstallUtils.doInstallApk(uri, applicationContext))
                                             R.string.install_done else R.string.install_err,
                                         applicationContext
                                     )
+                                    onDismissRequest()
                                 }
                             } else {
                                 Utils.mToast(R.string.enable_it, applicationContext)
+                                onDismissRequest()
                             }
-                            onDismissRequest()
                         },
                         onDismiss = onDismissRequest,
                         cancelable = false,

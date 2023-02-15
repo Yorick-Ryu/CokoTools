@@ -46,7 +46,7 @@ object InstallUtils {
 
     suspend fun installApkByShell(uris: List<Uri>, context: Context): Boolean {
         try {
-            val shell = ShizukuShell.instance ?: return false
+            val shell = ShizukuShell
             val sessionId = createSession(shell)
             val session = getSession(sessionId) ?: return false
             return doInstallApkBySession(uris, context, session)

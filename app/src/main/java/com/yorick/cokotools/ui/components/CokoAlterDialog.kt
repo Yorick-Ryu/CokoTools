@@ -102,7 +102,7 @@ fun BaseAlterDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     cancelable: Boolean = true,
-    buttonEnable:Boolean = true,
+    buttonEnable: Boolean = true,
     text: @Composable () -> Unit,
 ) {
     AlertDialog(
