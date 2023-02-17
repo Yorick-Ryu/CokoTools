@@ -21,14 +21,14 @@ object PackageInstallerUtils {
         installerAttributionTag: String?,
         userId: Int
     ): PackageInstaller {
-        return if (Build.VERSION.SDK_INT >= 30) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PackageInstaller::class.java.getConstructor(
                 IPackageInstaller::class.java,
                 String::class.java,
                 String::class.java,
                 Int::class.javaPrimitiveType
             ).newInstance(installer, installerPackageName, installerAttributionTag, userId)
-        } else if (Build.VERSION.SDK_INT >= 26) {
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             PackageInstaller::class.java.getConstructor(
                 IPackageInstaller::class.java,
                 String::class.java,

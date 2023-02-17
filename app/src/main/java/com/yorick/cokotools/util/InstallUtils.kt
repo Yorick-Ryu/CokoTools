@@ -31,7 +31,8 @@ import java.util.regex.Pattern
 object InstallUtils {
 
     private val sessionIdPattern = Pattern.compile("(\\d+)")
-    private val TAG = "InstallUtils"
+    private const val TAG = "InstallUtils"
+    private const val INSTALL_SUCCEEDED_FLAG = "INSTALL_SUCCEEDED"
 
     suspend fun doInstallApk(uri: Uri?, context: Context): Boolean {
         Utils.mToast(R.string.install_start, context)
@@ -63,6 +64,7 @@ object InstallUtils {
         session: Session
     ): Boolean {
         val res = StringBuilder()
+        var flag = false
         val cr: ContentResolver = context.contentResolver
         withContext(Dispatchers.IO) {
             try {
@@ -110,14 +112,15 @@ object InstallUtils {
                         PackageInstaller.STATUS_FAILURE
                     )
                 val message = result.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)
+                if (message != INSTALL_SUCCEEDED_FLAG) throw IllegalStateException(message)
                 res.append('\n').append("status: ").append(status).append(" (").append(message)
                     .append(")")
+                flag = true
             } catch (tr: Throwable) {
                 tr.printStackTrace()
                 res.append(tr)
                 CrashReport.postCatchedException(tr)
                 BuglyLog.e(TAG, res.toString())
-                return@withContext false
             } finally {
                 try {
                     session.close()
@@ -125,11 +128,8 @@ object InstallUtils {
                     res.append(tr)
                 }
             }
-//            withContext(Dispatchers.Main) {
-//                Utils.mToast(res.toString().split("\n").last(), context)
-//            }
         }
-        return true
+        return flag
     }
 
     // 可以安装但是不能降级安装
@@ -174,7 +174,7 @@ object InstallUtils {
 
             // the reason for use "com.android.shell" as installer package under adb is that getMySessions will check installer package's owner
             installerPackageName = if (isRoot) context.packageName else "com.android.shell"
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 installerAttributionTag = context.attributionTag
             }
             userId = if (isRoot) Process.myUserHandle().hashCode() else 0
