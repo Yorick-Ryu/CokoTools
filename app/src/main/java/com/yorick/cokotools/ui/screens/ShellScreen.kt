@@ -459,7 +459,7 @@ fun ShizukuStateCardContent(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(start = 16.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {

@@ -143,7 +143,7 @@ fun AboutScreen(
                 Modifier
                     .fillMaxWidth()
                     .padding(vertical = 0.dp, horizontal = 16.dp),
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.Top
             ) {
                 Column(
