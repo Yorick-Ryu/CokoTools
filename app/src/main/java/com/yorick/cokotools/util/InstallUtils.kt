@@ -37,13 +37,11 @@ object InstallUtils {
     suspend fun doInstallApk(uri: Uri?, context: Context): Boolean {
         Utils.mToast(R.string.install_start, context)
         return if (uri == null) {
-            Utils.mToast(R.string.empty, context)
             false
         } else {
             installApkByShell(listOf(uri), context)
         }
     }
-
 
     suspend fun installApkByShell(uris: List<Uri>, context: Context): Boolean {
         try {
@@ -82,7 +80,7 @@ object InstallUtils {
                         }
                     } finally {
                         try {
-                            `is`!!.close()
+                            `is`?.close()
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
@@ -132,7 +130,9 @@ object InstallUtils {
         return flag
     }
 
-    // 可以安装但是不能降级安装
+    /**
+     *  可以安装但是不能降级安装
+     */
     suspend fun doInstallApks(uris: List<Uri>, context: Context): Boolean {
         val sessionId = getSessionID(context) ?: return false
         val session = getSession(sessionId) ?: return false
@@ -214,20 +214,14 @@ object InstallUtils {
             val result: Shell.Result = shell.exec(commandToAttempt)
             attemptedCommands.add(Pair(commandToAttempt, result.toString()))
             if (!result.isSuccessful) {
-                Log.w(
-                    "yu",
-                    "Command failed: $commandToAttempt > $result"
-                )
+                Log.w(TAG, "Command failed: $commandToAttempt > $result")
                 continue
             }
             val sessionId = extractSessionId(result.out)
             if (sessionId != null) {
                 return sessionId
             } else {
-                Log.w(
-                    "yu",
-                    "Command failed: $commandToAttempt > $result"
-                )
+                Log.w(TAG, "Command failed: $commandToAttempt > $result")
             }
         }
         val exceptionMessage = StringBuilder("Unable to create session, attempted commands: ")
@@ -250,12 +244,8 @@ object InstallUtils {
                 )
             sessionIdMatcher.find()
             sessionIdMatcher.group(1)?.toInt()
-        } catch (e: java.lang.Exception) {
-            Log.w(
-                "TAG",
-                commandResult,
-                e
-            )
+        } catch (e: Exception) {
+            Log.w(TAG, commandResult, e)
             null
         }
     }
