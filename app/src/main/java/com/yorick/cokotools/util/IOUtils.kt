@@ -20,8 +20,7 @@ object IOUtils {
             try {
                 val buf = CharArray(1024)
                 var len: Int
-                val reader =
-                    BufferedReader(InputStreamReader(inputStream))
+                val reader = BufferedReader(InputStreamReader(inputStream))
                 while (reader.read(buf).also { len = it } > 0) {
                     builder.append(buf, 0, len)
                 }

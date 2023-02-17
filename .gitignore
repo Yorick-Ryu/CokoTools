@@ -18,6 +18,3 @@ bugly-map-upload.bat
 buglyqq-upload-symbol.jar
 cp_buglyQqUploadSymbolLib.jar
 buglybin
-app/release
-app/debug
-app/build
