@@ -70,28 +70,24 @@ class ShellViewModel(application: Application) : AndroidViewModel(application) {
         return Utils.openShizuku(context)
     }
 
-
     fun installApks(result: ActivityResult, context: Context) {
         if (result.resultCode == RESULT_OK) {
-            val uris: MutableList<Uri>
+            val uris = emptyList<Uri>().toMutableList()
             val clipData: ClipData? = result.data?.clipData
             if (clipData != null) {
-                uris = ArrayList(clipData.itemCount)
                 for (i in 0 until clipData.itemCount) {
                     val uri = clipData.getItemAt(i).uri
                     if (uri != null) {
-                        uris.add(uri)
+                        uris += uri
                     }
                 }
             } else {
-                uris = ArrayList()
                 result.data?.data?.let { uris.add(it) }
             }
             _uiState.value = _uiState.value.copy(
                 isInstallApk = true
             )
             mToast(R.string.install_start, context)
-
             viewModelScope.launch {
                 mToast(
                     if (InstallUtils.installApkByShell(uris, context))

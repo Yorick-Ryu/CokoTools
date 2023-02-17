@@ -11,10 +11,10 @@ abstract class IIntentSenderAdaptor : IIntentSender.Stub() {
     override fun send(
         code: Int,
         intent: Intent,
-        resolvedType: String,
-        finishedReceiver: IIntentReceiver,
-        requiredPermission: String,
-        options: Bundle
+        resolvedType: String?,
+        finishedReceiver: IIntentReceiver?,
+        requiredPermission: String?,
+        options: Bundle?
     ): Int {
         send(intent)
         return 0
@@ -23,11 +23,11 @@ abstract class IIntentSenderAdaptor : IIntentSender.Stub() {
     override fun send(
         code: Int,
         intent: Intent,
-        resolvedType: String,
-        whitelistToken: IBinder,
-        finishedReceiver: IIntentReceiver,
-        requiredPermission: String,
-        options: Bundle
+        resolvedType: String?,
+        whitelistToken: IBinder?,
+        finishedReceiver: IIntentReceiver?,
+        requiredPermission: String?,
+        options: Bundle?
     ) {
         send(intent)
     }

@@ -32,8 +32,8 @@ android {
         applicationId "com.yorick.cokotools"
         minSdk 24
         targetSdk 33
-        versionCode 5
-        versionName "3.0.3" + "-lion-" + refine
+        versionCode 6
+        versionName "3.0.4" + "-lion-" + refine
         if (gradle.startParameter.taskNames.any { it.toLowerCase().contains("debug") }) {
             versionName += "-debug"
         }

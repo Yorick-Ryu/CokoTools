@@ -62,9 +62,8 @@ object InstallUtils {
         session: Session
     ): Boolean {
         val res = StringBuilder()
-        var flag = false
         val cr: ContentResolver = context.contentResolver
-        withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             try {
                 for ((i, uri) in uris.withIndex()) {
                     val name = "$i.apk"
@@ -92,7 +91,7 @@ object InstallUtils {
                     }
                 }
                 res.append('\n').append("commit: ")
-                val results = arrayOf<Intent?>(null)
+                val results = mutableListOf<Intent?>(null)
                 val countDownLatch = CountDownLatch(1)
                 val intentSender: IntentSender =
                     IntentSenderUtils.newInstance(object : IIntentSenderAdaptor() {
@@ -113,12 +112,12 @@ object InstallUtils {
                 if (message != INSTALL_SUCCEEDED_FLAG) throw IllegalStateException(message)
                 res.append('\n').append("status: ").append(status).append(" (").append(message)
                     .append(")")
-                flag = true
             } catch (tr: Throwable) {
                 tr.printStackTrace()
                 res.append(tr)
                 CrashReport.postCatchedException(tr)
                 BuglyLog.e(TAG, res.toString())
+                return@withContext false
             } finally {
                 try {
                     session.close()
@@ -126,18 +125,18 @@ object InstallUtils {
                     res.append(tr)
                 }
             }
+            return@withContext true
         }
-        return flag
     }
 
     /**
      *  可以安装但是不能降级安装
      */
-    suspend fun doInstallApks(uris: List<Uri>, context: Context): Boolean {
-        val sessionId = getSessionID(context) ?: return false
-        val session = getSession(sessionId) ?: return false
-        return doInstallApkBySession(uris, context, session)
-    }
+//    suspend fun doInstallApks(uris: List<Uri>, context: Context): Boolean {
+//        val sessionId = getSessionID(context) ?: return false
+//        val session = getSession(sessionId) ?: return false
+//        return doInstallApkBySession(uris, context, session)
+//    }
 
     private fun getSession(sessionId: Int): Session? {
         var session: Session? = null
