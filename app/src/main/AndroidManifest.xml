@@ -31,7 +31,7 @@
         <activity
             android:name=".InstallActivity"
             android:exported="true"
-            android:label="@string/install_component"
+            android:label="@string/install_component_down_grade"
             android:theme="@style/AppTheme.Dialog.NoActionbar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

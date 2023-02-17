@@ -33,7 +33,7 @@ android {
         minSdk 24
         targetSdk 33
         versionCode 5
-        versionName "3.0.2" + "-lion-" + refine
+        versionName "3.0.3" + "-lion-" + refine
         if (gradle.startParameter.taskNames.any { it.toLowerCase().contains("debug") }) {
             versionName += "-debug"
         }
