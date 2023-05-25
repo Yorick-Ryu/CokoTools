@@ -19,15 +19,19 @@ val CokoViewModelFactory = object : ViewModelProvider.Factory {
                 isAssignableFrom(HomeViewModel::class.java) -> {
                     HomeViewModel(toolRepository, categoryRepository, userPreferencesRepository)
                 }
+
                 isAssignableFrom(ContributorViewModel::class.java) -> {
                     ContributorViewModel(contributorRepository)
                 }
+
                 isAssignableFrom(SettingViewModel::class.java) -> {
                     SettingViewModel(userPreferencesRepository)
                 }
+
                 isAssignableFrom(ShellViewModel::class.java) -> {
                     ShellViewModel(application)
                 }
+
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

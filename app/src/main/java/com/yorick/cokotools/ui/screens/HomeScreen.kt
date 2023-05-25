@@ -170,7 +170,6 @@ fun ToolsCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp, bottom = 14.dp),
-            horizontalArrangement = Arrangement.spacedBy(0.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
             rows = rows
         ) {

@@ -129,6 +129,7 @@ fun ShizukuCard(
                 SnackbarResult.ActionPerformed -> {
                     openUrl(Utils.SHIZUKU_INTRODUCTION_URL, context)
                 }
+
                 SnackbarResult.Dismissed -> {}
             }
         }
@@ -147,6 +148,7 @@ fun ShizukuCard(
                 SnackbarResult.ActionPerformed -> {
                     openUrl(Utils.SHIZUKU_DOWNLOAD_URL, context)
                 }
+
                 SnackbarResult.Dismissed -> {}
             }
         }
@@ -160,12 +162,15 @@ fun ShizukuCard(
                     ShizukuState.NOT_RUNNING -> {
                         if (!openShizuku(context)) errInfo()
                     }
+
                     ShizukuState.RUNNING_BUT_LOW_VERSION -> {
                         openUrl(Utils.SHIZUKU_DOWNLOAD_URL, context)
                     }
+
                     ShizukuState.RUNNING_BUT_NOT_GRANTED -> {
                         Shizuku.requestPermission(0)
                     }
+
                     ShizukuState.RUNNING_AND_GRANTED -> {}
                 }
             },
@@ -180,6 +185,7 @@ fun ShizukuCard(
                     stateDesc = stringResource(id = R.string.not_running_tip),
                 )
             }
+
             ShizukuState.RUNNING_BUT_LOW_VERSION -> {
                 ShizukuStateCardContent(
                     icon = Icons.Outlined.ErrorOutline,
@@ -190,6 +196,7 @@ fun ShizukuCard(
                             + stringResource(id = R.string.running_but_low_version_tip),
                 )
             }
+
             ShizukuState.RUNNING_BUT_NOT_GRANTED -> {
                 ShizukuStateCardContent(
                     icon = Icons.Outlined.ErrorOutline,
@@ -198,6 +205,7 @@ fun ShizukuCard(
                     stateDesc = stringResource(id = R.string.click_to_grant),
                 )
             }
+
             ShizukuState.RUNNING_AND_GRANTED -> {
                 ShizukuStateCardContent(
                     icon = Icons.Outlined.CheckCircle,
@@ -299,6 +307,7 @@ fun FreezeComponentCard(
                     res = Utils.matchPackageName(packageName.trim())
                     if (res == 0) freeze(packageName, context) else mToast(res, context)
                 }
+
                 SnackbarResult.Dismissed -> {}
             }
         }

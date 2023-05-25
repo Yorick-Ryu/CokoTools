@@ -6,7 +6,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
@@ -17,7 +22,12 @@ import com.yorick.cokotools.data.model.DarkThemeConfig
 import com.yorick.cokotools.ui.CokoToolsApp
 import com.yorick.cokotools.ui.components.BaseAlterDialog
 import com.yorick.cokotools.ui.theme.CokoToolsTheme
-import com.yorick.cokotools.ui.viewmodels.*
+import com.yorick.cokotools.ui.viewmodels.CokoViewModelFactory
+import com.yorick.cokotools.ui.viewmodels.ContributorViewModel
+import com.yorick.cokotools.ui.viewmodels.HomeViewModel
+import com.yorick.cokotools.ui.viewmodels.SettingViewModel
+import com.yorick.cokotools.ui.viewmodels.SettingsUiState
+import com.yorick.cokotools.ui.viewmodels.ShellViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch

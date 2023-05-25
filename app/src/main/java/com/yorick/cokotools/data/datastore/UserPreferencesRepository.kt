@@ -23,8 +23,10 @@ class UserPreferencesRepository(
                 DarkThemeConfigProto.DARK_THEME_CONFIG_FOLLOW_SYSTEM,
                 ->
                     DarkThemeConfig.FOLLOW_SYSTEM
+
                 DarkThemeConfigProto.DARK_THEME_CONFIG_LIGHT ->
                     DarkThemeConfig.LIGHT
+
                 DarkThemeConfigProto.DARK_THEME_CONFIG_DARK -> DarkThemeConfig.DARK
             },
             useDynamicColor = it.useDynamicColor,

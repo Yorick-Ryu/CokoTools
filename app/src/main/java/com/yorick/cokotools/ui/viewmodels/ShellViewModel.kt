@@ -17,7 +17,18 @@ import com.yorick.cokotools.util.Utils.mToast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import rikka.shizuku.Shizuku.*
+import rikka.shizuku.Shizuku.OnBinderDeadListener
+import rikka.shizuku.Shizuku.OnBinderReceivedListener
+import rikka.shizuku.Shizuku.OnRequestPermissionResultListener
+import rikka.shizuku.Shizuku.addBinderDeadListener
+import rikka.shizuku.Shizuku.addBinderReceivedListenerSticky
+import rikka.shizuku.Shizuku.addRequestPermissionResultListener
+import rikka.shizuku.Shizuku.checkSelfPermission
+import rikka.shizuku.Shizuku.getVersion
+import rikka.shizuku.Shizuku.isPreV11
+import rikka.shizuku.Shizuku.removeBinderDeadListener
+import rikka.shizuku.Shizuku.removeBinderReceivedListener
+import rikka.shizuku.Shizuku.removeRequestPermissionResultListener
 
 class ShellViewModel(application: Application) : AndroidViewModel(application) {
 

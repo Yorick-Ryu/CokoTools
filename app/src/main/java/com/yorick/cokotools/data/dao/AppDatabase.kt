@@ -5,7 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.yorick.cokotools.data.model.*
+import com.yorick.cokotools.data.model.Category
+import com.yorick.cokotools.data.model.Contributor
+import com.yorick.cokotools.data.model.Tool
+import com.yorick.cokotools.data.model.categories
+import com.yorick.cokotools.data.model.contributors
+import com.yorick.cokotools.data.model.tools
 import com.yorick.cokotools.data.network.CategoryApi
 import com.yorick.cokotools.data.network.ContributorApi
 import com.yorick.cokotools.data.network.ToolApi

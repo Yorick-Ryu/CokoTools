@@ -132,11 +132,11 @@ object InstallUtils {
     /**
      *  可以安装但是不能降级安装
      */
-//    suspend fun doInstallApks(uris: List<Uri>, context: Context): Boolean {
-//        val sessionId = getSessionID(context) ?: return false
-//        val session = getSession(sessionId) ?: return false
-//        return doInstallApkBySession(uris, context, session)
-//    }
+    suspend fun doInstallApks(uris: List<Uri>, context: Context): Boolean {
+        val sessionId = getSessionID(context) ?: return false
+        val session = getSession(sessionId) ?: return false
+        return doInstallApkBySession(uris, context, session)
+    }
 
     private fun getSession(sessionId: Int): Session? {
         var session: Session? = null
