@@ -1,6 +1,7 @@
 package com.yorick.cokotools.ui.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.PagerState
@@ -27,12 +28,17 @@ fun CokoToolsAppBar(
     onClickHelp: () -> Unit = {},
     onClickDonate: () -> Unit = {},
 ) {
-    TopAppBar(
+    CokoTopBar(
         modifier = modifier.fillMaxWidth(),
         navigationIcon = {
             CokoToolsLogo(modifier.padding(horizontal = 10.dp))
         },
-        title = { Text(text = stringResource(id = R.string.app_name)) },
+        title = {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
         actions = {
             IconButton(onClick = onClickHelp) {
                 Icon(
@@ -48,6 +54,35 @@ fun CokoToolsAppBar(
             }
         }
     )
+}
+
+@Composable
+fun CokoTopBar(
+    title: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    navigationIcon: @Composable () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = 5.dp, bottom = 10.dp, end = 5.dp, top = 8.dp)
+            .background(
+                color = MaterialTheme.colorScheme.surface
+            )
+            .statusBarsPadding(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            navigationIcon()
+            title()
+        }
+        Row(horizontalArrangement = Arrangement.End) {
+            actions()
+        }
+
+    }
 }
 
 enum class TabPage {
