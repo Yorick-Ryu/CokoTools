@@ -8,4 +8,5 @@ interface ToolRepository {
     suspend fun addNewTool(vararg tools: Tool)
     suspend fun updateTool(vararg tools: Tool)
     suspend fun deleteTool(vararg tools: Tool)
+    suspend fun getToolsFromRemote(): List<Tool>
 }

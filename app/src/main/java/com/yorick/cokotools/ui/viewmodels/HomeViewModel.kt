@@ -11,7 +11,6 @@ import com.yorick.cokotools.data.datastore.UserPreferencesRepository
 import com.yorick.cokotools.data.model.Category
 import com.yorick.cokotools.data.model.CategoryWithTools
 import com.yorick.cokotools.data.model.Tool
-import com.yorick.cokotools.data.network.ToolApi
 import com.yorick.cokotools.data.repository.CategoryRepository
 import com.yorick.cokotools.data.repository.ToolRepository
 import com.yorick.cokotools.util.Utils
@@ -21,17 +20,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HomeViewModel(
     private val toolRepository: ToolRepository,
     private val cateRepository: CategoryRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
-
-    companion object {
-        const val CALL_BACK_SUCCESS = "Tool stored correctly"
-    }
 
     private val _uiState = MutableStateFlow(HomeUiState(loading = true))
     val uiState: StateFlow<HomeUiState> = _uiState
@@ -91,13 +85,17 @@ class HomeViewModel(
         }
     }
 
+    // TODO: 拉取远端分类
+
     fun getAllRemoteTools() {
         viewModelScope.launch {
             try {
-                _uiState.value = _uiState.value.copy(
-                    remoteTools = ToolApi.toolApiService.getAllTools(),
-                    showTools = ToolApi.toolApiService.getAllTools().filter { it.release }
-                )
+                toolRepository.getToolsFromRemote().let { remoteTools ->
+                    _uiState.value = _uiState.value.copy(
+                        remoteTools = remoteTools,
+                        showTools = remoteTools.filter { it.release }
+                    )
+                }
             } catch (ex: Exception) {
                 _uiState.value = HomeUiState(error = ex.message)
                 // 失败了要重新读取数据
@@ -144,25 +142,27 @@ class HomeViewModel(
             mToast(R.string.upload_redundant, context)
             return
         }
-        viewModelScope.launch(Dispatchers.IO) {
-            var callBack: String? = null
-            try {
-                callBack = withContext(Dispatchers.IO) {
-                    ToolApi.toolApiService.addNewTool(tool).string()
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            withContext(Dispatchers.Main) {
-                mToast(
-                    if (callBack == CALL_BACK_SUCCESS) R.string.upload_success else R.string.upload_err,
-                    context
-                )
-            }
-        }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            var callBack: String? = null
+//            try {
+//                callBack = withContext(Dispatchers.IO) {
+//                    ToolApi.toolApiService.addNewTool(tool).string()
+//                }
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+//            withContext(Dispatchers.Main) {
+//                mToast(
+//                    if (callBack == CALL_BACK_SUCCESS) R.string.upload_success else R.string.upload_err,
+//                    context
+//                )
+//            }
+//        }
     }
 
-    // 打开Activity
+    /**
+     * Start Activity
+     */
     fun startActivity(context: Context, packageName: String, activityName: String, okMsg: String?) {
         if (Utils.startActivity(context, packageName, activityName)) {
             if (okToast) mToast(okMsg, context)

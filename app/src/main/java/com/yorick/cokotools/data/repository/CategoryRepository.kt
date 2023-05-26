@@ -9,4 +9,5 @@ interface CategoryRepository {
     suspend fun getAllCategoryWithTools(): Flow<List<CategoryWithTools>>
     suspend fun addNewCategory(vararg categories: Category)
     suspend fun deleteCategory(vararg categories: Category)
+    suspend fun getCategoryFromRemote(): List<Category>
 }

@@ -4,7 +4,7 @@ import com.yorick.cokotools.data.model.Contributor
 import retrofit2.http.GET
 
 interface ContributorApiService {
-    @GET("contributor")
+    @GET("contributors.json")
     suspend fun getAllContributors(): List<Contributor>
 }
 

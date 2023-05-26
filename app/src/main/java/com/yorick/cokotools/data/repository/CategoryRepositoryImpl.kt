@@ -3,6 +3,7 @@ package com.yorick.cokotools.data.repository
 import com.yorick.cokotools.data.dao.CategoryDao
 import com.yorick.cokotools.data.model.Category
 import com.yorick.cokotools.data.model.CategoryWithTools
+import com.yorick.cokotools.data.network.CategoryApi
 import kotlinx.coroutines.flow.Flow
 
 class CategoryRepositoryImpl(
@@ -18,4 +19,7 @@ class CategoryRepositoryImpl(
 
     override suspend fun deleteCategory(vararg categories: Category) =
         categoryDao.deleteCategory(*categories)
+
+    override suspend fun getCategoryFromRemote(): List<Category> =
+        CategoryApi.categoryApiService.getAllCategories()
 }

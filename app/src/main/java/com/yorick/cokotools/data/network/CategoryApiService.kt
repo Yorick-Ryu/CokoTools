@@ -4,7 +4,7 @@ import com.yorick.cokotools.data.model.Category
 import retrofit2.http.GET
 
 interface CategoryApiService {
-    @GET("category")
+    @GET("categories.json")
     suspend fun getAllCategories(): List<Category>
 }
 

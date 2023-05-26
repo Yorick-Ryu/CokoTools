@@ -2,6 +2,7 @@ package com.yorick.cokotools.data.repository
 
 import com.yorick.cokotools.data.dao.ToolDao
 import com.yorick.cokotools.data.model.Tool
+import com.yorick.cokotools.data.network.ToolApi
 import kotlinx.coroutines.flow.Flow
 
 class ToolRepositoryImpl(
@@ -14,4 +15,5 @@ class ToolRepositoryImpl(
     override suspend fun updateTool(vararg tools: Tool) = toolDao.updateTool(*tools)
 
     override suspend fun deleteTool(vararg tools: Tool) = toolDao.deleteTool(*tools)
+    override suspend fun getToolsFromRemote(): List<Tool> = ToolApi.toolApiService.getAllTools()
 }

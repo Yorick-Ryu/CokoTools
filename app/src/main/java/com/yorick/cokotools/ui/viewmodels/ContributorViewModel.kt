@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yorick.cokotools.data.model.Contributor
-import com.yorick.cokotools.data.network.ContributorApi
 import com.yorick.cokotools.data.repository.ContributorRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,7 +34,7 @@ class ContributorViewModel(
     private fun getLatestContributor() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                contributorRepository.addNewContributors(*(ContributorApi.contributorApiService.getAllContributors()).toTypedArray())
+                contributorRepository.addNewContributors(*(contributorRepository.getContributorsFromRemote()).toTypedArray())
             } catch (e: IOException) {
                 e.printStackTrace()
             }

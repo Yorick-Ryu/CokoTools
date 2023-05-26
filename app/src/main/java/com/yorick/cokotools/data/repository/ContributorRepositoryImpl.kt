@@ -2,6 +2,7 @@ package com.yorick.cokotools.data.repository
 
 import com.yorick.cokotools.data.dao.ContributorDao
 import com.yorick.cokotools.data.model.Contributor
+import com.yorick.cokotools.data.network.ContributorApi
 import kotlinx.coroutines.flow.Flow
 
 class ContributorRepositoryImpl(
@@ -15,4 +16,7 @@ class ContributorRepositoryImpl(
 
     override suspend fun deleteContributors(vararg contributors: Contributor) =
         contributorDao.deleteContributors(*contributors)
+
+    override suspend fun getContributorsFromRemote() =
+        ContributorApi.contributorApiService.getAllContributors()
 }
