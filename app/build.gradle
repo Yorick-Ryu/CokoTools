@@ -49,7 +49,7 @@ android {
         }
         ndk {
             // 设置支持的SO库架构
-            abiFilters 'arm64-v8a' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            abiFilters 'arm64-v8a', 'x86', 'armeabi-v7a', 'x86_64'
         }
     }
 
@@ -71,6 +71,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = '17'
+        languageVersion = "2.0"
     }
     buildFeatures {
         compose true
@@ -147,7 +148,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-compose:2.6.1'
 
     // Navigation
-    implementation "androidx.navigation:navigation-compose:2.5.3"
+    implementation "androidx.navigation:navigation-compose:2.6.0"
     implementation 'io.coil-kt:coil-compose:2.2.2'
 
     // Accompanist
@@ -180,11 +181,15 @@ dependencies {
     implementation "dev.rikka.tools.refine:runtime:4.1.0"
     implementation 'org.lsposed.hiddenapibypass:hiddenapibypass:4.3'
 
+    // AppIconLoader
+    implementation("me.zhanghai.android.appiconloader:appiconloader:1.5.0")
+
+    // Bugly
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+
     // Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    // Bugly
-    implementation 'com.tencent.bugly:crashreport:latest.release'
 }
