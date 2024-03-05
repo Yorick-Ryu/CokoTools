@@ -4,7 +4,7 @@
 ---
 ## 目前功能如下：
 
-详细文档：[《酷客工具箱》帮助文档](https://shimo.im/docs/R13j8x5vQ1ieogk5)
+详细文档：[《酷客工具箱》帮助文档](https://yorick-ryu.github.io/2023/02/11/Project/CookTools-doc/)
 
 - 锁频段LockBands
 - 状态栏显秒
