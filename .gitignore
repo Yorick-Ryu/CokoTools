@@ -16,3 +16,4 @@ cp_buglyQqUploadSymbolLib.jar
 buglybin
 /app/release/
 /.idea/
+/.idea/gradle.xml
