@@ -154,7 +154,6 @@ dependencies {
     // Accompanist
     def accompanist_version = "0.34.0"
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
-    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
 
     // Room
     def room_version = "2.5.1"
