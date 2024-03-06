@@ -3,14 +3,25 @@ package com.yorick.cokotools.ui.components
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material.icons.outlined.CloudDownload
 import androidx.compose.material.icons.outlined.GridView
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.yorick.cokotools.R
 import com.yorick.cokotools.ui.theme.CokoToolsTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CokoToolsAppBar(
     modifier: Modifier = Modifier,
@@ -42,7 +52,7 @@ fun CokoToolsAppBar(
         actions = {
             IconButton(onClick = onClickHelp) {
                 Icon(
-                    imageVector = Icons.Default.HelpOutline,
+                    imageVector = Icons.AutoMirrored.Filled.HelpOutline,
                     contentDescription = stringResource(id = R.string.action_helps)
                 )
             }

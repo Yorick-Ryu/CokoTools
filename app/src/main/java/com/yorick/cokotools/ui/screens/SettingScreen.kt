@@ -16,10 +16,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.SpeakerNotes
 import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material.icons.outlined.SpeakerNotes
 import androidx.compose.material.icons.outlined.SpeakerNotesOff
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -175,7 +175,7 @@ fun SettingList(
         CokoClassRow(className = stringResource(id = R.string.function)) {
             CokoSingleRowListItem(
                 modifier = Modifier,
-                icon = if (settings.okToast) Icons.Outlined.SpeakerNotes else Icons.Outlined.SpeakerNotesOff,
+                icon = if (settings.okToast) Icons.AutoMirrored.Outlined.SpeakerNotes else Icons.Outlined.SpeakerNotesOff,
                 name = stringResource(id = R.string.ok_toast),
             ) {
                 Switch(

@@ -1,7 +1,6 @@
 package com.yorick.cokotools.ui.screens
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,7 +19,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
@@ -48,7 +46,6 @@ import com.yorick.cokotools.util.Utils.openUrl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreen(
     modifier: Modifier = Modifier,
@@ -136,10 +133,7 @@ fun AboutScreen(
                             Text(text = contributor.name)
                         },
                         modifier = Modifier.padding(start = 12.dp),
-                        border = AssistChipDefaults.assistChipBorder(
-                            borderColor = MaterialTheme.colorScheme.primary,
-                            borderWidth = 1.5.dp
-                        ),
+                        border = AssistChipDefaults.assistChipBorder(enabled = true),
                         shape = MaterialTheme.shapes.medium,
                         colors = AssistChipDefaults.assistChipColors(
                             containerColor = MaterialTheme.colorScheme.secondaryContainer

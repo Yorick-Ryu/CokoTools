@@ -39,10 +39,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnrememberedMutableState")
-@OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-    ExperimentalAnimationApi::class
-)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ToolScreen(
     modifier: Modifier = Modifier,
@@ -54,7 +51,7 @@ fun ToolScreen(
     scope: CoroutineScope
 ) {
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { 2 })
     val state1 = rememberLazyListState()
     val state2 = rememberLazyListState()
     val fabVisibility by derivedStateOf {
@@ -138,7 +135,6 @@ fun ToolScreen(
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.padding(paddingValues),
-            pageCount = tabs.size
         ) { page ->
             tabs[page]()
         }

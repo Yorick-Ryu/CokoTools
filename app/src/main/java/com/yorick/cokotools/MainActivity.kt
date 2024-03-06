@@ -3,7 +3,9 @@ package com.yorick.cokotools
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -17,7 +19,6 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.yorick.cokotools.data.model.DarkThemeConfig
 import com.yorick.cokotools.ui.CokoToolsApp
 import com.yorick.cokotools.ui.components.BaseAlterDialog
@@ -62,15 +63,25 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        enableEdgeToEdge()
+
         setContent {
-            val systemUiController = rememberSystemUiController()
             val darkTheme = shouldUseDarkTheme(uiState)
-            DisposableEffect(systemUiController, darkTheme) {
-                systemUiController.systemBarsDarkContentEnabled = !darkTheme
-                onDispose {}
-            }
             var isFirst by remember {
                 mutableStateOf(count == 0)
+            }
+            DisposableEffect(darkTheme) {
+                enableEdgeToEdge(
+                    statusBarStyle = SystemBarStyle.auto(
+                        android.graphics.Color.TRANSPARENT,
+                        android.graphics.Color.TRANSPARENT,
+                    ) { darkTheme },
+                    navigationBarStyle = SystemBarStyle.auto(
+                        lightScrim,
+                        darkScrim,
+                    ) { darkTheme },
+                )
+                onDispose {}
             }
             CokoToolsTheme(
                 darkTheme = darkTheme,
@@ -127,3 +138,6 @@ private fun useDynamicTheming(
     SettingsUiState.Loading -> false
     is SettingsUiState.Success -> uiState.settings.useDynamicColor
 }
+
+private val lightScrim = android.graphics.Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
+private val darkScrim = android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)

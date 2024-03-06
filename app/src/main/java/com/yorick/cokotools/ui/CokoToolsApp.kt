@@ -6,9 +6,21 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -23,7 +35,11 @@ import com.yorick.cokotools.ui.components.CokoToolsAppBar
 import com.yorick.cokotools.ui.navigation.CokoToolsNavigationBottomBar
 import com.yorick.cokotools.ui.navigation.CookToolsRoute
 import com.yorick.cokotools.ui.navigation.NavigationActions
-import com.yorick.cokotools.ui.screens.*
+import com.yorick.cokotools.ui.screens.AboutScreen
+import com.yorick.cokotools.ui.screens.HomeScreen
+import com.yorick.cokotools.ui.screens.SettingScreen
+import com.yorick.cokotools.ui.screens.ShellScreen
+import com.yorick.cokotools.ui.screens.ToolScreen
 import com.yorick.cokotools.ui.theme.CokoToolsTheme
 import com.yorick.cokotools.ui.viewmodels.ContributorViewModel
 import com.yorick.cokotools.ui.viewmodels.HomeViewModel
@@ -74,7 +90,7 @@ fun CokoToolsApp(
                             onClick = { navController.popBackStack() }
                         ) {
                             Icon(
-                                imageVector = Icons.Default.ArrowBack,
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = stringResource(id = R.string.back)
                             )
                         }
