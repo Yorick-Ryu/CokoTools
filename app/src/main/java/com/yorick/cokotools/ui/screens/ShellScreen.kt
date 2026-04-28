@@ -90,6 +90,7 @@ fun ShellScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())
     ) {

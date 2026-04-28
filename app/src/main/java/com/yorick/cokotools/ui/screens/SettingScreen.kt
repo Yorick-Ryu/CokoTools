@@ -1,6 +1,7 @@
 package com.yorick.cokotools.ui.screens
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -58,7 +59,11 @@ fun SettingScreen(
 ) {
     val settingsUiState by settingViewModel.settingsUiState.collectAsStateWithLifecycle()
 
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)
+    ) {
         when (settingsUiState) {
             Loading -> {
                 Text(text = stringResource(id = R.string.loading))
